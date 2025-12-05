@@ -1,2 +1,25 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+.btn {
+  @apply btn-sm md:btn-md md:font-semibold md:text-base;
+}
+
+.btn:disabled {
+  @apply disabled:bg-gray-300 disabled:bg-none disabled:pointer-events-auto disabled:cursor-not-allowed;
+}
+
+.logo {
+  @apply text-xl md:text-2xl font-black bg-linear-to-r from-primary via-purple-500 to-secondary bg-clip-text text-transparent hover:scale-105 active:scale-95 transition-transform duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 rounded px-1;
+}
+
+.nav_links {
+  @apply relative text-base font-semibold text-neutral transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-linear-to-r after:from-primary after:to-secondary after:transition-all after:duration-300 rounded-t-xl;
+}
+
+.nav_links:hover,
+.nav_links.active {
+  @apply text-primary after:w-full bg-primary-content;
+}
