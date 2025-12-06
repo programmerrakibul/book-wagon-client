@@ -12,6 +12,19 @@
   --color-white: #f9f8f6;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-neutral;
+}
+
+.label {
+  @apply font-medium text-base lg:text-lg text-neutral;
+}
+
 .btn {
   @apply btn-sm md:btn-md md:font-semibold md:text-base;
 }

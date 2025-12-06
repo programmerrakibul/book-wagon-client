@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import MyInput from "../../../components/MyInput/MyInput";
 import MyLabel from "../../../components/MyLabel/MyLabel";
 import Button from "../../../components/Button/Button";
@@ -8,8 +8,12 @@ import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import { validatePassword } from "../../../utilities/validatePassword";
 import { uploadImage } from "../../../utilities/uploadImage";
 import useAuth from "../../../hooks/useAuth";
+import SocialLogin from "../../shared/SocialLogin/SocialLogin";
+import useGoogleLogin from "../../../hooks/useGoogleLogin";
+import { Link } from "react-router";
 
 const Register = () => {
+  const { handleGoogleLogin } = useGoogleLogin();
   const { updateUserProfile, createUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -43,7 +47,15 @@ const Register = () => {
       <div className="min-h-dvh flex items-center justify-center bg-secondary/5 py-12 md:px-4">
         <div className="card w-full max-w-md bg-base-100 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title text-3xl font-bold text-center text-primary mb-6">
+            <Link
+              to="/"
+              className="group flex items-center gap-2 text-gray-600 hover:text-primary transition-all duration-300 mb-4 w-fit"
+            >
+              <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+              <span className="text-sm font-medium">Back to Home</span>
+            </Link>
+
+            <h2 className="card-title text-3xl font-bold text-center text-primary! mb-6">
               Create Account
             </h2>
 
@@ -133,14 +145,16 @@ const Register = () => {
               <div className="text-center mt-4">
                 <p className="text-sm">
                   Already have an account?{" "}
-                  <a
-                    href="/login"
+                  <Link
+                    to="/auth/login"
                     className="text-secondary font-semibold hover:underline"
                   >
                     Login here
-                  </a>
+                  </Link>
                 </p>
               </div>
+
+              <SocialLogin onClick={() => handleGoogleLogin()} />
             </form>
           </div>
         </div>
