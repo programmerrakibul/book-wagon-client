@@ -10,9 +10,13 @@ import { uploadImage } from "../../../utilities/uploadImage";
 import useAuth from "../../../hooks/useAuth";
 import SocialLogin from "../../shared/SocialLogin/SocialLogin";
 import useGoogleLogin from "../../../hooks/useGoogleLogin";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
+import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
+import { toast } from "sonner";
 
 const Register = () => {
+  const navigate = useNavigate();
   const { handleGoogleLogin } = useGoogleLogin();
   const { updateUserProfile, createUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +24,7 @@ const Register = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -29,14 +34,19 @@ const Register = () => {
 
     try {
       const photoURL = await uploadImage(data.image[0]);
-      await createUser(email, password);
+      const { user } = await createUser(email, password);
 
       await updateUserProfile({
         displayName,
         photoURL,
       });
+
+      reset();
+      navigate("/");
+      loginSuccessMessage(user.displayName);
     } catch (error) {
-      console.error("Error uploading image:", error);
+      const errorMessage = getAuthErrorMessage(error.code);
+      toast.error(errorMessage);
     }
   };
 

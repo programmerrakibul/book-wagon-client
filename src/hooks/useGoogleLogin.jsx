@@ -1,8 +1,13 @@
 // import { useMutation } from "@tanstack/react-query";
 // import useSecureAxios from "./useSecureAxios";
+import { useNavigate } from "react-router";
 import useAuth from "./useAuth";
+import { loginSuccessMessage } from "../utilities/loginSuccessMessage";
+import { getAuthErrorMessage } from "../utilities/getAuthErrorMessage";
+import { toast } from "sonner";
 
 const useGoogleLogin = () => {
+  const navigate = useNavigate();
   const { loginInWithGoogle } = useAuth();
   // const secureAxios = useSecureAxios();
   // const { mutateAsync, isPending: googleLoading } = useMutation({
@@ -17,8 +22,9 @@ const useGoogleLogin = () => {
     try {
       const { user } = await loginInWithGoogle();
 
-      console.log(user);
+      loginSuccessMessage(user.displayName);
 
+      navigate("/");
       // const newUser = {
       //   name: user.displayName,
       //   email: user.email,
@@ -27,7 +33,8 @@ const useGoogleLogin = () => {
 
       // await mutateAsync(newUser);
     } catch (err) {
-      console.log(err);
+      const errorMessage = getAuthErrorMessage(err.code);
+      toast.error(errorMessage);
     }
   };
 

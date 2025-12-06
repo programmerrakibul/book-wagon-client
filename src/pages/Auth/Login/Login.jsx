@@ -8,9 +8,13 @@ import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import useAuth from "../../../hooks/useAuth";
 import SocialLogin from "../../shared/SocialLogin/SocialLogin";
 import useGoogleLogin from "../../../hooks/useGoogleLogin";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
+import { toast } from "sonner";
+import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { handleGoogleLogin } = useGoogleLogin();
   const { logInWithPassword } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +22,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -25,11 +30,14 @@ const Login = () => {
     const password = data.password;
 
     try {
-   await logInWithPassword(email, password);
+      const { user } = await logInWithPassword(email, password);
 
-
+      loginSuccessMessage(user.displayName);
+      reset();
+      navigate("/");
     } catch (error) {
-      console.error("Error uploading image:", error);
+      const errorMessage = getAuthErrorMessage(error.code);
+      toast.error(errorMessage);
     }
   };
 
