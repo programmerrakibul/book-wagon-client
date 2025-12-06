@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const updateUserProfile = (info) => {
-    console.log('From Update User ===> ',info);
+    console.log("From Update User ===> ", info);
 
     return updateProfile(auth.currentUser, info);
   };
@@ -62,10 +62,12 @@ const AuthProvider = ({ children }) => {
     logInWithPassword,
     logOutUser,
     loginInWithGoogle,
-    setUser,
-    loading,
   };
-  return <AuthContext value={authData}>{children}</AuthContext>;
+  return (
+    <AuthContext value={authData}>
+      {loading ? <p>Loading...</p> : children}
+    </AuthContext>
+  );
 };
 
 export default AuthProvider;
