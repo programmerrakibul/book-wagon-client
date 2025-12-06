@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import MyInput from "../../../components/MyInput/MyInput";
 import MyLabel from "../../../components/MyLabel/MyLabel";
 import Button from "../../../components/Button/Button";
@@ -9,6 +11,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const Register = () => {
   const { updateUserProfile, createUser } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -95,15 +98,29 @@ const Register = () => {
               {/* Password Field */}
               <div className="space-y-1">
                 <MyLabel htmlFor="password" label="Password" />
-                <MyInput
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  {...register("password", {
-                    required: "Password is required",
-                    validate: validatePassword,
-                  })}
-                />
+                <div className="relative">
+                  <MyInput
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    className="pr-10"
+                    {...register("password", {
+                      required: "Password is required",
+                      validate: validatePassword,
+                    })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash className="w-5 h-5" />
+                    ) : (
+                      <FaEye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
                 <ErrorMessage message={errors.password?.message} />
               </div>
 
