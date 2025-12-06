@@ -29,6 +29,7 @@ const Navbar = () => {
     { label: "Home", slug: "/" },
     { label: "Books", slug: "/books" },
     { label: "Dashboard", slug: "/dashboard" },
+    { label: "Coverage", slug: "/coverage" },
     { label: "About Us", slug: "/about-us" },
     { label: "Contact Us", slug: "/contact-us" },
   ];
@@ -105,7 +106,7 @@ const Navbar = () => {
           {/* Custom Mobile Menu - Smooth Slide Animation */}
           <div
             className={`lg:hidden border-t border-base-200/30 overflow-hidden transition-all duration-300 ease-in-out ${
-              mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              mobileMenuOpen ? "max-h-[490px] opacity-100" : "max-h-0 opacity-0"
             }`}
           >
             <div className="bg-base-100/80 backdrop-blur-xl shadow-sm px-4 md:px-6 py-4 space-y-2 border-t border-base-200/30">
@@ -150,7 +151,7 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <Button onClick={handleLogout} >
+                  <Button onClick={handleLogout}>
                     <LuLogOut />
                     <span>Logout</span>
                   </Button>
