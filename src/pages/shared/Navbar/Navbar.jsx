@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import Container from "../Container/Container";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import Button from "../../../components/Button/Button";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -51,13 +52,18 @@ const Navbar = () => {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="btn btn-ghost btn-circle md:hidden hover:bg-base-200/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                aria-label="Toggle navigation menu"
+                aria-label="Toggle navigate menu"
               >
                 {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
               </button>
 
               {/* CTA Button - Desktop Only */}
-              <Button className="hidden md:inline-flex">LogIn</Button>
+              <Button
+                onClick={() => navigate("/auth/login")}
+                className="hidden md:inline-flex"
+              >
+                LogIn
+              </Button>
             </div>
           </div>
 
@@ -86,9 +92,14 @@ const Navbar = () => {
               <div className="divider my-2" />
 
               {/* Mobile CTA */}
-              <Button className="btn-block">Get in Touch</Button>
+              <Button
+                onClick={() => navigate("/auth/login")}
+                className="btn-block"
+              >
+                Login
+              </Button>
               <p className="text-center text-xs text-base-content/40 pt-2">
-                Let&apos;s work together
+                Let&apos;s read together
               </p>
             </div>
           </div>

@@ -23,3 +23,9 @@
 .nav_links.active {
   @apply text-primary after:w-full bg-primary-content;
 }
+
+.input,
+.textarea,
+.select {
+  @apply w-full block bg-transparent border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-shadow duration-300 outline-primary;
+}
