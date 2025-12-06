@@ -3,6 +3,15 @@
   themes: light --default;
 }
 
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #6439ff;
+  --color-secondary: #4f75ff;
+  --color-neutral: #0f0e0e;
+  --color-white: #f9f8f6;
+}
+
 .btn {
   @apply btn-sm md:btn-md md:font-semibold md:text-base;
 }

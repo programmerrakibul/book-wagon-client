@@ -4,17 +4,33 @@ import MyLabel from "../../../components/MyLabel/MyLabel";
 import Button from "../../../components/Button/Button";
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import { validatePassword } from "../../../utilities/validatePassword";
+import { uploadImage } from "../../../utilities/uploadImage";
+import useAuth from "../../../hooks/useAuth";
 
 const Register = () => {
+  const { updateUserProfile, createUser } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle registration logic here
+  const onSubmit = async (data) => {
+    const displayName = data.name;
+    const email = data.email;
+    const password = data.password;
+
+    try {
+      const photoURL = await uploadImage(data.image[0]);
+      await createUser(email, password);
+
+      await updateUserProfile({
+        displayName,
+        photoURL,
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
   return (
@@ -52,7 +68,7 @@ const Register = () => {
                   id="image"
                   type="file"
                   accept="image/*"
-                  className="file-input file-input-bordered w-full"
+                  className="file-input file-input-bordered w-full px-0"
                   {...register("image", { required: "Image is required" })}
                 />
                 <ErrorMessage message={errors.image?.message} />

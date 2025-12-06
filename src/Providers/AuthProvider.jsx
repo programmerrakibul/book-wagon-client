@@ -9,7 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
-import AuthContext from "../contexts/AuthContexts";
+import AuthContext from "../contexts/AuthContext";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -34,7 +34,9 @@ const AuthProvider = ({ children }) => {
   };
 
   const updateUserProfile = (info) => {
-    return updateProfile(auth.user, info);
+    console.log('From Update User ===> ',info);
+
+    return updateProfile(auth.currentUser, info);
   };
 
   useEffect(() => {
