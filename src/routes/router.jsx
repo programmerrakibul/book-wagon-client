@@ -5,9 +5,12 @@ import Books from "../pages/Books/Books";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
-import DashboardLayout from "../layouts/Dashbaord/DashboardLayout";
 import Overview from "../pages/Dashboard/Overview/Overview";
 import AddBook from "../pages/Dashboard/AddBook/AddBook";
+import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
+import Profile from "../pages/Dashboard/Profile/Profile/Profile";
+import EditProfile from "../pages/Dashboard/Profile/EditProfile/EditProfile";
+import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 
 const router = createBrowserRouter([
   // Main routes
@@ -38,6 +41,21 @@ const router = createBrowserRouter([
       {
         path: "add-book",
         element: <AddBook />,
+      },
+      // Profile Layout
+      {
+        path: "profile",
+        element: <ProfileLayout />,
+        children: [
+          {
+            index: true,
+            element: <Profile />,
+          },
+          {
+            path: "edit",
+            element: <EditProfile />,
+          },
+        ],
       },
     ],
   },

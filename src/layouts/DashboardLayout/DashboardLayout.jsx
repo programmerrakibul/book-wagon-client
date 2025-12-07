@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router";
 import { MdLibraryAdd } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 
 const DashboardLayout = () => {
   return (
@@ -49,7 +50,6 @@ const DashboardLayout = () => {
           <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
             {/* Sidebar content here */}
             <ul className="menu w-full grow">
-              {/* List item */}
               <li>
                 <button
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
@@ -73,18 +73,29 @@ const DashboardLayout = () => {
                 </button>
               </li>
 
-              {/* List item */}
               <li>
                 <Link
                   to="/dashboard/add-book"
                   className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                   data-tip="Add Book"
                 >
-                  {/* Settings icon */}
                   <span className="text-xl">
                     <MdLibraryAdd />
                   </span>
                   <span className="is-drawer-close:hidden">Add Book</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/dashboard/profile"
+                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                  data-tip="Profile"
+                >
+                  <span className="text-xl">
+                    <FaUser />
+                  </span>
+                  <span className="is-drawer-close:hidden">Profile</span>
                 </Link>
               </li>
             </ul>
