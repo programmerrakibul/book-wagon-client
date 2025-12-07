@@ -94,8 +94,7 @@ const MyBooks = () => {
                             <div className="w-12 h-16 rounded">
                               <img
                                 src={
-                                  book.bookImage ||
-                                  "https://via.placeholder.com/100x150"
+                                  book.bookImage
                                 }
                                 alt={book.bookName}
                                 className="object-cover"

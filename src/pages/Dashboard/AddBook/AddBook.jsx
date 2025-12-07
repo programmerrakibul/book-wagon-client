@@ -13,6 +13,7 @@ import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
 import { useState } from "react";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
+import { uploadImage } from "../../../utilities/uploadImage";
 
 const AddBook = () => {
   const [loading, setLoading] = useState(false);
@@ -44,10 +45,15 @@ const AddBook = () => {
       }
     });
 
+    const imageFile = bookData.bookImage[0];
     bookData.librarianEmail = user.email;
 
     try {
-      const { data } = await secureAxios.post("/books", bookData);
+      const bookImage = await uploadImage(imageFile);
+      const { data } = await secureAxios.post("/books", {
+        ...bookData,
+        bookImage,
+      });
 
       if (data.insertedId) {
         reset();
