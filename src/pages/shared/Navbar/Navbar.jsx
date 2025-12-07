@@ -8,6 +8,7 @@ import useAuth from "../../../hooks/useAuth";
 import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
+import Logo from "../../../components/Logo/Logo";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -51,17 +52,15 @@ const Navbar = () => {
       <nav className="bg-base-100/80 border-b border-base-200/30 shadow-sm">
         <Container>
           {/* Desktop & Mobile layout */}
-          <div className="navbar h-16 p-0">
+          <div className="navbar py-2">
             {/* Logo - Left Side */}
             <div className="navbar-start">
-              <Link to="/" className="logo" aria-label="Rakibul - Home">
-                BookWagon
-              </Link>
+              <Logo />
             </div>
 
             {/* Desktop Menu - Center */}
             <div className="navbar-center hidden lg:inline-flex">
-              <ul className="menu menu-horizontal gap-2">{navLinks}</ul>
+              <ul className="menu py-0 menu-horizontal gap-2">{navLinks}</ul>
             </div>
 
             {/* Mobile Menu Button & Desktop CTA - Right Side */}
@@ -69,10 +68,10 @@ const Navbar = () => {
               {/* Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="btn btn-ghost btn-circle lg:hidden hover:bg-base-200/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="btn btn-ghost text-3xl! btn-circle lg:hidden hover:bg-base-200/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
                 aria-label="Toggle navigate menu"
               >
-                {mobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
+                {mobileMenuOpen ? <HiX  /> : <HiMenu />}
               </button>
 
               {/* Desktop Auth Section */}

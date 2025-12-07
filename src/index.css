@@ -34,7 +34,7 @@ h6 {
 }
 
 .logo {
-  @apply text-xl md:text-2xl font-black bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent active:scale-95 transition-transform duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 rounded px-1;
+  @apply inline-block max-w-12 md:max-w-16 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30
 }
 
 .nav_links {
@@ -52,7 +52,7 @@ h6 {
 }
 
 .select {
-  @apply bg-base-300
+  @apply bg-base-300;
 }
 
 .input,
