@@ -1,93 +1,185 @@
-import { Link, Outlet } from "react-router";
-import { MdLibraryAdd } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { Link, NavLink, Outlet } from "react-router";
+import { MdLibraryAdd, MdDashboard, MdMenu } from "react-icons/md";
+import { FaUser, FaBook, FaHome } from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
+import useAuth from "../../hooks/useAuth";
 
 const DashboardLayout = () => {
+  const { user, logout } = useAuth();
+
+  const menuItems = [
+    {
+      to: "/dashboard",
+      label: "Overview",
+      icon: <MdDashboard />,
+      tip: "Dashboard Overview",
+    },
+    {
+      to: "/dashboard/add-book",
+      label: "Add Book",
+      icon: <MdLibraryAdd />,
+      tip: "Add New Book",
+    },
+    {
+      to: "/dashboard/profile",
+      label: "Profile",
+      icon: <FaUser />,
+      tip: "My Profile",
+    },
+  ];
+
   return (
     <>
       <title>Dashboard - BookWagon</title>
 
       <div className="drawer lg:drawer-open">
-        <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
-          {/* Navbar */}
-          <nav className="navbar w-full bg-base-300 px-5">
-            <label
-              htmlFor="my-drawer-4"
-              aria-label="open sidebar"
-              className="btn btn-square btn-ghost"
-            >
-              {/* Sidebar toggle icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2"
-                fill="none"
-                stroke="currentColor"
-                className="my-1.5 inline-block size-4"
-              >
-                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                <path d="M9 4v16"></path>
-                <path d="M14 10l2 2l-2 2"></path>
-              </svg>
-            </label>
-            <div className="px-4">Navbar Title</div>
+        <input
+          id="dashboard-drawer"
+          type="checkbox"
+          className="drawer-toggle"
+        />
+
+        {/* Main Content */}
+        <div className="drawer-content flex flex-col">
+          {/* Top Navbar */}
+          <nav className="sticky top-0 z-30 bg-base-100 shadow-md">
+            <div className="navbar px-4 lg:px-6">
+              {/* Mobile Menu Button */}
+              <div className="flex-none lg:hidden">
+                <label
+                  htmlFor="dashboard-drawer"
+                  aria-label="open sidebar"
+                  className="btn btn-square btn-ghost"
+                >
+                  <MdMenu className="text-2xl" />
+                </label>
+              </div>
+
+              {/* Title */}
+              <div className="flex-1">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 ml-2 lg:ml-0">
+                  Dashboard
+                </h1>
+              </div>
+
+              {/* User Info */}
+              <div className="flex-none">
+                <div className="dropdown dropdown-end">
+                  <label
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                      <img
+                        src={
+                          user?.photoURL || "https://via.placeholder.com/150"
+                        }
+                        alt={user?.displayName || "User"}
+                      />
+                    </div>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
+                  >
+                    <li className="menu-title">
+                      <span className="text-xs text-gray-600">
+                        Signed in as
+                      </span>
+                    </li>
+                    <li className="disabled">
+                      <span className="text-sm font-semibold">
+                        {user?.displayName}
+                      </span>
+                    </li>
+                    <div className="divider my-1"></div>
+                    <li>
+                      <Link to="/" className="text-sm">
+                        <FaHome /> Home
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/books" className="text-sm">
+                        <FaBook /> All Books
+                      </Link>
+                    </li>
+                    <div className="divider my-1"></div>
+                    <li>
+                      <button onClick={logout} className="text-error text-sm">
+                        <IoLogOut /> Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </nav>
-          {/* Page content here */}
-          <>
+
+          {/* Page Content */}
+          <main className="flex-1 bg-base-200 min-h-screen">
             <Outlet />
-          </>
+          </main>
         </div>
 
-        <div className="drawer-side is-drawer-close:overflow-visible">
+        {/* Sidebar */}
+        <div className="drawer-side min-h-dvh z-40 backdrop-blur-[2px]">
           <label
-            htmlFor="my-drawer-4"
+            htmlFor="dashboard-drawer"
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-20 is-drawer-open:w-64">
-            {/* Sidebar content here */}
-            <ul className="menu w-full grow is-drawer-close:items-center">
-              <li>
-                <Link
-                  to="/"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                >
-                  <img src={logo} alt="BookWagon" className="max-w-10" />
-                  <span className="is-drawer-close:hidden text-2xl font-bold">BookWagon</span>
-                </Link>
-              </li>
 
-              <li>
-                <Link
-                  to="/dashboard/add-book"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Add Book"
-                >
-                  <span className="text-xl">
-                    <MdLibraryAdd />
-                  </span>
-                  <span className="is-drawer-close:hidden">Add Book</span>
-                </Link>
-              </li>
+          <aside className="flex min-h-full w-64 bg-base-100 flex-col  border-r border-primary/20">
+            {/* Logo Section */}
+            <div className="sticky top-0 bg-base-100/80 border-b border-primary/20 p-4">
+              <Link
+                to="/"
+                className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+              >
+                <img src={logo} alt="BookWagon" className="w-12 h-12" />
+                <span className="text-2xl font-bold">BookWagon</span>
+              </Link>
+            </div>
 
-              <li>
-                <Link
-                  to="/dashboard/profile"
-                  className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                  data-tip="Profile"
-                >
-                  <span className="text-xl">
-                    <FaUser />
-                  </span>
-                  <span className="is-drawer-close:hidden">Profile</span>
-                </Link>
-              </li>
+            {/* Menu Items */}
+            <ul className="menu w-full menu-vertical p-4 space-y-2 flex-1">
+              {menuItems.map((item, index) => (
+                <li key={index}>
+                  <NavLink
+                    to={item.to}
+                    end={item.to === "/dashboard"}
+                    className="dashboard_nav_links"
+                  >
+                    <span className="text-xl">{item.icon}</span>
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </NavLink>
+                </li>
+              ))}
             </ul>
-          </div>
+
+            {/* User Card at Bottom */}
+            <div className="sticky bottom-0 bg-base-100/80 backdrop-blur-md border-t border-primary/20 p-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/10 to-secondary/10">
+                <div className="avatar">
+                  <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <img
+                      src={user?.photoURL || "https://via.placeholder.com/150"}
+                      alt={user?.displayName || "User"}
+                    />
+                  </div>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold truncate">
+                    {user?.displayName || "User"}
+                  </p>
+                  <p className="text-xs text-gray-600 truncate">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </>

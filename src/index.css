@@ -34,7 +34,7 @@ h6 {
 }
 
 .logo {
-  @apply inline-block max-w-12 md:max-w-16 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30
+  @apply inline-block max-w-12 md:max-w-16 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30;
 }
 
 .nav_links {
@@ -44,6 +44,14 @@ h6 {
 .nav_links:hover,
 .nav_links.active {
   @apply text-primary after:w-full bg-primary-content;
+}
+
+.dashboard_nav_links {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 hover:bg-base-100 hover:shadow-md hover:scale-102;
+}
+
+.dashboard_nav_links.active {
+  @apply bg-primary text-primary-content shadow-lg scale-105;
 }
 
 .input,
