@@ -12,11 +12,13 @@ import { Link, useNavigate } from "react-router";
 import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
 import { toast } from "sonner";
 import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
+import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { handleGoogleLogin } = useGoogleLogin();
   const { logInWithPassword } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { handleGoogleLogin, googleLoading } = useGoogleLogin();
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -29,6 +31,8 @@ const Login = () => {
     const email = data.email;
     const password = data.password;
 
+    setLoading(true);
+
     try {
       const { user } = await logInWithPassword(email, password);
 
@@ -38,6 +42,8 @@ const Login = () => {
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,6 +73,7 @@ const Login = () => {
                 <MyInput
                   id="email"
                   type="email"
+                  disabled={loading || googleLoading}
                   placeholder="Enter your email"
                   {...register("email", {
                     required: "Email is required",
@@ -85,6 +92,7 @@ const Login = () => {
                 <div className="relative">
                   <MyInput
                     id="password"
+                    disabled={loading || googleLoading}
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="pr-10"
@@ -94,6 +102,7 @@ const Login = () => {
                   />
                   <button
                     type="button"
+                    disabled={loading || googleLoading}
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
@@ -109,7 +118,12 @@ const Login = () => {
 
               {/* Submit Button */}
               <div className="mt-6">
-                <Button className="btn-block">Login</Button>
+                <Button
+                  disabled={loading || googleLoading}
+                  className="btn-block"
+                >
+                  {loading ? <ActionSpinner /> : "Login"}
+                </Button>
               </div>
 
               {/* Login Link */}
@@ -125,7 +139,11 @@ const Login = () => {
                 </p>
               </div>
 
-              <SocialLogin onClick={() => handleGoogleLogin()} />
+              <SocialLogin
+                disabled={loading || googleLoading}
+                isLoading={googleLoading}
+                onClick={() => handleGoogleLogin()}
+              />
             </form>
           </div>
         </div>

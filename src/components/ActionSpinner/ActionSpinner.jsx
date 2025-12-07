@@ -1,7 +1,7 @@
 const ActionSpinner = () => {
   return (
     <>
-      <span className="loading loading-spinner text-primary"></span>
+      <span className="loading loading-dots loading-md text-primary"></span>
     </>
   );
 };

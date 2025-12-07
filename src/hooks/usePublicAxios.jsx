@@ -4,8 +4,8 @@ const instance = axios.create({
   baseURL: import.meta.env.SERVER_URL,
 });
 
-const useSecureAxios = () => {
+const usePublicAxios = () => {
   return instance;
 };
 
-export default useSecureAxios;
+export default usePublicAxios;

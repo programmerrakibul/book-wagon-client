@@ -14,10 +14,13 @@ import { Link, useNavigate } from "react-router";
 import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
 import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 import { toast } from "sonner";
+import { postUser } from "../../../utilities/postUser";
+import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { handleGoogleLogin } = useGoogleLogin();
+  const [loading, setLoading] = useState(false);
+  const { handleGoogleLogin, googleLoading } = useGoogleLogin();
   const { updateUserProfile, createUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -32,6 +35,8 @@ const Register = () => {
     const email = data.email;
     const password = data.password;
 
+    setLoading(true);
+
     try {
       const photoURL = await uploadImage(data.image[0]);
       const { user } = await createUser(email, password);
@@ -41,12 +46,16 @@ const Register = () => {
         photoURL,
       });
 
+      await postUser(user);
+
       reset();
       navigate("/");
       loginSuccessMessage(user.displayName);
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,6 +84,7 @@ const Register = () => {
                 <MyLabel htmlFor="name" label="Name" />
                 <MyInput
                   id="name"
+                  disabled={loading || googleLoading}
                   placeholder="Enter your name"
                   {...register("name", {
                     required: "Name is required",
@@ -91,6 +101,7 @@ const Register = () => {
                 <MyLabel htmlFor="image" label="Profile Image" />
                 <MyInput
                   id="image"
+                  disabled={loading || googleLoading}
                   type="file"
                   accept="image/*"
                   className="file-input file-input-bordered w-full px-0"
@@ -104,6 +115,7 @@ const Register = () => {
                 <MyLabel htmlFor="email" label="Email" />
                 <MyInput
                   id="email"
+                  disabled={loading || googleLoading}
                   type="email"
                   placeholder="Enter your email"
                   {...register("email", {
@@ -123,6 +135,7 @@ const Register = () => {
                 <div className="relative">
                   <MyInput
                     id="password"
+                    disabled={loading || googleLoading}
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="pr-10"
@@ -133,6 +146,7 @@ const Register = () => {
                   />
                   <button
                     type="button"
+                    disabled={loading || googleLoading}
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   >
@@ -148,7 +162,12 @@ const Register = () => {
 
               {/* Submit Button */}
               <div className="mt-6">
-                <Button className="btn-block">Register</Button>
+                <Button
+                  disabled={loading || googleLoading}
+                  className="btn-block"
+                >
+                  {loading ? <ActionSpinner /> : "Register"}
+                </Button>
               </div>
 
               {/* Login Link */}
@@ -164,7 +183,11 @@ const Register = () => {
                 </p>
               </div>
 
-              <SocialLogin onClick={() => handleGoogleLogin()} />
+              <SocialLogin
+                disabled={loading || googleLoading}
+                isLoading={googleLoading}
+                onClick={() => handleGoogleLogin()}
+              />
             </form>
           </div>
         </div>

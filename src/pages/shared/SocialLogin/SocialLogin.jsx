@@ -1,6 +1,7 @@
 import { FcGoogle } from "react-icons/fc";
+import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 
-const SocialLogin = ({ onClick, disabled = false }) => {
+const SocialLogin = ({ onClick, disabled = false, isLoading = false }) => {
   return (
     <>
       <div>
@@ -12,10 +13,16 @@ const SocialLogin = ({ onClick, disabled = false }) => {
           disabled={disabled}
           className="btn btn-block bg-white text-gray-700 border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-200 font-medium"
         >
-          <span className="text-base md:text-xl">
-            <FcGoogle />
-          </span>
-          <span>Continue with Google</span>
+          {isLoading ? (
+            <ActionSpinner />
+          ) : (
+            <>
+              <span className="text-base md:text-xl">
+                <FcGoogle />
+              </span>
+              <span>Continue with Google</span>
+            </>
+          )}
         </button>
       </div>
     </>
