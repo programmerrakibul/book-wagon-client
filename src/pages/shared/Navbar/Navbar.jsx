@@ -2,29 +2,16 @@ import { useState } from "react";
 import { HiMenu, HiX } from "react-icons/hi";
 import { LuLogIn, LuLogOut } from "react-icons/lu";
 import Container from "../Container/Container";
-import { Link, NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
-import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
-import { toast } from "sonner";
-import { getAlert } from "../../../utilities/getAlert";
 import Logo from "../../../components/Logo/Logo";
+import { handleLogout } from "../../../utilities/handleLogout";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logOutUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await logOutUser();
-      getAlert({ title: "You have been logged out successfully." });
-    } catch (error) {
-      const errorMessage = getAuthErrorMessage(error.code);
-      toast.error(errorMessage);
-      console.error("Error logging out:", error);
-    }
-  };
 
   const navItems = [
     { label: "Home", slug: "/" },
@@ -71,7 +58,7 @@ const Navbar = () => {
                 className="btn btn-ghost text-3xl! btn-circle lg:hidden hover:bg-base-200/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
                 aria-label="Toggle navigate menu"
               >
-                {mobileMenuOpen ? <HiX  /> : <HiMenu />}
+                {mobileMenuOpen ? <HiX /> : <HiMenu />}
               </button>
 
               {/* Desktop Auth Section */}
@@ -85,7 +72,7 @@ const Navbar = () => {
                       />
                     </div>
                   </div>
-                  <Button onClick={handleLogout}>
+                  <Button onClick={() => handleLogout(logOutUser)}>
                     <LuLogOut />
                     <span>Logout</span>
                   </Button>
@@ -150,7 +137,7 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <Button onClick={handleLogout}>
+                  <Button onClick={() => handleLogout(logOutUser)}>
                     <LuLogOut />
                     <span>Logout</span>
                   </Button>

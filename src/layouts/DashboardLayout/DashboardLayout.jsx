@@ -1,31 +1,34 @@
 import { Link, NavLink, Outlet } from "react-router";
 import { MdLibraryAdd, MdDashboard, MdMenu } from "react-icons/md";
 import { FaUser, FaBook, FaHome } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
+import { IoLibrary, IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
+import { handleLogout } from "../../utilities/handleLogout";
 
 const DashboardLayout = () => {
-  const { user, logout } = useAuth();
+  const { user, logOutUser } = useAuth();
 
   const menuItems = [
     {
       to: "/dashboard",
       label: "Overview",
       icon: <MdDashboard />,
-      tip: "Dashboard Overview",
     },
     {
       to: "/dashboard/add-book",
       label: "Add Book",
       icon: <MdLibraryAdd />,
-      tip: "Add New Book",
+    },
+    {
+      to: "/dashboard/my-books",
+      label: "My Books",
+      icon: <IoLibrary />,
     },
     {
       to: "/dashboard/profile",
       label: "Profile",
       icon: <FaUser />,
-      tip: "My Profile",
     },
   ];
 
@@ -106,7 +109,10 @@ const DashboardLayout = () => {
                     </li>
                     <div className="divider my-1"></div>
                     <li>
-                      <button onClick={logout} className="text-error text-sm">
+                      <button
+                        onClick={() => handleLogout(logOutUser)}
+                        className="text-error text-sm"
+                      >
                         <IoLogOut /> Logout
                       </button>
                     </li>
