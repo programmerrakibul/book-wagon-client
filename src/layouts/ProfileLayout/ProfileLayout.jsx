@@ -35,17 +35,16 @@ const ProfileLayout = () => {
                   "& .MuiTab-root": {
                     textTransform: "none",
                     fontSize: { xs: "0.875rem", md: "1rem" },
+                    color: '#6439ff',
                     fontWeight: 500,
-                    color: "#6b7280",
                     minHeight: { xs: "56px", md: "64px" },
                     "&.Mui-selected": {
-                      color: "hsl(var(--p))",
                       fontWeight: 600,
                     },
                   },
                   "& .MuiTabs-indicator": {
-                    backgroundColor: "hsl(var(--p))",
                     height: 3,
+                    bgcolor: '#6439ff'
                   },
                 }}
               >
