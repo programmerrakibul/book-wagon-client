@@ -74,12 +74,7 @@ const DashboardLayout = () => {
                     className="btn btn-ghost btn-circle avatar"
                   >
                     <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                      <img
-                        src={
-                          user?.photoURL || "https://via.placeholder.com/150"
-                        }
-                        alt={user?.displayName || "User"}
-                      />
+                      <img src={user.photoURL} alt={user.displayName} />
                     </div>
                   </label>
                   <ul
@@ -93,7 +88,7 @@ const DashboardLayout = () => {
                     </li>
                     <li className="disabled">
                       <span className="text-sm font-semibold">
-                        {user?.displayName}
+                        {user.displayName}
                       </span>
                     </li>
                     <div className="divider my-1"></div>
@@ -138,10 +133,10 @@ const DashboardLayout = () => {
 
           <aside className="flex min-h-full w-64 bg-base-100 flex-col  border-r border-primary/20">
             {/* Logo Section */}
-            <div className="sticky top-0 bg-base-100/80 border-b border-primary/20 p-4">
+            <div className="sticky top-0 z-50 bg-base-100/80 border-b border-primary/20 p-4">
               <Link
                 to="/"
-                className="flex items-center gap-3 hover:scale-105 transition-transform duration-300"
+                className="flex items-center gap-3 text-neutral"
               >
                 <img src={logo} alt="BookWagon" className="w-12 h-12" />
                 <span className="text-2xl font-bold">BookWagon</span>

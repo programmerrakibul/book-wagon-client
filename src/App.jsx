@@ -2,7 +2,7 @@ import { RouterProvider } from "react-router";
 import router from "./routes/router";
 import AuthProvider from "./Providers/AuthProvider";
 import { Toaster } from "sonner";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
