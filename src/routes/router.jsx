@@ -5,8 +5,12 @@ import Books from "../pages/Books/Books";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
+import DashboardLayout from "../layouts/Dashbaord/DashboardLayout";
+import Overview from "../pages/Dashboard/Overview/Overview";
+import AddBook from "../pages/Dashboard/AddBook/AddBook";
 
 const router = createBrowserRouter([
+  // Main routes
   {
     path: "/",
     element: <RootLayout />,
@@ -21,6 +25,24 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  // Dashboard routes
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <Overview />,
+      },
+      {
+        path: "add-book",
+        element: <AddBook />,
+      },
+    ],
+  },
+
+  // Auth routes
   {
     path: "/",
     element: <AuthLayout />,

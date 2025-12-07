@@ -7,11 +7,10 @@ export const postUser = async (user) => {
     photoURL: user.photoURL,
   };
 
+  const apiBaseUrl = import.meta.env.VITE_SERVER_URL;
+
   try {
-    const { data } = await axios.post(
-      `${import.meta.env.SERVER_URL}/users`,
-      newUser
-    );
+    const { data } = await axios.post(`${apiBaseUrl}/users`, newUser);
     return data;
   } catch (error) {
     console.error("Error posting user:", error);

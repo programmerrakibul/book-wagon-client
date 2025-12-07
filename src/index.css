@@ -38,7 +38,7 @@ h6 {
 }
 
 .nav_links {
-  @apply relative text-base font-semibold! text-neutral transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-linear-to-r after:from-primary after:to-secondary after:transition-all after:duration-300
+  @apply relative text-base font-semibold! text-neutral transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-linear-to-r after:from-primary after:to-secondary after:transition-all after:duration-300;
 }
 
 .nav_links:hover,
@@ -47,7 +47,16 @@ h6 {
 }
 
 .input,
+.textarea {
+  @apply bg-transparent;
+}
+
+.select {
+  @apply bg-base-300
+}
+
+.input,
 .textarea,
 .select {
-  @apply w-full block bg-transparent border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-shadow duration-300 outline-primary;
+  @apply w-full block border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-shadow duration-300 outline-primary;
 }
