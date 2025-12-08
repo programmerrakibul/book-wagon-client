@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router";
 import { MdLibraryAdd, MdDashboard, MdMenu } from "react-icons/md";
-import { FaUser, FaBook, FaHome } from "react-icons/fa";
+import { FaUser, FaBook, FaHome, FaUsers } from "react-icons/fa";
 import { IoLibrary, IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
@@ -29,6 +29,11 @@ const DashboardLayout = () => {
       to: "/dashboard/manage-books",
       label: "Manage Books",
       icon: <IoLibrary />,
+    },
+    {
+      to: "/dashboard/manage-users",
+      label: "Manage Users",
+      icon: <FaUsers />,
     },
     {
       to: "/dashboard/profile",
