@@ -7,6 +7,7 @@ import Button from "../../../components/Button/Button";
 import useAuth from "../../../hooks/useAuth";
 import Logo from "../../../components/Logo/Logo";
 import { handleLogout } from "../../../utilities/handleLogout";
+import Avatar from "../../../components/Avatar/Avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -64,14 +65,8 @@ const Navbar = () => {
               {/* Desktop Auth Section */}
               {user ? (
                 <div className="hidden lg:flex items-center gap-3">
-                  <div className="avatar">
-                    <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                      <img
-                        src={user.photoURL || "https://via.placeholder.com/150"}
-                        alt={user.displayName || "User"}
-                      />
-                    </div>
-                  </div>
+                  <Avatar src={user.photoURL} alt={user.displayName} />
+
                   <Button onClick={() => handleLogout(logOutUser)}>
                     <LuLogOut />
                     <span>Logout</span>
@@ -117,16 +112,12 @@ const Navbar = () => {
               {user ? (
                 <div className="flex items-center justify-between flex-wrap gap-3">
                   <div className="flex items-center gap-3 p-3 bg-base-200/40 rounded-lg">
-                    <div className="avatar">
-                      <div className="w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img
-                          src={
-                            user.photoURL || "https://via.placeholder.com/150"
-                          }
-                          alt={user.displayName || "User"}
-                        />
-                      </div>
-                    </div>
+                    <Avatar
+                      src={user.photoURL}
+                      alt={user.displayName}
+                      size="size-12"
+                    />
+
                     <div>
                       <p className="font-semibold text-sm">
                         {user.displayName || "User"}

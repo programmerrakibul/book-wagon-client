@@ -7,6 +7,7 @@ import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
+import Avatar from "../../../components/Avatar/Avatar";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
@@ -89,17 +90,10 @@ const ManageUsers = () => {
                           <tr key={user._id} className="hover">
                             <td className="font-semibold">{index + 1}</td>
                             <td>
-                              <div className="avatar">
-                                <div className="w-10 h-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                  <img
-                                    src={
-                                      user.photoURL ||
-                                      "https://via.placeholder.com/150"
-                                    }
-                                    alt={user.displayName}
-                                  />
-                                </div>
-                              </div>
+                              <Avatar
+                                src={user.photoURL}
+                                alt={user.displayName}
+                              />
                             </td>
                             <td className="font-medium text-sm lg:text-base">
                               <div className="flex items-center gap-2">
@@ -149,14 +143,11 @@ const ManageUsers = () => {
                         <div className="card-body p-4">
                           <div className="flex gap-4">
                             {/* User Avatar */}
-                            <div className="avatar shrink-0">
-                              <div className="w-16 h-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                                <img
-                                  src={user.photoURL}
-                                  alt={user.displayName}
-                                />
-                              </div>
-                            </div>
+                            <Avatar
+                              src={user.photoURL}
+                              alt={user.displayName}
+                              size="size-16"
+                            />
 
                             {/* User Info */}
                             <div className="flex-1 min-w-0">

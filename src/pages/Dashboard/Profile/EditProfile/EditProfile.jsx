@@ -11,6 +11,7 @@ import { uploadImage } from "../../../../utilities/uploadImage";
 import { toast } from "sonner";
 import { getAlert } from "../../../../utilities/getAlert";
 import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
+import Avatar from "../../../../components/Avatar/Avatar";
 
 const EditProfile = () => {
   const { user, updateUserProfile } = useAuth();
@@ -103,14 +104,11 @@ const EditProfile = () => {
 
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               {/* Image Preview */}
-              <div className="avatar">
-                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img
-                    src={imagePreview || "https://via.placeholder.com/150"}
-                    alt="Profile Preview"
-                  />
-                </div>
-              </div>
+              <Avatar
+                src={imagePreview}
+                alt="Profile Preview"
+                size="size-32 sm:size-40"
+              />
 
               {/* File Input */}
               <div className="flex-1 w-full">

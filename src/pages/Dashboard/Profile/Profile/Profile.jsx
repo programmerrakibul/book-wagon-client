@@ -8,6 +8,7 @@ import { FaRegCircleXmark } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
 import { format, getYear } from "date-fns";
 import useAuth from "../../../../hooks/useAuth";
+import Avatar from "../../../../components/Avatar/Avatar";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -39,14 +40,11 @@ const Profile = () => {
         <div className="card-body p-4 sm:p-6 lg:p-8">
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
             {/* Avatar */}
-            <div className="avatar">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img
-                  src={user.photoURL || "https://via.placeholder.com/150"}
-                  alt={user.displayName || "User"}
-                />
-              </div>
-            </div>
+            <Avatar
+              src={user.photoURL}
+              alt={user.displayName}
+              size="size-24 sm:size-28 lg:size-32"
+            />
 
             {/* User Info */}
             <div className="flex-1 text-center sm:text-left">

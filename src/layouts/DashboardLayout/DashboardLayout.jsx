@@ -5,6 +5,7 @@ import { IoLibrary, IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
 import { handleLogout } from "../../utilities/handleLogout";
+import Avatar from "../../components/Avatar/Avatar";
 
 const DashboardLayout = () => {
   const { user, logOutUser } = useAuth();
@@ -169,14 +170,8 @@ const DashboardLayout = () => {
             {/* User Card at Bottom */}
             <div className="sticky bottom-0 bg-base-100/80 backdrop-blur-md border-t border-primary/20 p-4">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/10 to-secondary/10">
-                <div className="avatar">
-                  <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img
-                      src={user?.photoURL || "https://via.placeholder.com/150"}
-                      alt={user?.displayName || "User"}
-                    />
-                  </div>
-                </div>
+                <Avatar src={user?.photoURL} alt={user?.displayName} />
+
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold truncate">
                     {user?.displayName || "User"}
