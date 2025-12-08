@@ -12,6 +12,7 @@ import Profile from "../pages/Dashboard/Profile/Profile/Profile";
 import EditProfile from "../pages/Dashboard/Profile/EditProfile/EditProfile";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import MyBooks from "../pages/Dashboard/MyBooks/MyBooks";
+import EditBook from "../pages/Dashboard/EditBook/EditBook";
 
 const router = createBrowserRouter([
   // Main routes
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: "my-books",
         element: <MyBooks />,
+      },
+      {
+        path: "edit-book/:id",
+        element: <EditBook />,
       },
       // Profile Layout
       {
