@@ -5,6 +5,7 @@ import useSecureAxios from "../../../hooks/useSecureAxios";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 const ManageBooks = () => {
   const secureAxios = useSecureAxios();
@@ -32,6 +33,39 @@ const ManageBooks = () => {
     } catch (err) {
       const errorMessage = err?.response?.data?.message || err.message;
       toast.error(errorMessage);
+    }
+  };
+
+  const handleDeleteBook = async (id) => {
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        const { data } = await secureAxios.delete(`/books/${id}`);
+
+        if (data.deletedCount) {
+          refetch();
+
+          Swal.fire({
+            title: "Deleted!",
+            text: "Book data deleted successfully.",
+            icon: "success",
+          });
+        }
+
+        console.log(data);
+      }
+    } catch (err) {
+      const errorMessage = err?.response?.data?.message || err.message;
+      toast.error(errorMessage);
+      console.log(err);
     }
   };
 
@@ -116,7 +150,10 @@ const ManageBooks = () => {
                           </select>
                         </td>
                         <td className="text-center">
-                          <button className="btn btn-error btn-xs sm:btn-sm gap-1">
+                          <button
+                            onClick={() => handleDeleteBook(book._id)}
+                            className="btn btn-error btn-xs sm:btn-sm gap-1"
+                          >
                             <FaTrash />
                             Delete
                           </button>
@@ -172,7 +209,10 @@ const ManageBooks = () => {
                           </select>
 
                           {/* Edit Button */}
-                          <button className="btn btn-error btn-sm gap-2 w-full">
+                          <button
+                            onClick={() => handleDeleteBook(book._id)}
+                            className="btn btn-error btn-sm gap-2 w-full"
+                          >
                             <FaTrash />
                             Delete Book
                           </button>
