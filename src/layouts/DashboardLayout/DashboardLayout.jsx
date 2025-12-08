@@ -1,6 +1,17 @@
 import { Link, NavLink, Outlet } from "react-router";
-import { MdLibraryAdd, MdDashboard, MdMenu } from "react-icons/md";
-import { FaUser, FaBook, FaHome, FaUsers } from "react-icons/fa";
+import {
+  MdLibraryAdd,
+  MdDashboard,
+  MdMenu,
+  MdShoppingCart,
+} from "react-icons/md";
+import {
+  FaUser,
+  FaBook,
+  FaHome,
+  FaUsers,
+  FaFileInvoiceDollar,
+} from "react-icons/fa";
 import { IoLibrary, IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
@@ -15,6 +26,21 @@ const DashboardLayout = () => {
       to: "/dashboard",
       label: "Overview",
       icon: <MdDashboard />,
+    },
+    {
+      to: "/dashboard/my-orders",
+      label: "My Orders",
+      icon: <MdShoppingCart />,
+    },
+    {
+      to: "/dashboard/all-orders",
+      label: "All Orders",
+      icon: <MdShoppingCart />,
+    },
+    {
+      to: "/dashboard/invoices",
+      label: "Invoices",
+      icon: <FaFileInvoiceDollar />,
     },
     {
       to: "/dashboard/add-book",
