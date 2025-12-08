@@ -144,10 +144,14 @@ const DashboardLayout = () => {
 
           <aside className="flex min-h-full w-64 bg-base-100 flex-col  border-r border-primary/20">
             {/* Logo Section */}
-            <div className="sticky top-0 z-50 bg-base-100/80 border-b border-primary/20 p-4">
-              <Link to="/" className="flex items-center gap-3 text-neutral">
-                <img src={logo} alt="BookWagon" className="w-12 h-12" />
-                <span className="text-2xl font-bold">BookWagon</span>
+            <div className="sticky top-0 z-50 bg-base-100/80 border-b border-primary/20 px-4 py-3 backdrop-blur-sm">
+              <Link to="/" className="flex items-center gap-1 text-neutral">
+                <img
+                  src={logo}
+                  alt="BookWagon"
+                  className="size-10 object-cover"
+                />
+                <span className="text-[23px] font-bold">BookWagon</span>
               </Link>
             </div>
 
@@ -168,8 +172,8 @@ const DashboardLayout = () => {
             </ul>
 
             {/* User Card at Bottom */}
-            <div className="sticky bottom-0 bg-base-100/80 backdrop-blur-md border-t border-primary/20 p-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/10 to-secondary/10">
+            <div className="sticky bottom-0 bg-base-100/40 backdrop-blur-sm border-t border-primary/20 p-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20">
                 <Avatar src={user?.photoURL} alt={user?.displayName} />
 
                 <div className="flex-1 min-w-0">
