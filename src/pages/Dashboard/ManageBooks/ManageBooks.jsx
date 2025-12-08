@@ -1,30 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router";
-import { FaEdit, FaBook } from "react-icons/fa";
+import { FaBook, FaTrash } from "react-icons/fa";
 import Container from "../../shared/Container/Container";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
-import Button from "../../../components/Button/Button";
 
-const MyBooks = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+const ManageBooks = () => {
   const secureAxios = useSecureAxios();
   const {
     data: books,
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ["books", user.email],
+    queryKey: ["manage-books"],
     queryFn: async () => {
-      const { data } = await secureAxios.get("/books", {
-        params: {
-          email: user.email,
-        },
-      });
+      const { data } = await secureAxios.get("/books");
 
       return data?.books;
     },
@@ -62,10 +53,10 @@ const MyBooks = () => {
           <div className="mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 flex items-center gap-2">
               <FaBook className="text-primary" />
-              My Books
+              Manage Books
             </h2>
             <p className="text-sm sm:text-base text-gray-600">
-              Manage your book collection
+              Manage all librarians book collection
             </p>
           </div>
 
@@ -125,13 +116,10 @@ const MyBooks = () => {
                           </select>
                         </td>
                         <td className="text-center">
-                          <Link
-                            to={`/dashboard/edit-book/${book._id}`}
-                            className="btn btn-primary btn-xs sm:btn-sm gap-1"
-                          >
-                            <FaEdit />
-                            Edit
-                          </Link>
+                          <button className="btn btn-error btn-xs sm:btn-sm gap-1">
+                            <FaTrash />
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -184,13 +172,10 @@ const MyBooks = () => {
                           </select>
 
                           {/* Edit Button */}
-                          <Link
-                            to={`/dashboard/edit-book/${book._id}`}
-                            className="btn btn-primary btn-sm gap-2 w-full"
-                          >
-                            <FaEdit />
-                            Edit Book
-                          </Link>
+                          <button className="btn btn-error btn-sm gap-2 w-full">
+                            <FaTrash />
+                            Delete Book
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -205,15 +190,6 @@ const MyBooks = () => {
                 <h3 className="text-xl font-semibold text-gray-600 mb-2">
                   No Books Found
                 </h3>
-                <p className="text-gray-500 mb-4">
-                  You haven't added any books yet.
-                </p>
-                <Button
-                  handleClick={() => navigate("/dashboard/add-book")}
-                  className="btn btn-primary mx-auto"
-                >
-                  Add Your First Book
-                </Button>
               </div>
             </div>
           )}
@@ -223,4 +199,4 @@ const MyBooks = () => {
   );
 };
 
-export default MyBooks;
+export default ManageBooks;

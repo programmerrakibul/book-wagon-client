@@ -26,6 +26,11 @@ const DashboardLayout = () => {
       icon: <IoLibrary />,
     },
     {
+      to: "/dashboard/manage-books",
+      label: "Manage Books",
+      icon: <IoLibrary />,
+    },
+    {
       to: "/dashboard/profile",
       label: "Profile",
       icon: <FaUser />,
@@ -134,10 +139,7 @@ const DashboardLayout = () => {
           <aside className="flex min-h-full w-64 bg-base-100 flex-col  border-r border-primary/20">
             {/* Logo Section */}
             <div className="sticky top-0 z-50 bg-base-100/80 border-b border-primary/20 p-4">
-              <Link
-                to="/"
-                className="flex items-center gap-3 text-neutral"
-              >
+              <Link to="/" className="flex items-center gap-3 text-neutral">
                 <img src={logo} alt="BookWagon" className="w-12 h-12" />
                 <span className="text-2xl font-bold">BookWagon</span>
               </Link>
