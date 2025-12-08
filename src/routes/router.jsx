@@ -18,6 +18,9 @@ import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import Invoices from "../pages/Dashboard/Invoices/Invoices";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AllOrders from "../pages/Dashboard/AllOrders/AllOrders";
+import Coverage from "../pages/Coverage/Coverage";
+import AboutUs from "../pages/AboutUs/AboutUs";
+import ContactUs from "../pages/ContactUs/ContactUs";
 
 const router = createBrowserRouter([
   // Main routes
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
       {
         path: "books",
         element: <Books />,
+      },
+      {
+        path: "coverage",
+        element: <Coverage />,
+      },
+      {
+        path: "about-us",
+        element: <AboutUs />,
+      },
+      {
+        path: "contact-us",
+        element: <ContactUs />,
       },
     ],
   },
