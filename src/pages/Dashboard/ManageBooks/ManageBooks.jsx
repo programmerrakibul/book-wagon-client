@@ -2,17 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { FaBook, FaTrash } from "react-icons/fa";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 import Heading from "../../../components/Heading/Heading";
+import Loading from "../../../components/Loading/Loading";
 
 const ManageBooks = () => {
   const secureAxios = useSecureAxios();
   const {
     data: books,
-    isPending,
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["manage-books"],
@@ -70,12 +70,8 @@ const ManageBooks = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading message="Books is loading..." />;
   }
 
   return (

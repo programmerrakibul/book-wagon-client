@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
+import Loading from "../../../components/Loading/Loading";
 import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 
@@ -18,7 +18,7 @@ const MyOrders = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
 
-  const { data: orders = [], isPending } = useQuery({
+  const { data: orders = [], isLoading } = useQuery({
     queryKey: ["my-orders", "customer", user.email],
     queryFn: async () => {
       const { data } = await secureAxios.get(`/orders/customer/${user.email}`);
@@ -26,12 +26,8 @@ const MyOrders = () => {
     },
   });
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading message="Loading your orders..." />;
   }
 
   return (

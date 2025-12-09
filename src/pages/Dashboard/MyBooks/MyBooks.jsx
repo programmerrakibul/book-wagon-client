@@ -4,11 +4,11 @@ import { FaEdit, FaBook } from "react-icons/fa";
 import Container from "../../shared/Container/Container";
 import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
 import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
+import Loading from "../../../components/Loading/Loading";
 
 const MyBooks = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const MyBooks = () => {
   const secureAxios = useSecureAxios();
   const {
     data: books,
-    isPending,
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["books", user.email],
@@ -45,12 +45,8 @@ const MyBooks = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading message="Loading your books..." />;
   }
 
   return (

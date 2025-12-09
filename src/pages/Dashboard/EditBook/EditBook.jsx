@@ -14,6 +14,7 @@ import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
+import Loading from "../../../components/Loading/Loading";
 
 const EditBook = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const EditBook = () => {
   const secureAxios = useSecureAxios();
   const [loading, setLoading] = useState(false);
 
-  const { data: book, isPending } = useQuery({
+  const { data: book, isLoading } = useQuery({
     queryKey: ["book", id],
     queryFn: async () => {
       const { data } = await secureAxios.get(`/books/${id}`);
@@ -70,12 +71,8 @@ const EditBook = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading message="Book is loading..." />;
   }
 
   return (

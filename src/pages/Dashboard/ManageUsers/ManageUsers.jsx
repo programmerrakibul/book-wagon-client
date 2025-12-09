@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { FaUsers, FaUserShield, FaUserTie } from "react-icons/fa";
-import { MdVerified } from "react-icons/md";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import useAuth from "../../../hooks/useAuth";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
 import Avatar from "../../../components/Avatar/Avatar";
 import Heading from "../../../components/Heading/Heading";
+import Loading from "../../../components/Loading/Loading";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
@@ -16,7 +15,7 @@ const ManageUsers = () => {
 
   const {
     data: users,
-    isPending,
+    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["manage-users", currentUser.email],
@@ -43,12 +42,8 @@ const ManageUsers = () => {
     }
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (

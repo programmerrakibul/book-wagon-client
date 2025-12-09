@@ -4,16 +4,16 @@ import { FaBook } from "react-icons/fa";
 import { Pagination, Box } from "@mui/material";
 import usePublicAxios from "../../hooks/usePublicAxios";
 import Container from "../shared/Container/Container";
-import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
 import BookCard from "../../components/BookCard/BookCard";
 import Heading from "../../components/Heading/Heading";
+import Loading from "../../components/Loading/Loading";
 
 const Books = () => {
   const publicAxios = usePublicAxios();
   const [page, setPage] = useState(1);
   const booksPerPage = 10;
 
-  const { data, isPending } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["all-books", page],
     queryFn: async () => {
       const { data } = await publicAxios.get("/books", {
@@ -36,12 +36,8 @@ const Books = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  if (isLoading) {
+    return <Loading message="Books is loading..." />;
   }
 
   return (
