@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { format } from "date-fns";
 import {
   FaShoppingBag,
@@ -15,11 +15,56 @@ import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import Container from "../../shared/Container/Container";
 import { toast } from "sonner";
+import { useEffect } from "react";
 import { getAlert } from "../../../utilities/getAlert";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const MyOrders = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id");
+
+  useEffect(() => {
+    let mount = true;
+
+    if (session_id && mount) {
+      secureAxios
+        .get(`/checkout-session/retrieve/${session_id}`)
+        .then(({ data }) => {
+          MySwal.fire({
+            icon: "success",
+            title: "Payment Successful!",
+            allowOutsideClick: false,
+            html: (
+              <div className="space-y-3">
+                <p className="space-x-1.5">
+                  <strong>Transaction ID:</strong>
+                  <span>{data.transactionId}</span>
+                </p>
+                <p className="space-x-1.5">
+                  <strong>Order ID:</strong>
+                  <span>{data.orderID}</span>
+                </p>
+              </div>
+            ),
+          }).then((result) => {
+            if (result.isConfirmed) {
+              console.log("Confirmed");
+              setSearchParams("");
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    mount = false;
+  }, [session_id, secureAxios, setSearchParams]);
 
   const {
     data: orders = [],
@@ -52,6 +97,31 @@ const MyOrders = () => {
       toast.error("Order status update failed! Please try again.");
     }
     console.log({ id, status });
+  };
+
+  const handlePayment = async (order) => {
+    const paymentInfo = {
+      customerEmail: order.customerEmail,
+      price: order.orderedBook.price,
+      bookId: order.bookId,
+      description: order.orderedBook.description,
+      bookName: order.orderedBook.bookName,
+      orderID: order.orderID,
+    };
+
+    try {
+      const { data } = await secureAxios.post(
+        "/checkout-session/create",
+        paymentInfo
+      );
+
+      console.log(data);
+      window.location.assign(data.url);
+    } catch (err) {
+      console.log(err);
+
+      toast.error("Payment failed! Please try again.");
+    }
   };
 
   return (
@@ -146,7 +216,10 @@ const MyOrders = () => {
                             {order.status === "pending" &&
                               order.paymentStatus !== "paid" && (
                                 <>
-                                  <Button className="btn-sm! text-nowrap">
+                                  <Button
+                                    handleClick={() => handlePayment(order)}
+                                    className="btn-sm! text-nowrap"
+                                  >
                                     <FaCreditCard />
                                     Pay Now
                                   </Button>
@@ -235,7 +308,10 @@ const MyOrders = () => {
                       {order.status === "pending" &&
                         order.paymentStatus !== "paid" && (
                           <div className="flex gap-2 mt-4">
-                            <Button className="btn-sm! btn-block flex-1">
+                            <Button
+                              handleClick={() => handlePayment(order)}
+                              className="btn-sm! btn-block flex-1"
+                            >
                               <FaCreditCard />
                               Pay Now
                             </Button>
