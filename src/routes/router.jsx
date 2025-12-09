@@ -21,6 +21,7 @@ import AllOrders from "../pages/Dashboard/AllOrders/AllOrders";
 import Coverage from "../pages/Coverage/Coverage";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import BookDetails from "../pages/BookDetails/BookDetails";
 
 const router = createBrowserRouter([
   // Main routes
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "books",
         element: <Books />,
+      },
+      {
+        path: "book-details/:id",
+        element: <BookDetails />,
       },
       {
         path: "coverage",
