@@ -6,6 +6,7 @@ import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
+import Heading from "../../../components/Heading/Heading";
 
 const ManageBooks = () => {
   const secureAxios = useSecureAxios();
@@ -84,15 +85,15 @@ const ManageBooks = () => {
       <section className="py-6 sm:py-8 lg:py-10">
         <Container>
           {/* Header */}
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-              <FaBook className="text-primary" />
-              Manage Books
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600">
-              Manage all librarians book collection
-            </p>
-          </div>
+          <Heading
+            title={
+              <>
+                <FaBook className="text-primary mr-2 inline-block" />
+                Manage Books
+              </>
+            }
+            subtitle="Manage all librarians book collection"
+          />
 
           {/* Books Table */}
           {books.length > 0 ? (

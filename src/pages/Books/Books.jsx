@@ -6,6 +6,7 @@ import usePublicAxios from "../../hooks/usePublicAxios";
 import Container from "../shared/Container/Container";
 import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
 import BookCard from "../../components/BookCard/BookCard";
+import Heading from "../../components/Heading/Heading";
 
 const Books = () => {
   const publicAxios = usePublicAxios();
@@ -50,17 +51,10 @@ const Books = () => {
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
           {/* Header */}
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <div className="inline-block p-3 sm:p-4 bg-primary/10 rounded-full mb-3 sm:mb-4">
-              <FaBook className="text-3xl sm:text-4xl lg:text-5xl text-primary" />
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-3 sm:mb-4">
-              Explore Our Collection
-            </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover amazing books from our extensive library collection
-            </p>
-          </div>
+          <Heading
+            title="Explore Our Collection"
+            subtitle="Discover amazing books from our extensive library collection"
+          />
 
           {/* Books Grid */}
           {books.length > 0 ? (

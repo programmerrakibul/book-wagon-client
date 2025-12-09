@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { uploadImage } from "../../../utilities/uploadImage";
+import Heading from "../../../components/Heading/Heading";
 
 const AddBook = () => {
   const [loading, setLoading] = useState(false);
@@ -74,18 +75,11 @@ const AddBook = () => {
       <section className="bg-linear-to-br from-secondary/10 via-primary/5 to-secondary/10 py-6 sm:py-10 lg:py-16 px-3 sm:px-0">
         <Container>
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-10 lg:mb-12 animate-fade-in">
-            <div className="inline-block p-3 sm:p-4 bg-primary/10 rounded-full mb-3 sm:mb-4">
-              <FaBook className="text-3xl sm:text-4xl lg:text-5xl text-primary" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 sm:mb-3">
-              Add New Book
-            </h1>
-            <p className="text-xs sm:text-sm lg:text-base text-gray-600 max-w-2xl mx-auto px-4">
-              Fill in the details below to add a new book to your library
-              collection
-            </p>
-          </div>
+          <Heading
+            title="Add New Book"
+            subtitle="Fill in the details below to add a new book to your library
+              collection"
+          />
 
           {/* Form Card */}
           <div className="card bg-secondary/3 shadow-2xl border border-primary/50 rounded-xl sm:rounded-2xl overflow-hidden">

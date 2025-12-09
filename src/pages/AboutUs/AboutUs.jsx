@@ -1,6 +1,7 @@
 import { FaBook, FaUsers, FaHeart, FaAward } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
 import Container from "../shared/Container/Container";
+import Heading from "../../components/Heading/Heading";
 
 const AboutUs = () => {
   const stats = [
@@ -65,15 +66,11 @@ const AboutUs = () => {
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
           {/* Hero Section */}
-          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-3 sm:mb-4">
-              About BookWagon
-            </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto">
-              Your trusted partner in the world of books, connecting readers
-              with stories that inspire, educate, and entertain.
-            </p>
-          </div>
+          <Heading
+            title="About BookWagon"
+            subtitle="Your trusted partner in the world of books, connecting readers
+              with stories that inspire, educate, and entertain."
+          />
 
           {/* Our Story with Image */}
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-12 lg:mb-16">

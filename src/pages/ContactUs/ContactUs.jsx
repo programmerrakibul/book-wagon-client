@@ -8,6 +8,7 @@ import { MdEmail } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 import { toast } from "sonner";
 import Container from "../shared/Container/Container";
+import Heading from "../../components/Heading/Heading";
 
 const ContactUs = () => {
   const handleSubmit = (e) => {
@@ -24,15 +25,11 @@ const ContactUs = () => {
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
           {/* Header */}
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-3 sm:mb-4">
-              Get In Touch
-            </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
-              Have questions? We'd love to hear from you. Send us a message and
-              we'll respond as soon as possible.
-            </p>
-          </div>
+          <Heading
+            title="Get In Touch"
+            subtitle="Have questions? We'd love to hear from you. Send us a message and
+              we'll respond as soon as possible."
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
             {/* Contact Information */}

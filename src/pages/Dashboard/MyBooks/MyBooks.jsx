@@ -8,6 +8,7 @@ import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
 import Button from "../../../components/Button/Button";
+import Heading from "../../../components/Heading/Heading";
 
 const MyBooks = () => {
   const navigate = useNavigate();
@@ -59,15 +60,15 @@ const MyBooks = () => {
       <section className="py-6 sm:py-8 lg:py-10">
         <Container>
           {/* Header */}
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-              <FaBook className="text-primary" />
-              My Books
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600">
-              Manage your book collection
-            </p>
-          </div>
+          <Heading
+            title={
+              <>
+                <FaBook className="text-primary inline-block mr-2" />
+                My Books
+              </>
+            }
+            subtitle="Manage your book collection"
+          />
 
           {/* Books Table */}
           {books.length > 0 ? (

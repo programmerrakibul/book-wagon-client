@@ -8,6 +8,7 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
 import Avatar from "../../../components/Avatar/Avatar";
+import Heading from "../../../components/Heading/Heading";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
@@ -57,15 +58,15 @@ const ManageUsers = () => {
       <section className="py-6 sm:py-8 lg:py-10">
         <Container>
           {/* Header */}
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-              <FaUsers className="text-primary" />
-              Manage Users
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600">
-              Manage user roles and permissions
-            </p>
-          </div>
+          <Heading
+            title={
+              <>
+                <FaUsers className="text-primary inline-block mr-2" />
+                Manage Users
+              </>
+            }
+            subtitle="Manage user roles and permissions"
+          />
 
           {/* Users Table */}
           {users?.length > 0 ? (
