@@ -40,7 +40,7 @@ const Navbar = () => {
       <nav className="bg-base-100/80 border-b border-base-200/30 shadow-sm">
         <Container>
           {/* Desktop & Mobile layout */}
-          <div className="navbar py-2">
+          <div className="navbar px-0 py-2">
             {/* Logo - Left Side */}
             <div className="navbar-start">
               <Logo />
