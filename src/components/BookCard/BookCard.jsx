@@ -1,55 +1,115 @@
-import { BsBoxSeam } from "react-icons/bs";
-import { FaTag, FaUser } from "react-icons/fa";
 import { Link } from "react-router";
+import { FaTag, FaUser } from "react-icons/fa";
+import { BsBoxSeam } from "react-icons/bs";
+import { Card, CardMedia, CardContent, Typography, Box, Chip } from "@mui/material";
 
 const BookCard = ({ book }) => {
-  const { _id, bookName, bookImage, author, price, quantity } = book || {};
+  const { _id, bookName, bookImage, author, price, quantity } = book;
 
   return (
-    <>
-      <Link
-        to={`/book-details/${_id}`}
-        className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group aspect-3/4 max-h-64 w-full"
+    <Link to={`/book-details/${_id}`}>
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: { xs: "row", sm: "column" },
+          transition: "all 0.3s ease",
+          "&:hover": {
+            transform: "translateY(-8px)",
+            boxShadow: 6,
+          },
+        }}
       >
-        <img
-          src={bookImage}
-          alt={bookName}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
+        <Box sx={{ position: "relative", width: { xs: "40%", sm: "100%" }, flexShrink: 0 }}>
+          <CardMedia
+            component="img"
+            image={bookImage}
+            alt={bookName}
+            sx={{
+              height: 150,
+              objectFit: "cover",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.05)",
+              },
+            }}
+          />
+          <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+            {quantity > 0 ? (
+              <Chip
+                icon={<BsBoxSeam />}
+                label={quantity}
+                color="success"
+                size="small"
+                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+              />
+            ) : (
+              <Chip
+                label="Out of Stock"
+                color="error"
+                size="small"
+                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+              />
+            )}
+          </Box>
+        </Box>
 
-        {quantity > 0 ? (
-          <div className="absolute top-3 right-3 badge badge-success badge-sm sm:badge-md gap-1 shadow-lg">
-            <BsBoxSeam className="text-xs" />
-            {quantity}
-          </div>
-        ) : (
-          <div className="absolute top-3 right-3 badge badge-error badge-sm sm:badge-md shadow-lg">
-            Out of Stock
-          </div>
-        )}
-
-        <div className="absolute inset-0 bg-linear-to-t from-secondary-content/90 via-secondary-content/70 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 sm:p-6">
-          {/* Book Name */}
-          <h2 className="text-primary font-bold text-xl mb-2 sm:mb-3 line-clamp-2">
+        <CardContent sx={{ flexGrow: 1, p: { xs: 1.5, sm: 2.5 } }}>
+          <Typography
+            variant="h6"
+            component="h2"
+            sx={{
+              fontWeight: 700,
+              mb: { xs: 1, sm: 1.5 },
+              fontSize: { xs: "0.875rem", sm: "1.125rem", lg: "1.25rem" },
+              color: "primary.main",
+              display: "-webkit-box",
+              WebkitLineClamp: 1,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
             {bookName}
-          </h2>
+          </Typography>
 
-          <div className="space-y-1 sm:space-y-2">
-            {/* Author */}
-            <div className="flex items-center gap-2 text-primary">
-              <FaUser className="shrink-0 text-sm" />
-              <span className="truncate text-sm">{author}</span>
-            </div>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              mb: { xs: 1, sm: 2 },
+              color: "text.secondary",
+            }}
+          >
+            <FaUser style={{ flexShrink: 0, fontSize: "0.75rem" }} />
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: { xs: "0.7rem", sm: "0.875rem" },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {author}
+            </Typography>
+          </Box>
 
-            {/* Price */}
-            <div className="flex items-center gap-2 text-primary">
-              <FaTag className="shrink-0 text-sm" />
-              <span className="font-bold text-lg">৳ {price}</span>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "primary.main" }}>
+            <FaTag style={{ flexShrink: 0, fontSize: "0.875rem" }} />
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: "1rem", sm: "1.25rem" },
+              }}
+            >
+              ৳ {price}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 

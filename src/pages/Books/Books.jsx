@@ -11,7 +11,7 @@ import Heading from "../../components/Heading/Heading";
 const Books = () => {
   const publicAxios = usePublicAxios();
   const [page, setPage] = useState(1);
-  const booksPerPage = 12;
+  const booksPerPage = 10;
 
   const { data, isPending } = useQuery({
     queryKey: ["all-books", page],
@@ -59,7 +59,7 @@ const Books = () => {
           {/* Books Grid */}
           {books.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
                 {books.map((book) => (
                   <BookCard key={book._id} book={book} />
                 ))}
