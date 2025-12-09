@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   FaBook,
@@ -9,6 +9,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaShoppingCart,
+  FaArrowLeft,
 } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
@@ -16,10 +17,13 @@ import Container from "../shared/Container/Container";
 import usePublicAxios from "../../hooks/usePublicAxios";
 import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
 import Button from "../../components/Button/Button";
+import { useState } from "react";
+import OrderModal from "../../components/OrderModal/OrderModal";
 
 const BookDetails = () => {
   const { id } = useParams();
   const publicAxios = usePublicAxios();
+  const [open, setOpen] = useState(false);
 
   const { data: book = {}, isPending } = useQuery({
     queryKey: ["book-details", id],
@@ -36,6 +40,10 @@ const BookDetails = () => {
       </div>
     );
   }
+
+  const closeModal = () => {
+    setOpen(false);
+  };
 
   const {
     bookName,
@@ -55,6 +63,15 @@ const BookDetails = () => {
 
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
+          {/* Back Button */}
+          <Link
+            to={-1}
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold mb-6 sm:mb-8 transition-colors"
+          >
+            <FaArrowLeft />
+            <span className="text-sm sm:text-base">Go Back</span>
+          </Link>
+
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
             {/* Book Image */}
             <div className="flex-1 lg:max-w-md">
@@ -63,7 +80,7 @@ const BookDetails = () => {
                   <img
                     src={bookImage}
                     alt={bookName}
-                    className="w-full h-96 sm:h-112 lg:h-128 object-cover"
+                    className="w-full h-80 sm:h-96 lg:h-112 object-cover"
                   />
                   <div className="absolute top-4 right-4">
                     {quantity > 0 ? (
@@ -213,7 +230,11 @@ const BookDetails = () => {
                 )}
 
                 {/* Order Button */}
-                <Button className="btn-block" disabled={quantity === 0}>
+                <Button
+                  handleClick={() => setOpen(true)}
+                  className="btn-block"
+                  disabled={quantity === 0}
+                >
                   <FaShoppingCart className="text-lg sm:text-xl" />
                   {quantity > 0 ? "Order Now" : "Out of Stock"}
                 </Button>
@@ -222,6 +243,8 @@ const BookDetails = () => {
           </div>
         </Container>
       </section>
+
+      <OrderModal isOpen={open} closeModal={closeModal} book={book} />
     </>
   );
 };
