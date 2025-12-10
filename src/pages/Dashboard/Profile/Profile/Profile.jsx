@@ -9,10 +9,17 @@ import { MdVerified } from "react-icons/md";
 import { format, getYear } from "date-fns";
 import useAuth from "../../../../hooks/useAuth";
 import Avatar from "../../../../components/Avatar/Avatar";
+import useRole from "../../../../hooks/useRole";
+import Loading from "../../../../components/Loading/Loading";
 
 const Profile = () => {
   const { user } = useAuth();
+  const { role, roleLoading } = useRole();
   const joinedYear = getYear(new Date(user.metadata.creationTime));
+
+  if (roleLoading) {
+    return <Loading />;
+  }
 
   const profileStats = [
     { label: "Books Ordered", value: "12", icon: "📚" },
@@ -64,10 +71,25 @@ const Profile = () => {
                 {user.email}
               </p>
               <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                <div className="badge badge-primary badge-sm sm:badge-md gap-1">
-                  <FaUser className="text-xs" />
-                  <span className="text-xs sm:text-sm">Member</span>
-                </div>
+                {/* Role Badge */}
+                {role === "admin" && (
+                  <div className="badge badge-error badge-sm sm:badge-md gap-1">
+                    <FaUser className="text-xs" />
+                    <span className="text-xs sm:text-sm">Admin</span>
+                  </div>
+                )}
+                {role === "librarian" && (
+                  <div className="badge badge-warning badge-sm sm:badge-md gap-1">
+                    <FaUser className="text-xs" />
+                    <span className="text-xs sm:text-sm">Librarian</span>
+                  </div>
+                )}
+                {role === "user" && (
+                  <div className="badge badge-primary badge-sm sm:badge-md gap-1">
+                    <FaUser className="text-xs" />
+                    <span className="text-xs sm:text-sm">Member</span>
+                  </div>
+                )}
                 {user.emailVerified && (
                   <div className="badge badge-success badge-sm sm:badge-md gap-1">
                     <FaCheckCircle className="text-xs" />
