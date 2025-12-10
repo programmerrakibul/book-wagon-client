@@ -18,9 +18,16 @@ import useAuth from "../../hooks/useAuth";
 import { handleLogout } from "../../utilities/handleLogout";
 import Avatar from "../../components/Avatar/Avatar";
 import Container from "../../pages/shared/Container/Container";
+import useRole from "../../hooks/useRole";
+import Loading from "../../components/Loading/Loading";
 
 const DashboardLayout = () => {
   const { user, logOutUser } = useAuth();
+  const { role, roleLoading } = useRole();
+
+  if (roleLoading) {
+    return <Loading />;
+  }
 
   const menuItems = [
     {
@@ -33,42 +40,58 @@ const DashboardLayout = () => {
       label: "My Orders",
       icon: <MdShoppingCart />,
     },
-    {
-      to: "/dashboard/all-orders",
-      label: "All Orders",
-      icon: <MdShoppingCart />,
-    },
+
     {
       to: "/dashboard/invoices",
       label: "Invoices",
       icon: <FaFileInvoiceDollar />,
     },
-    {
-      to: "/dashboard/add-book",
-      label: "Add Book",
-      icon: <MdLibraryAdd />,
-    },
-    {
-      to: "/dashboard/my-books",
-      label: "My Books",
-      icon: <IoLibrary />,
-    },
-    {
-      to: "/dashboard/manage-books",
-      label: "Manage Books",
-      icon: <IoLibrary />,
-    },
-    {
-      to: "/dashboard/manage-users",
-      label: "Manage Users",
-      icon: <FaUsers />,
-    },
+
     {
       to: "/dashboard/profile",
       label: "Profile",
       icon: <FaUser />,
     },
   ];
+
+  if (role === "admin") {
+    const admin = [
+      {
+        to: "/dashboard/manage-books",
+        label: "Manage Books",
+        icon: <IoLibrary />,
+      },
+      {
+        to: "/dashboard/manage-users",
+        label: "Manage Users",
+        icon: <FaUsers />,
+      },
+    ];
+
+    menuItems.splice(3, 0, ...admin);
+  }
+
+  if (role === "librarian") {
+    const librarian = [
+      {
+        to: "/dashboard/all-orders",
+        label: "All Orders",
+        icon: <MdShoppingCart />,
+      },
+      {
+        to: "/dashboard/add-book",
+        label: "Add Book",
+        icon: <MdLibraryAdd />,
+      },
+      {
+        to: "/dashboard/my-books",
+        label: "My Books",
+        icon: <IoLibrary />,
+      },
+    ];
+
+    menuItems.splice(3, 0, ...librarian);
+  }
 
   return (
     <>

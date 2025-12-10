@@ -23,6 +23,8 @@ import ContactUs from "../pages/ContactUs/ContactUs";
 import BookDetails from "../pages/BookDetails/BookDetails";
 import Error from "../pages/Error/Error";
 import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import LibrarianRoute from "./LibrarianRoute";
 
 const router = createBrowserRouter([
   // Main routes
@@ -73,7 +75,11 @@ const router = createBrowserRouter([
       },
       {
         path: "all-orders",
-        element: <AllOrders />,
+        element: (
+          <LibrarianRoute>
+            <AllOrders />
+          </LibrarianRoute>
+        ),
       },
       {
         path: "invoices",
@@ -81,23 +87,43 @@ const router = createBrowserRouter([
       },
       {
         path: "add-book",
-        element: <AddBook />,
+        element: (
+          <LibrarianRoute>
+            <AddBook />
+          </LibrarianRoute>
+        ),
       },
       {
         path: "my-books",
-        element: <MyBooks />,
+        element: (
+          <LibrarianRoute>
+            <MyBooks />
+          </LibrarianRoute>
+        ),
       },
       {
         path: "edit-book/:id",
-        element: <EditBook />,
+        element: (
+          <LibrarianRoute>
+            <EditBook />
+          </LibrarianRoute>
+        ),
       },
       {
         path: "manage-books",
-        element: <ManageBooks />,
+        element: (
+          <AdminRoute>
+            <ManageBooks />
+          </AdminRoute>
+        ),
       },
       {
         path: "manage-users",
-        element: <ManageUsers />,
+        element: (
+          <AdminRoute>
+            <ManageUsers />
+          </AdminRoute>
+        ),
       },
       // Profile Layout
       {
