@@ -22,6 +22,7 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import BookDetails from "../pages/BookDetails/BookDetails";
 import Error from "../pages/Error/Error";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   // Main routes
@@ -56,7 +57,11 @@ const router = createBrowserRouter([
   // Dashboard routes
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
