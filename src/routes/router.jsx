@@ -18,7 +18,6 @@ import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
 import Invoices from "../pages/Dashboard/Invoices/Invoices";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AllOrders from "../pages/Dashboard/AllOrders/AllOrders";
-import Coverage from "../pages/Coverage/Coverage";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import BookDetails from "../pages/BookDetails/BookDetails";

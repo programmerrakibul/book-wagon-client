@@ -9,7 +9,7 @@ const RootLayout = () => {
         <Navbar />
       </header>
 
-      <main>
+      <main className="space-y-16 md:space-y-20">
         <Outlet />
       </main>
 

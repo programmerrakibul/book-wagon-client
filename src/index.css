@@ -9,7 +9,7 @@
   --color-primary: #6439ff;
   --color-secondary: #4f75ff;
   --color-neutral: #0f0e0e;
-  --color-error: #F72C5B;
+  --color-error: #f72c5b;
   --color-white: #f9f8f6;
 }
 
@@ -68,4 +68,8 @@ h6 {
 .textarea,
 .select {
   @apply w-full block border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-shadow duration-300 outline-primary;
+}
+
+.latest-books-swiper {
+  @apply py-5 px-0;
 }
