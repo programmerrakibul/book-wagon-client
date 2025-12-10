@@ -19,11 +19,12 @@ const MyBooks = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["books", user.email],
+    queryKey: ["books", "librarian", user.email],
     queryFn: async () => {
       const { data } = await secureAxios.get("/books", {
         params: {
           email: user.email,
+          role: "librarian",
         },
       });
 

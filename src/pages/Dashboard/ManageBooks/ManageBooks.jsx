@@ -15,9 +15,13 @@ const ManageBooks = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["manage-books"],
+    queryKey: ["manage-books", "admin"],
     queryFn: async () => {
-      const { data } = await secureAxios.get("/books");
+      const { data } = await secureAxios.get("/books", {
+        params: {
+          role: "admin",
+        },
+      });
 
       return data?.books;
     },
