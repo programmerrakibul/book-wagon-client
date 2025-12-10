@@ -33,6 +33,7 @@ const OrderModal = ({ isOpen, closeModal, book }) => {
 
     const orderData = {
       bookId: book._id,
+      librarianEmail: book.librarianEmail,
       customerName: user.displayName,
       customerEmail: user.email,
       ...data,
