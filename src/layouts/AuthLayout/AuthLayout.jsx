@@ -1,8 +1,15 @@
-import { Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import Container from "../../pages/shared/Container/Container";
 import authImg from "../../assets/auth.avif";
+import useAuth from "../../hooks/useAuth";
 
 const AuthLayout = () => {
+  const { user } = useAuth();
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <>
       <section>
