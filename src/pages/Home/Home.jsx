@@ -1,4 +1,4 @@
-import Container from "../shared/Container/Container";
+import Banner from "./Banner";
 import ChooseUs from "./ChooseUs";
 import Coverage from "./Coverage";
 import LatestBooks from "./LatestBooks";
@@ -9,10 +9,7 @@ const Home = () => {
     <>
       <title>Home - BookWagon</title>
 
-      <section>
-        <Container>This is Home Page</Container>
-      </section>
-
+      <Banner />
       <LatestBooks />
       <ChooseUs />
       <Coverage />
