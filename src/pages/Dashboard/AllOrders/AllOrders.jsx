@@ -126,7 +126,7 @@ const AllOrders = () => {
                   <tbody>
                     {orders.map((order) => (
                       <tr key={order._id} className="text-sm lg:text-base">
-                        <td className="font-semibold min-w-[180px] w-full">
+                        <td className="font-semibold min-w-[180px]">
                           {order.orderedBook.bookName}
                         </td>
                         <td>

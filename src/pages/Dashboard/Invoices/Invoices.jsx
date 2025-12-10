@@ -64,7 +64,7 @@ const Invoices = () => {
                   <tbody>
                     {invoices.map((invoice) => (
                       <tr key={invoice._id} className="text-sm lg:text-base">
-                        <td className="font-semibold min-w-[170px] w-full">
+                        <td className="font-semibold min-w-[170px]">
                           {invoice.bookName}
                         </td>
                         <td className="font-mono text-xs sm:text-sm">
