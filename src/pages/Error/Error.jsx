@@ -47,12 +47,10 @@ const Error = () => {
                 <FaArrowLeft />
                 Go Back
               </Button>
-              <Link to="/">
-                <Button>
-                  <FaHome />
-                  Back to Home
-                </Button>
-              </Link>
+              <Button handleClick={() => navigate("/")}>
+                <FaHome />
+                Back to Home
+              </Button>
             </div>
 
             {/* Helpful Links */}
