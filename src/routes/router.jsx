@@ -22,12 +22,14 @@ import Coverage from "../pages/Coverage/Coverage";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import BookDetails from "../pages/BookDetails/BookDetails";
+import Error from "../pages/Error/Error";
 
 const router = createBrowserRouter([
   // Main routes
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
