@@ -1,4 +1,5 @@
 import Container from "../shared/Container/Container";
+import ChooseUs from "./ChooseUs";
 import LatestBooks from "./LatestBooks";
 import NewsLetter from "./NewsLetter";
 
@@ -12,7 +13,7 @@ const Home = () => {
       </section>
 
       <LatestBooks />
-
+      <ChooseUs />
       <NewsLetter />
     </>
   );
