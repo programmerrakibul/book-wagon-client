@@ -50,7 +50,7 @@ const ChooseUs = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-base-100">
+    <section className="py-12 sm:py-16 lg:py-20">
       <Container>
         <Heading
           title="Why Choose BookWagon"
