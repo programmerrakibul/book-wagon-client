@@ -40,7 +40,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-base-100/80 border-b border-base-200/30 shadow-sm">
+      <nav className="bg-base-100/40 backdrop-blur-sm border-b border-base-200/30 shadow-sm">
         <Container>
           {/* Desktop & Mobile layout */}
           <div className="navbar px-0 py-2">
@@ -89,11 +89,11 @@ const Navbar = () => {
 
           {/* Custom Mobile Menu - Smooth Slide Animation */}
           <div
-            className={`lg:hidden border-t border-base-200/30 overflow-hidden transition-all duration-300 ease-in-out ${
+            className={`lg:hidden border-t border-base-100/40 backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out ${
               mobileMenuOpen ? "max-h-[490px] opacity-100" : "max-h-0 opacity-0"
             }`}
           >
-            <div className="bg-base-100/80 backdrop-blur-xl shadow-sm px-4 md:px-6 py-4 space-y-2 border-t border-base-200/30">
+            <div className="bg-base-100/40 backdrop-blur-sm shadow-sm px-4 md:px-6 py-4 space-y-2 border-t border-base-100/40">
               {/* Mobile Nav Links */}
               <div className="space-y-1">
                 {navItems.map((item, index) => (

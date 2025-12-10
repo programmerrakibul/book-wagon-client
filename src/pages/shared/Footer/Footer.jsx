@@ -6,7 +6,6 @@ import {
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
-  FaBook,
 } from "react-icons/fa";
 import Container from "../Container/Container";
 import Logo from "../../../components/Logo/Logo";
