@@ -1,5 +1,6 @@
 import Container from "../shared/Container/Container";
 import LatestBooks from "./LatestBooks";
+import NewsLetter from "./NewsLetter";
 
 const Home = () => {
   return (
@@ -11,6 +12,8 @@ const Home = () => {
       </section>
 
       <LatestBooks />
+
+      <NewsLetter />
     </>
   );
 };
