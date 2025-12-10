@@ -44,10 +44,6 @@ const router = createBrowserRouter([
         element: <BookDetails />,
       },
       {
-        path: "coverage",
-        element: <Coverage />,
-      },
-      {
         path: "about-us",
         element: <AboutUs />,
       },

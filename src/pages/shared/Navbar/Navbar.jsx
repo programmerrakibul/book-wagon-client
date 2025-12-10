@@ -18,7 +18,6 @@ const Navbar = () => {
     { label: "Home", slug: "/" },
     { label: "Books", slug: "/books" },
     { label: "Dashboard", slug: "/dashboard" },
-    { label: "Coverage", slug: "/coverage" },
     { label: "About Us", slug: "/about-us" },
     { label: "Contact Us", slug: "/contact-us" },
   ];
