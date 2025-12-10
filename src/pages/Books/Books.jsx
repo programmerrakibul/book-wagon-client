@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { FaBook } from "react-icons/fa";
+import { FaBook, FaSearch, FaSort } from "react-icons/fa";
 import { Pagination, Box } from "@mui/material";
 import usePublicAxios from "../../hooks/usePublicAxios";
 import Container from "../shared/Container/Container";
@@ -11,16 +11,21 @@ import Loading from "../../components/Loading/Loading";
 const Books = () => {
   const publicAxios = usePublicAxios();
   const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sort, setSort] = useState("");
   const booksPerPage = 10;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["all-books", page],
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: ["all-books", page, searchQuery, sort],
     queryFn: async () => {
       const { data } = await publicAxios.get("/books", {
         params: {
           fields: "bookName,bookImage,author,price,quantity",
           limit: booksPerPage,
           skip: (page - 1) * booksPerPage,
+          search: searchQuery,
+          sortBy: sort.split("-")[0],
+          sortOrder: sort.split("-")[1],
         },
       });
       return data;
@@ -31,14 +36,23 @@ const Books = () => {
   const totalBooks = data?.total || 0;
   const totalPages = Math.ceil(totalBooks / booksPerPage);
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (_event, value) => {
     setPage(value);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (isLoading) {
-    return <Loading message="Books is loading..." />;
-  }
+  const handleSearch = (e) => {
+    refetch();
+    setSearchQuery(e.target.value.trim());
+    setPage(1);
+  };
+
+  const handleSort = (e) => {
+    const sort = e.target.value;
+    setSort(sort);
+    refetch();
+    setPage(1);
+  };
 
   return (
     <>
@@ -52,8 +66,47 @@ const Books = () => {
             subtitle="Discover amazing books from our extensive library collection"
           />
 
+          {/* Search and Sort Section */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6 sm:mb-8 lg:mb-10">
+            {/* Search Input */}
+            <div className="flex-1">
+              <div className="relative">
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+                <input
+                  type="text"
+                  placeholder="Search books by title, author, or category..."
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  className="input input-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary"
+                />
+              </div>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="sm:w-64">
+              <div className="relative">
+                <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base pointer-events-none z-10" />
+                <select
+                  value={sort}
+                  onChange={handleSort}
+                  className="select select-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary appearance-none"
+                >
+                  <option value="">Sort By</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="bookName-asc">Name: A to Z</option>
+                  <option value="bookName-desc">Name: Z to A</option>
+                  <option value="createdAt-desc">Newest First</option>
+                  <option value="createdAt-asc">Oldest First</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           {/* Books Grid */}
-          {books.length > 0 ? (
+          {isLoading ? (
+            <Loading message="Books is loading..." />
+          ) : books.length > 0 ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
                 {books.map((book) => (
