@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 import {
   FaFacebookF,
-  FaTwitter,
   FaInstagram,
   FaLinkedinIn,
   FaEnvelope,
@@ -11,6 +10,7 @@ import {
 } from "react-icons/fa";
 import Container from "../Container/Container";
 import Logo from "../../../components/Logo/Logo";
+import { BsTwitterX } from "react-icons/bs";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -31,7 +31,7 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <FaFacebookF />, url: "https://facebook.com", label: "Facebook" },
-    { icon: <FaTwitter />, url: "https://twitter.com", label: "Twitter" },
+    { icon: <BsTwitterX />, url: "https://twitter.com", label: "Twitter" },
     { icon: <FaInstagram />, url: "https://instagram.com", label: "Instagram" },
     { icon: <FaLinkedinIn />, url: "https://linkedin.com", label: "LinkedIn" },
   ];
