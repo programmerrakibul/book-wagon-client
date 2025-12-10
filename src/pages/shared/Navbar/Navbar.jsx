@@ -17,10 +17,14 @@ const Navbar = () => {
   const navItems = [
     { label: "Home", slug: "/" },
     { label: "Books", slug: "/books" },
-    { label: "Dashboard", slug: "/dashboard" },
     { label: "About Us", slug: "/about-us" },
     { label: "Contact Us", slug: "/contact-us" },
   ];
+
+  if (user) {
+    const dashboard = { label: "Dashboard", slug: "/dashboard" };
+    navItems.splice(2, 0, dashboard);
+  }
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
