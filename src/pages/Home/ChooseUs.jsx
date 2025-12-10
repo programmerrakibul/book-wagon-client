@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import Container from "../shared/Container/Container";
 import Heading from "../../components/Heading/Heading";
+import chooseUsImg from "../../assets/choose_us.png";
 
 const ChooseUs = () => {
   const features = [
@@ -63,7 +64,7 @@ const ChooseUs = () => {
           <div className="flex-1 w-full">
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80"
+                src={chooseUsImg}
                 alt="Books"
                 className="w-full h-64 sm:h-80 lg:h-96 xl:h-fit object-cover rounded-2xl shadow-2xl"
               />

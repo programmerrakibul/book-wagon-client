@@ -2,6 +2,9 @@ import { FaBook, FaUsers, FaHeart, FaAward } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
 import Container from "../shared/Container/Container";
 import Heading from "../../components/Heading/Heading";
+import ourStoryImg from "../../assets/our_story.png";
+import missionImg from "../../assets/mission.png";
+import visionImg from "../../assets/vision.png";
 
 const AboutUs = () => {
   const stats = [
@@ -43,8 +46,7 @@ const AboutUs = () => {
       title: "Our Mission",
       description:
         "To foster a love of reading and learning by providing access to a diverse collection of books, creating a welcoming environment for all, and building a community where knowledge and ideas can flourish.",
-      image:
-        "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80",
+      image: missionImg,
       gradient: "from-primary/10 to-primary/5",
       border: "border-primary/20",
     },
@@ -52,8 +54,7 @@ const AboutUs = () => {
       title: "Our Vision",
       description:
         "To be the leading library that inspires lifelong learning, promotes literacy, and serves as a cornerstone of our community, making quality literature accessible to everyone.",
-      image:
-        "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&q=80",
+      image: visionImg,
       gradient: "from-secondary/10 to-secondary/5",
       border: "border-secondary/20",
     },
@@ -77,7 +78,7 @@ const AboutUs = () => {
             {/* Image */}
             <div className="flex-1">
               <img
-                src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80"
+                src={ourStoryImg}
                 alt="Library"
                 className="w-full h-full object-cover rounded-2xl shadow-xl"
               />
