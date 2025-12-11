@@ -186,7 +186,7 @@ const DashboardLayout = () => {
           </nav>
 
           {/* Page Content */}
-          <main className="flex-1 bg-base-200 min-h-screen">
+          <main className="flex-1 bg-base-200 min-h-[70dvh]">
             <Outlet />
           </main>
         </div>

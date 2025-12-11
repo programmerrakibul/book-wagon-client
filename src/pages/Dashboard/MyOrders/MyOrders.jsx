@@ -8,6 +8,15 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
@@ -154,93 +163,118 @@ const MyOrders = () => {
           ) : (
             <>
               {/* Desktop Table */}
-              <div className="hidden sm:block overflow-x-auto">
-                <table className="table table-zebra">
-                  <thead>
-                    <tr className="text-sm lg:text-base">
-                      <th>Book Title</th>
-                      <th>Order Date</th>
-                      <th>Price</th>
-                      <th>Status</th>
-                      <th>Payment</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((order) => (
-                      <tr key={order._id} className="text-sm lg:text-base">
-                        <td className="font-semibold min-w-[185px]">
-                          {order.orderedBook.bookName}
-                        </td>
-                        <td>
-                          {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                        </td>
-                        <td className="font-bold text-primary">
-                          ৳ {order.orderedBook.price}
-                        </td>
-                        <td>
-                          {order.status === "pending" && (
-                            <span className="badge badge-warning gap-1">
-                              <FaTimesCircle className="text-xs" />
-                              Pending
+              <div className="hidden sm:block">
+                <TableContainer component={Paper} className="shadow-lg">
+                  <Table>
+                    <TableHead>
+                      <TableRow className="bg-primary/10">
+                        <TableCell className="font-bold! text-base!">
+                          Book Title
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Order Date
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Price
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Status
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Payment
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          className="font-bold! text-base!"
+                        >
+                          Actions
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {orders.map((order) => (
+                        <TableRow
+                          key={order._id}
+                          className="hover:bg-base-200 transition-colors"
+                        >
+                          <TableCell className="min-w-40">
+                            <span className="font-semibold text-gray-800 text-sm lg:text-base">
+                              {order.orderedBook.bookName}
                             </span>
-                          )}
-                          {order.status === "cancelled" && (
-                            <span className="badge badge-error gap-1">
-                              <FaTimesCircle className="text-xs" />
-                              Cancelled
-                            </span>
-                          )}
-                          {order.status === "completed" && (
-                            <span className="badge badge-success gap-1">
-                              <FaCheckCircle className="text-xs" />
-                              Completed
-                            </span>
-                          )}
-                        </td>
-                        <td>
-                          {order.paymentStatus === "paid" ? (
-                            <span className="badge badge-success gap-1">
-                              <FaCheckCircle className="text-xs" />
-                              Paid
-                            </span>
-                          ) : (
-                            <span className="badge badge-warning gap-1">
-                              <FaTimesCircle className="text-xs" />
-                              Unpaid
-                            </span>
-                          )}
-                        </td>
-                        <td>
-                          <div className="flex gap-2">
-                            {order.status === "pending" &&
-                              order.paymentStatus !== "paid" && (
-                                <>
-                                  <Button
-                                    handleClick={() => handlePayment(order)}
-                                    className="btn-sm! text-nowrap"
-                                  >
-                                    <FaCreditCard />
-                                    Pay Now
-                                  </Button>
+                          </TableCell>
+                          <TableCell className="text-gray-600 text-sm lg:text-base text-nowrap">
+                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
+                          </TableCell>
+                          <TableCell className="font-bold text-primary text-nowrap text-sm lg:text-base">
+                            ৳ {order.orderedBook.price}
+                          </TableCell>
+                          <TableCell>
+                            {order.status === "pending" && (
+                              <span className="badge badge-warning gap-1 badge-sm">
+                                <FaTimesCircle className="text-xs" />
+                                Pending
+                              </span>
+                            )}
+                            {order.status === "cancelled" && (
+                              <span className="badge badge-error gap-1 badge-sm">
+                                <FaTimesCircle className="text-xs" />
+                                Cancelled
+                              </span>
+                            )}
+                            {order.status === "completed" && (
+                              <span className="badge badge-success gap-1 badge-sm">
+                                <FaCheckCircle className="text-xs" />
+                                Completed
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {order.paymentStatus === "paid" ? (
+                              <span className="badge badge-success gap-1 badge-sm">
+                                <FaCheckCircle className="text-xs" />
+                                Paid
+                              </span>
+                            ) : (
+                              <span className="badge badge-warning gap-1 badge-sm">
+                                <FaTimesCircle className="text-xs" />
+                                Unpaid
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell align="center">
+                            <div className="flex gap-2 justify-center">
+                              {order.status === "pending" &&
+                                order.paymentStatus !== "paid" && (
+                                  <>
+                                    <Button
+                                      handleClick={() => handlePayment(order)}
+                                      className="btn-sm!"
+                                    >
+                                      <FaCreditCard />
+                                      Pay Now
+                                    </Button>
 
-                                  <button
-                                    onClick={() =>
-                                      handleOrderStatus(order._id, "cancelled")
-                                    }
-                                    className="btn btn-sm! btn-error"
-                                  >
-                                    <FaTimes />
-                                    Cancel
-                                  </button>
-                                </>
-                              )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                                    <button
+                                      onClick={() =>
+                                        handleOrderStatus(
+                                          order._id,
+                                          "cancelled"
+                                        )
+                                      }
+                                      className="btn btn-sm! btn-error text-xs"
+                                    >
+                                      <FaTimes />
+                                      Cancel
+                                    </button>
+                                  </>
+                                )}
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </div>
 
               {/* Mobile Cards */}
