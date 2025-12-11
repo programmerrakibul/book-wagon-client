@@ -10,24 +10,30 @@ import {
   FaTimesCircle,
   FaShoppingCart,
   FaArrowLeft,
+  FaRegHeart,
+  FaHeart,
 } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
 import Container from "../shared/Container/Container";
 import usePublicAxios from "../../hooks/usePublicAxios";
-import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
 import Button from "../../components/Button/Button";
 import { useState } from "react";
 import OrderModal from "../../components/OrderModal/OrderModal";
 import useAuth from "../../hooks/useAuth";
+import Loading from "../../components/Loading/Loading";
+import useSecureAxios from "../../hooks/useSecureAxios";
+import { toast } from "sonner";
+import { getAlert } from "../../utilities/getAlert";
 
 const BookDetails = () => {
   const { id } = useParams();
   const publicAxios = usePublicAxios();
+  const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
 
-  const { data: book = {}, isPending } = useQuery({
+  const { data: book = {}, isLoading: bookLoading } = useQuery({
     queryKey: ["book-details", id],
     queryFn: async () => {
       const { data } = await publicAxios.get(`/books/${id}`);
@@ -35,12 +41,23 @@ const BookDetails = () => {
     },
   });
 
-  if (isPending) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <ActionSpinner />
-      </div>
-    );
+  const {
+    data: inWishlist,
+    isLoading: wishlistLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["inWishlist", id, user?.email],
+    queryFn: async () => {
+      const { data } = await secureAxios.get(
+        `/wishlist/${user?.email}/check/${id}`
+      );
+
+      return data?.inWishlist;
+    },
+  });
+
+  if (bookLoading || wishlistLoading) {
+    return <Loading message="Book is loading..." />;
   }
 
   const closeModal = () => {
@@ -48,6 +65,7 @@ const BookDetails = () => {
   };
 
   const {
+    _id,
     bookName,
     bookImage,
     author,
@@ -57,7 +75,50 @@ const BookDetails = () => {
     description,
     pageCount,
     subcategory,
+    librarianEmail,
   } = book;
+
+  const isLibrarian = librarianEmail === user?.email;
+
+  const addToWishlist = async () => {
+    try {
+      const { data } = await secureAxios.post(`/wishlist/${user.email}/add`, {
+        bookId: _id,
+      });
+
+      if (data.success) {
+        refetch();
+
+        getAlert({
+          title: "Successfully added to wishlist.",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+
+      toast.error("Add to wishlist failed! Please try again.");
+    }
+  };
+
+  const removeFromWishlist = async () => {
+    try {
+      const { data } = await secureAxios.delete(
+        `/wishlist/${user.email}/remove/${id}`
+      );
+
+      if (data.success) {
+        refetch();
+
+        getAlert({
+          title: "Successfully removed from wishlist.",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+
+      toast.error("Remove from wishlist failed! Please try again.");
+    }
+  };
 
   return (
     <>
@@ -77,7 +138,7 @@ const BookDetails = () => {
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
             {/* Book Image */}
             <div className="flex-1 lg:max-w-md">
-              <div className="card bg-base-100 shadow-xl overflow-hidden sticky top-8">
+              <div className="card bg-base-100 shadow-xl overflow-hidden sticky top-24">
                 <figure className="relative">
                   <img
                     src={bookImage}
@@ -110,9 +171,29 @@ const BookDetails = () => {
               <div className="space-y-6 sm:space-y-8">
                 {/* Title & Author */}
                 <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800 mb-3 sm:mb-4">
-                    {bookName}
-                  </h1>
+                  <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800">
+                      {bookName}
+                    </h1>
+                    {(user || !isLibrarian) &&
+                      (inWishlist ? (
+                        <button
+                          onClick={removeFromWishlist}
+                          data-tip="Remove from Wishlist"
+                          className="wish_heart"
+                        >
+                          <FaHeart className="text-error" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={addToWishlist}
+                          data-tip="Add to Wishlist"
+                          className="wish_heart"
+                        >
+                          <FaRegHeart className="text-error" />
+                        </button>
+                      ))}
+                  </div>
                   <div className="flex items-center gap-2 text-gray-600 text-base sm:text-lg">
                     <FaUser className="text-primary" />
                     <span className="font-medium">by {author}</span>
@@ -232,7 +313,7 @@ const BookDetails = () => {
                 )}
 
                 {/* Order Button */}
-                {user?.email !== book.librarianEmail && (
+                {!isLibrarian && (
                   <Button
                     handleClick={() => setOpen(true)}
                     className="btn-block"

@@ -73,3 +73,7 @@ h6 {
 .latest-books-swiper {
   @apply py-5 px-0;
 }
+
+.wish_heart {
+  @apply btn btn-square text-xl! w-fit sm:text-2xl! bg-transparent rounded-full shadow-none border-none tooltip tooltip-left;
+}
