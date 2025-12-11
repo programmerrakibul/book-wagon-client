@@ -14,7 +14,7 @@ import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
 import Avatar from "../../../../components/Avatar/Avatar";
 
 const EditProfile = () => {
-  const { user, updateUserProfile } = useAuth();
+  const { user, setUser, updateUserProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(user.photoURL);
 
@@ -53,10 +53,12 @@ const EditProfile = () => {
         if (imageInfo) {
           const photoURL = await uploadImage(imageInfo);
           await updateUserProfile({ photoURL });
+          setUser({ ...user, photoURL });
         }
 
         if (displayName) {
           await updateUserProfile({ displayName });
+          setUser({ ...user, displayName });
         }
 
         getAlert({ title: "Profile information updated" });
