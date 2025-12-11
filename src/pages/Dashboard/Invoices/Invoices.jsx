@@ -1,6 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { FaFileInvoice, FaCheckCircle, FaBook } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
@@ -50,42 +59,64 @@ const Invoices = () => {
           ) : (
             <>
               {/* Desktop Table */}
-              <div className="hidden sm:block overflow-x-auto">
-                <table className="table table-zebra">
-                  <thead>
-                    <tr className="text-sm lg:text-base">
-                      <th>Book Name</th>
-                      <th>Payment ID</th>
-                      <th>Payment Date</th>
-                      <th>Amount</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {invoices.map((invoice) => (
-                      <tr key={invoice._id} className="text-sm lg:text-base">
-                        <td className="font-semibold min-w-[170px]">
-                          {invoice.bookName}
-                        </td>
-                        <td className="font-mono text-xs sm:text-sm">
-                          {invoice.transactionId}
-                        </td>
-                        <td>
-                          {format(new Date(invoice.createdAt), "MMM dd, yyyy")}
-                        </td>
-                        <td className="font-bold text-primary">
-                          ৳ {invoice.price}
-                        </td>
-                        <td>
-                          <span className="badge badge-success gap-1">
-                            <FaCheckCircle className="text-xs" />
-                            Paid
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="hidden sm:block">
+                <TableContainer component={Paper} className="shadow-lg!">
+                  <Table>
+                    <TableHead>
+                      <TableRow className="bg-primary/10">
+                        <TableCell className="font-bold! text-base!">
+                          Book Name
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Payment ID
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Payment Date
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Amount
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Status
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {invoices.map((invoice) => (
+                        <TableRow
+                          key={invoice._id}
+                          className="hover:bg-base-200 transition-colors"
+                        >
+                          <TableCell className="min-w-20!">
+                            <span className="font-semibold text-gray-800 text-sm lg:text-base">
+                              {invoice.bookName}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="font-mono text-xs sm:text-sm text-gray-600">
+                              {invoice.transactionId}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-gray-600 text-sm lg:text-base text-nowrap">
+                            {format(
+                              new Date(invoice.createdAt),
+                              "MMM dd, yyyy"
+                            )}
+                          </TableCell>
+                          <TableCell className="font-bold text-primary text-sm lg:text-base">
+                            ৳ {invoice.price}
+                          </TableCell>
+                          <TableCell>
+                            <span className="badge badge-success gap-1 badge-sm">
+                              <FaCheckCircle className="text-xs" />
+                              Paid
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </div>
 
               {/* Mobile Cards */}
