@@ -17,7 +17,7 @@ const Coverage = () => {
 
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
           {/* Map */}
-          <div className="flex-1">
+          <div className="flex-1 z-0!">
             <div className="card bg-base-100 shadow-2xl overflow-hidden">
               <div className="h-64 sm:h-80 lg:h-96 w-full">
                 <MapContainer
