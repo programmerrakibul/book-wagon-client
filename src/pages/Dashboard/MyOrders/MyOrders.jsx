@@ -37,10 +37,24 @@ const MyOrders = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const session_id = searchParams.get("session_id");
 
+  const {
+    data: orders = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["my-orders", "customer", user.email],
+    queryFn: async () => {
+      const { data } = await secureAxios.get(`/orders/customer/${user.email}`);
+      return data?.orders;
+    },
+  });
+
   useEffect(() => {
     let mount = true;
 
     if (session_id && mount) {
+      refetch();
+
       secureAxios
         .get(`/checkout-session/retrieve/${session_id}`)
         .then(({ data }) => {
@@ -62,7 +76,8 @@ const MyOrders = () => {
             ),
           }).then((result) => {
             if (result.isConfirmed) {
-              console.log("Confirmed");
+              refetch();
+
               setSearchParams("");
             }
           });
@@ -73,19 +88,7 @@ const MyOrders = () => {
     }
 
     mount = false;
-  }, [session_id, secureAxios, setSearchParams]);
-
-  const {
-    data: orders = [],
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["my-orders", "customer", user.email],
-    queryFn: async () => {
-      const { data } = await secureAxios.get(`/orders/customer/${user.email}`);
-      return data?.orders;
-    },
-  });
+  }, [session_id, secureAxios, setSearchParams, refetch]);
 
   if (isLoading) {
     return <Loading message="Loading your orders..." />;
@@ -244,30 +247,29 @@ const MyOrders = () => {
                           <TableCell align="center">
                             <div className="flex gap-2 justify-center">
                               {order.status === "pending" &&
-                                order.paymentStatus !== "paid" && (
-                                  <>
-                                    <Button
-                                      handleClick={() => handlePayment(order)}
-                                      className="btn-sm!"
-                                    >
-                                      <FaCreditCard />
-                                      Pay Now
-                                    </Button>
+                              order.paymentStatus !== "paid" ? (
+                                <>
+                                  <Button
+                                    handleClick={() => handlePayment(order)}
+                                    className="btn-sm!"
+                                  >
+                                    <FaCreditCard />
+                                    Pay Now
+                                  </Button>
 
-                                    <button
-                                      onClick={() =>
-                                        handleOrderStatus(
-                                          order._id,
-                                          "cancelled"
-                                        )
-                                      }
-                                      className="btn btn-sm! btn-error text-xs"
-                                    >
-                                      <FaTimes />
-                                      Cancel
-                                    </button>
-                                  </>
-                                )}
+                                  <button
+                                    onClick={() =>
+                                      handleOrderStatus(order._id, "cancelled")
+                                    }
+                                    className="btn btn-sm! btn-error text-xs"
+                                  >
+                                    <FaTimes />
+                                    Cancel
+                                  </button>
+                                </>
+                              ) : (
+                                <span>No Action</span>
+                              )}
                             </div>
                           </TableCell>
                         </TableRow>
