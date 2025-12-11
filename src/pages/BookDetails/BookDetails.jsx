@@ -19,11 +19,13 @@ import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
 import Button from "../../components/Button/Button";
 import { useState } from "react";
 import OrderModal from "../../components/OrderModal/OrderModal";
+import useAuth from "../../hooks/useAuth";
 
 const BookDetails = () => {
   const { id } = useParams();
   const publicAxios = usePublicAxios();
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   const { data: book = {}, isPending } = useQuery({
     queryKey: ["book-details", id],
@@ -230,14 +232,16 @@ const BookDetails = () => {
                 )}
 
                 {/* Order Button */}
-                <Button
-                  handleClick={() => setOpen(true)}
-                  className="btn-block"
-                  disabled={quantity === 0}
-                >
-                  <FaShoppingCart className="text-lg sm:text-xl" />
-                  {quantity > 0 ? "Order Now" : "Out of Stock"}
-                </Button>
+                {user?.email !== book.librarianEmail && (
+                  <Button
+                    handleClick={() => setOpen(true)}
+                    className="btn-block"
+                    disabled={quantity === 0}
+                  >
+                    <FaShoppingCart className="text-lg sm:text-xl" />
+                    {quantity > 0 ? "Order Now" : "Out of Stock"}
+                  </Button>
+                )}
               </div>
             </div>
           </div>
