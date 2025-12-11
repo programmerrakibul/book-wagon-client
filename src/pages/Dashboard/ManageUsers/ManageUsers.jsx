@@ -1,5 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { FaUsers, FaUserShield, FaUserTie } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import useAuth from "../../../hooks/useAuth";
@@ -65,66 +74,89 @@ const ManageUsers = () => {
 
           {/* Users Table */}
           {users?.length > 0 ? (
-            <div className="card bg-base-100 shadow-xl overflow-hidden">
+            <>
               {/* Desktop Table */}
-              <div className="hidden md:block overflow-x-auto">
-                <table className="table table-zebra">
-                  <thead className="bg-linear-to-r from-primary/10 to-secondary/10">
-                    <tr>
-                      <th className="text-sm lg:text-base">#</th>
-                      <th className="text-sm lg:text-base">Avatar</th>
-                      <th className="text-sm lg:text-base">Name</th>
-                      <th className="text-sm lg:text-base">Email</th>
-                      <th className="text-sm lg:text-base">Current Role</th>
-                      <th className="text-sm lg:text-base">Change Role</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map(
-                      (user, index) =>
-                        currentUser.email !== user.email && (
-                          <tr key={user._id} className="hover">
-                            <td className="font-semibold">{index + 1}</td>
-                            <td>
-                              <Avatar
-                                src={user.photoURL}
-                                alt={user.displayName}
-                              />
-                            </td>
-                            <td className="font-medium text-sm lg:text-base">
-                              <div className="flex items-center gap-2">
-                                {user.name}
-                              </div>
-                            </td>
-                            <td className="text-sm lg:text-base text-gray-600">
-                              {user.email}
-                            </td>
-                            <td>
-                              <div className="badge badge-primary badge-sm sm:badge-md gap-1">
-                                {user.role === "admin" && <FaUserShield />}
-                                {user.role === "librarian" && <FaUserTie />}
-                                {user.role === "user" && <FaUsers />}
-                                <span className="capitalize">{user.role}</span>
-                              </div>
-                            </td>
-                            <td>
-                              <select
-                                value={user.role}
-                                onChange={(e) =>
-                                  handleRoleChange(user.email, e.target.value)
-                                }
-                                className="select select-bordered select-xs sm:select-sm w-full max-w-xs"
-                              >
-                                <option value="user">User</option>
-                                <option value="librarian">Librarian</option>
-                                <option value="admin">Admin</option>
-                              </select>
-                            </td>
-                          </tr>
-                        )
-                    )}
-                  </tbody>
-                </table>
+              <div className="hidden md:block">
+                <TableContainer component={Paper} className="shadow-lg!">
+                  <Table>
+                    <TableHead>
+                      <TableRow className="bg-primary/10">
+                        <TableCell className="font-bold! text-base!">
+                          #
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Avatar
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Name
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Email
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Current Role
+                        </TableCell>
+                        <TableCell className="font-bold! text-base!">
+                          Change Role
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {users.map(
+                        (user, index) =>
+                          currentUser.email !== user.email && (
+                            <TableRow
+                              key={user._id}
+                              className="hover:bg-base-200 transition-colors"
+                            >
+                              <TableCell>
+                                <span className="font-semibold text-gray-800">
+                                  {index + 1}
+                                </span>
+                              </TableCell>
+                              <TableCell>
+                                <Avatar
+                                  src={user.photoURL}
+                                  alt={user.displayName}
+                                />
+                              </TableCell>
+                              <TableCell>
+                                <span className="font-medium text-gray-800 text-sm lg:text-base">
+                                  {user.name}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-gray-600 text-sm lg:text-base">
+                                {user.email}
+                              </TableCell>
+                              <TableCell>
+                                <div className="badge badge-primary badge-sm gap-1">
+                                  {user.role === "admin" && <FaUserShield />}
+                                  {user.role === "librarian" && <FaUserTie />}
+                                  {user.role === "user" && <FaUsers />}
+                                  <span className="capitalize">
+                                    {user.role}
+                                  </span>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <select
+                                  value={user.role}
+                                  onChange={(e) =>
+                                    handleRoleChange(user.email, e.target.value)
+                                  }
+                                  className="select select-bordered select-sm"
+                                >
+                                  <option value="user">User</option>
+                                  <option value="librarian">Librarian</option>
+                                  <option value="admin">Admin</option>
+                                </select>
+                              </TableCell>
+                            </TableRow>
+                          )
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </div>
 
               {/* Mobile Cards */}
@@ -196,7 +228,7 @@ const ManageUsers = () => {
                     )
                 )}
               </div>
-            </div>
+            </>
           ) : (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center py-12">

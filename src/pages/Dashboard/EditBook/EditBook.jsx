@@ -15,6 +15,7 @@ import useSecureAxios from "../../../hooks/useSecureAxios";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { getAlert } from "../../../utilities/getAlert";
 import Loading from "../../../components/Loading/Loading";
+import Heading from "../../../components/Heading/Heading";
 
 const EditBook = () => {
   const { id } = useParams();
@@ -79,20 +80,14 @@ const EditBook = () => {
     <>
       <title>Edit Book - BookWagon</title>
 
-      <section className="bg-linear-to-br from-secondary/10 via-primary/5 to-secondary/10 py-6 sm:py-10 lg:py-16 px-3 sm:px-0">
+      <section className="bg-linear-to-br from-secondary/10 via-primary/5 to-secondary/10 py-6 sm:py-10 lg:py-16">
         <Container>
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-10 lg:mb-12">
-            <div className="inline-block p-3 sm:p-4 bg-primary/10 rounded-full mb-3 sm:mb-4">
-              <FaBook className="text-3xl sm:text-4xl lg:text-5xl text-primary" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-2 sm:mb-3">
-              Edit Book
-            </h1>
-            <p className="text-xs sm:text-sm lg:text-base text-gray-600 max-w-2xl mx-auto px-4">
-              Update the book information below
-            </p>
-          </div>
+          <Heading
+            title="Edit Book"
+            subtitle="Update the book information below"
+            size="large"
+          />
 
           {/* Form Card */}
           <div className="card bg-base-100 shadow-2xl border border-primary/20 rounded-xl sm:rounded-2xl overflow-hidden">
@@ -285,7 +280,7 @@ const EditBook = () => {
                     type="button"
                     onClick={() => navigate("/dashboard/my-books")}
                     disabled={loading}
-                    className="btn btn-outline btn-error gap-2 flex-1"
+                    className="btn btn-outline btn-error gap-2 sm:flex-1"
                   >
                     <MdCancel className="text-lg" />
                     Cancel
@@ -293,7 +288,7 @@ const EditBook = () => {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 gap-2"
+                    className="sm:flex-1 gap-2"
                   >
                     {loading ? (
                       <ActionSpinner />
