@@ -9,6 +9,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { toast } from "sonner";
 import Container from "../shared/Container/Container";
 import Heading from "../../components/Heading/Heading";
+import Button from "../../components/Button/Button";
 
 const ContactUs = () => {
   const handleSubmit = (e) => {
@@ -210,13 +211,10 @@ const ContactUs = () => {
                   </div>
 
                   {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-full gap-2 text-sm sm:text-base"
-                  >
+                  <Button className="btn-block">
                     <FaPaperPlane />
                     Send Message
-                  </button>
+                  </Button>
                 </form>
               </div>
             </div>

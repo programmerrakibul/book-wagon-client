@@ -6,10 +6,10 @@ import {
   Typography,
 } from "@mui/material";
 import { FaChevronDown } from "react-icons/fa";
-import Container from "../../shared/Container/Container";
-import Heading from "../../../components/Heading/Heading";
+import Container from "../shared/Container/Container";
+import Heading from "../../components/Heading/Heading";
 import { useNavigate } from "react-router";
-import Button from "../../../components/Button/Button";
+import Button from "../../components/Button/Button";
 
 const FAQ = () => {
   const [expanded, setExpanded] = useState(false);

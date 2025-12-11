@@ -1,7 +1,7 @@
 import Banner from "./Banner";
 import ChooseUs from "./ChooseUs";
 import Coverage from "./Coverage";
-import FAQ from "./FAQ/FAQ";
+import FAQ from "./FAQ";
 import LatestBooks from "./LatestBooks";
 import NewsLetter from "./NewsLetter";
 
