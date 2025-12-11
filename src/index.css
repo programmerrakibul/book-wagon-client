@@ -35,7 +35,7 @@ h6 {
 }
 
 .logo {
-  @apply inline-block max-w-12 md:max-w-16 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30;
+  @apply inline-flex items-center gap-0.5 text-2xl md:text-3xl font-bold text-neutral max-w-9 md:max-w-12 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/30;
 }
 
 .nav_links {
