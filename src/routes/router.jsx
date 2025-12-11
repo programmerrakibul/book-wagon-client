@@ -25,6 +25,7 @@ import Error from "../pages/Error/Error";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import LibrarianRoute from "./LibrarianRoute";
+import Wishlist from "../pages/Dashboard/Wishlist/Wishlist";
 
 const router = createBrowserRouter([
   // Main routes
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "my-orders",
         element: <MyOrders />,
+      },
+      {
+        path: "my-wishlist",
+        element: <Wishlist />,
       },
       {
         path: "all-orders",

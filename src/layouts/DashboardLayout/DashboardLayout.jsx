@@ -11,6 +11,7 @@ import {
   FaHome,
   FaUsers,
   FaFileInvoiceDollar,
+  FaHeart,
 } from "react-icons/fa";
 import { IoLibrary, IoLogOut } from "react-icons/io5";
 import logo from "../../assets/logo.png";
@@ -40,7 +41,11 @@ const DashboardLayout = () => {
       label: "My Orders",
       icon: <MdShoppingCart />,
     },
-
+    {
+      to: "/dashboard/my-wishlist",
+      label: "My Wishlist",
+      icon: <FaHeart />,
+    },
     {
       to: "/dashboard/invoices",
       label: "Invoices",
