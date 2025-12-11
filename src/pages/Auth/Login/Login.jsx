@@ -13,6 +13,7 @@ import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
 import { toast } from "sonner";
 import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
+import { postUser } from "../../../utilities/postUser";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const Login = () => {
 
     try {
       const { user } = await logInWithPassword(email, password);
+      await postUser(user);
 
       loginSuccessMessage(user.displayName);
       reset();
