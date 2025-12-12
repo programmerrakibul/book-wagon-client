@@ -165,7 +165,7 @@ The build output will be in the `dist` directory.
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Md. Rakibul Islam**
 
 - GitHub: [@programmerrakibul](https://github.com/programmerrakibul)
 - Email: rakibul00206@gmail.com
