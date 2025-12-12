@@ -128,9 +128,7 @@ const BookDetails = () => {
           title: "Successfully added to wishlist.",
         });
       }
-    } catch (err) {
-      console.log(err);
-
+    } catch {
       toast.error("Add to wishlist failed! Please try again.");
     }
   };
@@ -148,9 +146,7 @@ const BookDetails = () => {
           title: "Successfully removed from wishlist.",
         });
       }
-    } catch (err) {
-      console.log(err);
-
+    } catch {
       toast.error("Remove from wishlist failed! Please try again.");
     }
   };

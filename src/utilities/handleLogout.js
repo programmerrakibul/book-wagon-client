@@ -9,7 +9,6 @@ export const handleLogout = async (logOutUser) => {
   } catch (error) {
     const errorMessage = getAuthErrorMessage(error.code);
     toast.error(errorMessage);
-    console.error("Error logging out:", error);
   }
 
   return null;

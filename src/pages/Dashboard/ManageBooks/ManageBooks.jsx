@@ -73,13 +73,9 @@ const ManageBooks = () => {
             icon: "success",
           });
         }
-
-        console.log(data);
       }
-    } catch (err) {
-      const errorMessage = err?.response?.data?.message || err.message;
-      toast.error(errorMessage);
-      console.log(err);
+    } catch {
+      toast.error("Book delete failed! Please try again.");
     }
   };
 

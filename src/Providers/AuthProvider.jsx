@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.init";
 import AuthContext from "../contexts/AuthContext";
+import Loading from "../components/Loading/Loading";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -34,8 +35,6 @@ const AuthProvider = ({ children }) => {
   };
 
   const updateUserProfile = (info) => {
-    console.log("From Update User ===> ", info);
-
     return updateProfile(auth.currentUser, info);
   };
 
@@ -68,7 +67,13 @@ const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext value={authData}>
-      {loading ? <p>Loading...</p> : children}
+      {loading ? (
+        <div className="min-h-dvh grid place-items-center">
+          <Loading />
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext>
   );
 };

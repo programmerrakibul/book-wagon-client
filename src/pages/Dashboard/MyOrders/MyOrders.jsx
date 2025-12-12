@@ -108,7 +108,6 @@ const MyOrders = () => {
     } catch {
       toast.error("Order status update failed! Please try again.");
     }
-    console.log({ id, status });
   };
 
   const handlePayment = async (order) => {
@@ -127,11 +126,8 @@ const MyOrders = () => {
         paymentInfo
       );
 
-      console.log(data);
       window.location.assign(data.url);
-    } catch (err) {
-      console.log(err);
-
+    } catch {
       toast.error("Payment failed! Please try again.");
     }
   };

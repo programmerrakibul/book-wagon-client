@@ -146,16 +146,10 @@ const Footer = () => {
               © {currentYear} BookWagon. All rights reserved.
             </p>
             <div className="flex gap-4 sm:gap-6">
-              <Link
-                to="/privacy-policy"
-                className="text-xs sm:text-sm  hover:text-primary transition-colors"
-              >
+              <Link className="text-xs sm:text-sm  hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-              <Link
-                to="/terms-of-service"
-                className="text-xs sm:text-sm  hover:text-primary transition-colors"
-              >
+              <Link className="text-xs sm:text-sm  hover:text-primary transition-colors">
                 Terms of Service
               </Link>
             </div>

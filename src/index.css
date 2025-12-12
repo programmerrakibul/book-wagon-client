@@ -120,3 +120,22 @@ h6 {
 .MuiTab-root.Mui-selected {
   @apply text-primary!;
 }
+
+.swal2-popup,
+.swal2-success-circular-line-left,
+.swal2-success-circular-line-right,
+.swal2-success-fix {
+  @apply dark:bg-base-100!;
+}
+
+.swal2-title {
+  @apply dark:text-white;
+}
+
+.swal2-html-container {
+  @apply dark:text-white/70;
+}
+
+.swal2-confirm {
+  @apply bg-linear-to-br from-primary/60 hover:from-primary/75 to-secondary/60 hover:to-secondary/75 duration-300 transition-colors text-neutral dark:text-white;
+}

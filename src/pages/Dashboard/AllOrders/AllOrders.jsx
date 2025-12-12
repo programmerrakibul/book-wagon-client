@@ -84,9 +84,7 @@ const AllOrders = () => {
           title: `Order ${status} successfully`,
         });
       }
-    } catch (err) {
-      console.log(err);
-
+    } catch {
       toast.error("Status update failed! Please try again.");
     }
   };
