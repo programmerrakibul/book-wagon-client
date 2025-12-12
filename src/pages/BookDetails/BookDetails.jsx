@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
+import { formatDistanceToNow } from "date-fns";
 import Container from "../shared/Container/Container";
 import usePublicAxios from "../../hooks/usePublicAxios";
 import Button from "../../components/Button/Button";
@@ -25,6 +26,8 @@ import Loading from "../../components/Loading/Loading";
 import useSecureAxios from "../../hooks/useSecureAxios";
 import { toast } from "sonner";
 import { getAlert } from "../../utilities/getAlert";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import Avatar from "../../components/Avatar/Avatar";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -32,12 +35,43 @@ const BookDetails = () => {
   const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const [comment, setComment] = useState("");
+  const [error, setError] = useState(null);
 
   const { data: book = {}, isLoading: bookLoading } = useQuery({
     queryKey: ["book-details", id],
     queryFn: async () => {
       const { data } = await publicAxios.get(`/books/${id}`);
       return data?.book;
+    },
+  });
+
+  const {
+    data: comments = [],
+    isLoading: commentLoading,
+    refetch: refetchComments,
+  } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: async () => {
+      const { data } = await secureAxios.get(`/comments/${id}`);
+
+      return data;
+    },
+  });
+
+  const {
+    data: isOrdered,
+    isLoading: isOrderedLoading,
+    refetch: isOrderedRefetch,
+  } = useQuery({
+    queryKey: ["is-ordered", user?.email, id],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const { data } = await secureAxios.get(
+        `/orders/${id}/user/${user?.email}`
+      );
+
+      return data;
     },
   });
 
@@ -118,6 +152,40 @@ const BookDetails = () => {
       console.log(err);
 
       toast.error("Remove from wishlist failed! Please try again.");
+    }
+  };
+
+  const handlePostComment = async () => {
+    setError(null);
+
+    if (!comment) {
+      return setError("Please write a comment before posting.");
+    }
+
+    const newComment = {
+      customerName: user.displayName,
+      customerImage: user.photoURL,
+      customerEmail: user.email,
+      comment,
+      bookId: _id,
+    };
+
+    try {
+      const { data } = await secureAxios.post("/comments", newComment);
+
+      if (data.success) {
+        setError(null);
+        setComment("");
+        refetchComments();
+
+        getAlert({
+          title: `Successfully reviewed for ${bookName} book!`,
+        });
+      }
+    } catch {
+      toast.error("Comment failed! Please try  again.");
+    } finally {
+      setError(null);
     }
   };
 
@@ -328,10 +396,103 @@ const BookDetails = () => {
               </div>
             </div>
           </div>
+
+          {/* Comments Section */}
+          <div className="mt-12 sm:mt-16 lg:mt-20">
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body p-4 sm:p-6 lg:p-8">
+                {/* Comments Header */}
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-6 sm:mb-8">
+                  Reader Reviews ({comments?.length || 0})
+                </h2>
+
+                {/* Add Comment Form */}
+                {user &&
+                  !isLibrarian &&
+                  isOrdered &&
+                  (isOrderedLoading ? (
+                    <Loading />
+                  ) : (
+                    <div className="mb-8 sm:mb-10">
+                      <div className="flex gap-3 sm:gap-4">
+                        <div className="avatar shrink-0">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full">
+                            <img src={user.photoURL} alt={user.displayName} />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <textarea
+                            onChange={(e) => setComment(e.target.value.trim())}
+                            value={comment}
+                            placeholder="Share your thoughts about this book..."
+                            className="textarea textarea-bordered w-full text-sm sm:text-base min-h-[100px] sm:min-h-[120px] focus:outline-primary"
+                          ></textarea>
+                          <ErrorMessage message={error} />
+                          <div className="flex justify-end mt-3">
+                            <Button handleClick={handlePostComment}>
+                              Post Comment
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                {/* Comments List */}
+                {commentLoading ? (
+                  <Loading />
+                ) : comments?.length > 0 ? (
+                  <div className="space-y-6 sm:space-y-8">
+                    {comments.map((comment, index) => (
+                      <div key={index} className="flex gap-3 sm:gap-4">
+                        <Avatar
+                          src={comment.customerImage}
+                          alt={comment.customerName}
+                          size="size-10 sm:size-12"
+                        />
+
+                        <div className="flex-1">
+                          <div className="bg-base-200 rounded-2xl p-4 sm:p-5">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                              <h4 className="font-bold text-gray-800 text-sm sm:text-base">
+                                {comment.customerName}
+                              </h4>
+                              <span className="text-xs sm:text-sm text-gray-500">
+                                {formatDistanceToNow(
+                                  new Date(comment.createdAt),
+                                  {
+                                    addSuffix: true,
+                                  }
+                                )}
+                              </span>
+                            </div>
+                            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                              {comment.comment}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <p className="text-gray-500 text-sm sm:text-base">
+                      No reviews yet. Be the first to share your thoughts!
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </Container>
       </section>
 
-      <OrderModal isOpen={open} closeModal={closeModal} book={book} />
+      <OrderModal
+        isOpen={open}
+        closeModal={closeModal}
+        book={book}
+        refetch={isOrderedRefetch}
+      />
     </>
   );
 };

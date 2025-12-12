@@ -17,7 +17,7 @@ import { getAlert } from "../../utilities/getAlert";
 import { useState } from "react";
 import ActionSpinner from "../ActionSpinner/ActionSpinner";
 
-const OrderModal = ({ isOpen, closeModal, book }) => {
+const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
   const { user } = useAuth();
@@ -43,6 +43,8 @@ const OrderModal = ({ isOpen, closeModal, book }) => {
       const { data } = await secureAxios.post("/orders", orderData);
 
       if (data.insertedId) {
+        refetch();
+
         getAlert({
           title: `${book.bookName} successfully ordered. Please pay to continue.`,
         });
