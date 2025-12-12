@@ -151,11 +151,11 @@ const MyOrders = () => {
           {orders.length === 0 ? (
             <div className="card bg-base-100 shadow-lg">
               <div className="card-body text-center py-12 sm:py-16">
-                <FaShoppingBag className="text-6xl sm:text-7xl text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl sm:text-2xl font-semibold text-gray-600 mb-2">
+                <FaShoppingBag className="text-6xl sm:text-7xl  mx-auto mb-4" />
+                <h3 className="text-xl sm:text-2xl font-semibold  mb-2">
                   No Orders Yet
                 </h3>
-                <p className="text-sm sm:text-base text-gray-500 mb-4">
+                <p className="text-sm sm:text-base  mb-4">
                   You haven't placed any orders yet.
                 </p>
                 <Link to="/books" className="btn btn-primary btn-sm sm:btn-md">
@@ -201,11 +201,11 @@ const MyOrders = () => {
                           className="hover:bg-base-200 transition-colors"
                         >
                           <TableCell className="min-w-40">
-                            <span className="font-semibold text-gray-800 text-sm lg:text-base">
+                            <span className="font-semibold  text-sm lg:text-base">
                               {order.orderedBook.bookName}
                             </span>
                           </TableCell>
-                          <TableCell className="text-gray-600 text-sm lg:text-base text-nowrap">
+                          <TableCell className=" text-sm lg:text-base text-nowrap">
                             {format(new Date(order.createdAt), "MMM dd, yyyy")}
                           </TableCell>
                           <TableCell className="font-bold text-primary text-nowrap text-sm lg:text-base">
@@ -284,27 +284,27 @@ const MyOrders = () => {
                 {orders.map((order) => (
                   <div key={order._id} className="card bg-base-100 shadow-lg">
                     <div className="card-body p-4 sm:p-5">
-                      <h3 className="font-bold text-base sm:text-lg text-gray-800 mb-2">
+                      <h3 className="font-bold text-base sm:text-lg  mb-2">
                         {order.orderedBook.bookName}
                       </h3>
 
                       <div className="space-y-2 text-sm sm:text-base">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Order Date:</span>
+                          <span className="">Order Date:</span>
                           <span className="font-semibold">
                             {format(new Date(order.createdAt), "MMM dd, yyyy")}
                           </span>
                         </div>
 
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Price:</span>
+                          <span className="">Price:</span>
                           <span className="font-bold text-primary">
                             ৳ {order.orderedBook.price}
                           </span>
                         </div>
 
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Status:</span>
+                          <span className="">Status:</span>
                           {order.status === "pending" && (
                             <span className="badge badge-warning gap-1 text-xs sm:text-sm">
                               <FaTimesCircle className="text-xs" />
@@ -326,7 +326,7 @@ const MyOrders = () => {
                         </div>
 
                         <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Payment:</span>
+                          <span className="">Payment:</span>
                           {order.paymentStatus === "paid" ? (
                             <span className="badge badge-success gap-1 text-xs sm:text-sm">
                               <FaCheckCircle className="text-xs" />

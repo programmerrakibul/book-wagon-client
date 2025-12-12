@@ -88,10 +88,10 @@ const ChooseUs = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-1 sm:mb-2">
+                        <h3 className="text-base sm:text-lg font-bold mb-1 sm:mb-2">
                           {feature.title}
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        <p className="text-xs sm:text-sm">
                           {feature.description}
                         </p>
                       </div>

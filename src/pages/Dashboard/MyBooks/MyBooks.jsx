@@ -115,9 +115,7 @@ const MyBooks = () => {
                           className="hover:bg-base-200 transition-colors"
                         >
                           <TableCell>
-                            <span className="font-semibold text-gray-800">
-                              {index + 1}
-                            </span>
+                            <span className="font-semibold ">{index + 1}</span>
                           </TableCell>
                           <TableCell>
                             <img
@@ -127,11 +125,11 @@ const MyBooks = () => {
                             />
                           </TableCell>
                           <TableCell>
-                            <span className="font-medium text-gray-800 text-sm lg:text-base">
+                            <span className="font-medium  text-sm lg:text-base">
                               {book.bookName}
                             </span>
                           </TableCell>
-                          <TableCell className="text-gray-600 text-sm lg:text-base">
+                          <TableCell className=" text-sm lg:text-base">
                             {book.author}
                           </TableCell>
                           <TableCell>
@@ -196,7 +194,7 @@ const MyBooks = () => {
                           <h3 className="font-bold text-base mb-1 truncate">
                             {book.bookName}
                           </h3>
-                          <p className="text-sm text-gray-600 mb-3 truncate">
+                          <p className="text-sm  mb-3 truncate">
                             by {book.author}
                           </p>
 
@@ -232,13 +230,9 @@ const MyBooks = () => {
           ) : (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center py-12">
-                <FaBook className="text-6xl text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                  No Books Found
-                </h3>
-                <p className="text-gray-500 mb-4">
-                  You haven't added any books yet.
-                </p>
+                <FaBook className="text-6xl  mx-auto mb-4" />
+                <h3 className="text-xl font-semibold  mb-2">No Books Found</h3>
+                <p className=" mb-4">You haven't added any books yet.</p>
                 <Button
                   handleClick={() => navigate("/dashboard/add-book")}
                   className="btn btn-primary mx-auto"

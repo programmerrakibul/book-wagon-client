@@ -110,7 +110,7 @@ const ManageUsers = () => {
                               className="hover:bg-base-200 transition-colors"
                             >
                               <TableCell>
-                                <span className="font-semibold text-gray-800">
+                                <span className="font-semibold ">
                                   {index + 1}
                                 </span>
                               </TableCell>
@@ -121,11 +121,11 @@ const ManageUsers = () => {
                                 />
                               </TableCell>
                               <TableCell>
-                                <span className="font-medium text-gray-800 text-sm lg:text-base">
+                                <span className="font-medium  text-sm lg:text-base">
                                   {user.name}
                                 </span>
                               </TableCell>
-                              <TableCell className="text-gray-600 text-sm lg:text-base">
+                              <TableCell className=" text-sm lg:text-base">
                                 {user.email}
                               </TableCell>
                               <TableCell>
@@ -185,13 +185,13 @@ const ManageUsers = () => {
                               <h3 className="font-bold text-base mb-1 flex items-center gap-2">
                                 <span className="truncate">{user.name}</span>
                               </h3>
-                              <p className="text-sm text-gray-600 mb-3 truncate">
+                              <p className="text-sm  mb-3 truncate">
                                 {user.email}
                               </p>
 
                               {/* Current Role Badge */}
                               <div className="mb-3">
-                                <span className="text-xs text-gray-500 block mb-1">
+                                <span className="text-xs  block mb-1">
                                   Current Role:
                                 </span>
                                 <div className="badge badge-primary badge-sm gap-1">
@@ -206,7 +206,7 @@ const ManageUsers = () => {
 
                               {/* Role Change Select */}
                               <div>
-                                <label className="text-xs text-gray-500 block mb-1">
+                                <label className="text-xs  block mb-1">
                                   Change Role:
                                 </label>
                                 <select
@@ -232,13 +232,9 @@ const ManageUsers = () => {
           ) : (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center py-12">
-                <FaUsers className="text-6xl text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                  No Users Found
-                </h3>
-                <p className="text-gray-500">
-                  No registered users in the system yet.
-                </p>
+                <FaUsers className="text-6xl  mx-auto mb-4" />
+                <h3 className="text-xl font-semibold  mb-2">No Users Found</h3>
+                <p className="">No registered users in the system yet.</p>
               </div>
             </div>
           )}

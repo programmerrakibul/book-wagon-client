@@ -128,7 +128,7 @@ const DashboardLayout = () => {
 
                 {/* Title */}
                 <div className="flex-1">
-                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 ml-2 lg:ml-0">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold ml-2 lg:ml-0">
                     Dashboard
                   </h1>
                 </div>
@@ -149,7 +149,7 @@ const DashboardLayout = () => {
                       className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
                     >
                       <li className="menu-title">
-                        <span className="text-xs text-gray-600">
+                        <span className="text-xs">
                           Signed in as
                         </span>
                       </li>
@@ -186,7 +186,7 @@ const DashboardLayout = () => {
           </nav>
 
           {/* Page Content */}
-          <main className="flex-1 bg-base-200 min-h-[70dvh]">
+          <main className="flex-1 bg-base-300 min-h-[70dvh]">
             <Outlet />
           </main>
         </div>
@@ -208,7 +208,9 @@ const DashboardLayout = () => {
                   alt="BookWagon"
                   className="size-10 object-cover"
                 />
-                <span className="text-[23px] font-bold">BookWagon</span>
+                <span className="text-[23px] font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  BookWagon
+                </span>
               </Link>
             </div>
 
@@ -237,7 +239,7 @@ const DashboardLayout = () => {
                   <p className="text-sm font-semibold truncate">
                     {user?.displayName || "User"}
                   </p>
-                  <p className="text-xs text-gray-600 truncate">
+                  <p className="text-xs truncate">
                     {user?.email}
                   </p>
                 </div>

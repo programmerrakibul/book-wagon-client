@@ -75,10 +75,10 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
             <FaShoppingCart className="text-xl sm:text-2xl text-primary" />
           </div>
           <div>
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold">
               Place Your Order
             </h3>
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm">
               Fill in your details to complete the order
             </p>
           </div>
@@ -95,10 +95,10 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
                   className="w-14 h-18 sm:w-16 sm:h-20 object-cover rounded"
                 />
                 <div className="flex-1">
-                  <h4 className="font-bold text-sm sm:text-base text-gray-800 line-clamp-1">
+                  <h4 className="font-bold text-sm sm:text-base line-clamp-1">
                     {book.bookName}
                   </h4>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm">
                     {book.author}
                   </p>
                   <p className="text-base sm:text-lg font-bold text-primary mt-1">
@@ -116,8 +116,8 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
           <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-base-200 rounded-lg">
             <FaUser className="text-primary text-base sm:text-lg" />
             <div>
-              <p className="text-xs text-gray-500">Name</p>
-              <p className="font-semibold text-sm sm:text-base text-gray-800">
+              <p className="text-xs">Name</p>
+              <p className="font-semibold text-sm sm:text-base">
                 {user.displayName}
               </p>
             </div>
@@ -127,8 +127,8 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
           <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-base-200 rounded-lg">
             <FaEnvelope className="text-primary text-base sm:text-lg" />
             <div>
-              <p className="text-xs text-gray-500">Email</p>
-              <p className="font-semibold text-sm sm:text-base text-gray-800">
+              <p className="text-xs">Email</p>
+              <p className="font-semibold text-sm sm:text-base">
                 {user.email}
               </p>
             </div>
@@ -145,7 +145,7 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
               </span>
             </MyLabel>
             <div className="relative">
-              <FaPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+              <FaPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" />
               <MyInput
                 id="phone"
                 type="tel"
@@ -168,7 +168,7 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
               </span>
             </MyLabel>
             <div className="relative">
-              <FaMapMarkerAlt className="absolute left-3 top-3 text-gray-400 text-sm" />
+              <FaMapMarkerAlt className="absolute left-3 top-3 text-sm" />
               <textarea
                 id="address"
                 disabled={loading}

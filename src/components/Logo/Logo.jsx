@@ -6,7 +6,9 @@ const Logo = () => {
     <>
       <Link to="/" className="logo">
         <img src={logo} alt="BookWagon" />
-        <span>BookWagon</span>
+        <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+          BookWagon
+        </span>
       </Link>
     </>
   );

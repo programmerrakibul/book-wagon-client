@@ -241,7 +241,7 @@ const BookDetails = () => {
                 {/* Title & Author */}
                 <div>
                   <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800">
+                    <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold">
                       {bookName}
                     </h1>
                     {user &&
@@ -264,7 +264,7 @@ const BookDetails = () => {
                         </button>
                       ))}
                   </div>
-                  <div className="flex items-center gap-2 text-gray-600 text-base sm:text-lg">
+                  <div className="flex items-center gap-2 text-base sm:text-lg">
                     <FaUser className="text-primary" />
                     <span className="font-medium">by {author}</span>
                   </div>
@@ -276,9 +276,7 @@ const BookDetails = () => {
                     <div className="flex items-center gap-3">
                       <FaTag className="text-2xl sm:text-3xl text-primary" />
                       <div>
-                        <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                          Price
-                        </p>
+                        <p className="text-xs sm:text-sm mb-1">Price</p>
                         <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary">
                           ৳ {price}
                         </p>
@@ -290,7 +288,7 @@ const BookDetails = () => {
                 {/* Book Information */}
                 <div className="card bg-base-100 shadow-lg">
                   <div className="card-body p-4 sm:p-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2">
                       <FaBook className="text-primary" />
                       Book Information
                     </h2>
@@ -302,10 +300,8 @@ const BookDetails = () => {
                           <MdCategory className="text-lg sm:text-xl text-primary" />
                         </div>
                         <div>
-                          <p className="text-xs sm:text-sm text-gray-500 mb-1">
-                            Category
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-gray-800">
+                          <p className="text-xs sm:text-sm mb-1">Category</p>
+                          <p className="text-sm sm:text-base font-semibold">
                             {category}
                           </p>
                         </div>
@@ -317,10 +313,8 @@ const BookDetails = () => {
                           <FaLayerGroup className="text-lg sm:text-xl text-secondary" />
                         </div>
                         <div>
-                          <p className="text-xs sm:text-sm text-gray-500 mb-1">
-                            Subcategory
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-gray-800">
+                          <p className="text-xs sm:text-sm mb-1">Subcategory</p>
+                          <p className="text-sm sm:text-base font-semibold">
                             {subcategory}
                           </p>
                         </div>
@@ -332,10 +326,8 @@ const BookDetails = () => {
                           <FaFileAlt className="text-lg sm:text-xl text-primary" />
                         </div>
                         <div>
-                          <p className="text-xs sm:text-sm text-gray-500 mb-1">
-                            Pages
-                          </p>
-                          <p className="text-sm sm:text-base font-semibold text-gray-800">
+                          <p className="text-xs sm:text-sm mb-1">Pages</p>
+                          <p className="text-sm sm:text-base font-semibold">
                             {pageCount} pages
                           </p>
                         </div>
@@ -351,7 +343,7 @@ const BookDetails = () => {
                           )}
                         </div>
                         <div>
-                          <p className="text-xs sm:text-sm text-gray-500 mb-1">
+                          <p className="text-xs sm:text-sm mb-1">
                             Availability
                           </p>
                           <p
@@ -371,11 +363,11 @@ const BookDetails = () => {
                 {description && (
                   <div className="card bg-base-100 shadow-lg">
                     <div className="card-body p-4 sm:p-6">
-                      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 flex items-center gap-2">
+                      <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 flex items-center gap-2">
                         <FaFileAlt className="text-primary" />
                         Description
                       </h2>
-                      <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                      <p className="text-sm sm:text-base lg:text-lg">
                         {description}
                       </p>
                     </div>
@@ -402,7 +394,7 @@ const BookDetails = () => {
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body p-4 sm:p-6 lg:p-8">
                 {/* Comments Header */}
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8">
                   Reader Reviews ({comments?.length || 0})
                 </h2>
 
@@ -454,10 +446,10 @@ const BookDetails = () => {
                         <div className="flex-1">
                           <div className="bg-base-200 rounded-2xl p-4 sm:p-5">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                              <h4 className="font-bold text-gray-800 text-sm sm:text-base">
+                              <h4 className="font-bold text-sm sm:text-base">
                                 {comment.customerName}
                               </h4>
-                              <span className="text-xs sm:text-sm text-gray-500">
+                              <span className="text-xs sm:text-sm">
                                 {formatDistanceToNow(
                                   new Date(comment.createdAt),
                                   {
@@ -466,7 +458,7 @@ const BookDetails = () => {
                                 )}
                               </span>
                             </div>
-                            <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                            <p className="text-sm sm:text-base leading-relaxed">
                               {comment.comment}
                             </p>
                           </div>
@@ -476,7 +468,7 @@ const BookDetails = () => {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <p className="text-gray-500 text-sm sm:text-base">
+                    <p className="text-sm sm:text-base">
                       No reviews yet. Be the first to share your thoughts!
                     </p>
                   </div>

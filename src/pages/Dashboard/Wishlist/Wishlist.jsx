@@ -87,7 +87,7 @@ const Wishlist = () => {
                             />
                           </TableCell>
                           <TableCell>
-                            <span className="font-semibold text-gray-800 text-base">
+                            <span className="font-semibold  text-base">
                               {book.bookName}
                             </span>
                           </TableCell>
@@ -124,7 +124,7 @@ const Wishlist = () => {
 
                         {/* Book Info */}
                         <div className="flex-1">
-                          <h3 className="font-bold text-lg text-gray-800 mb-2 line-clamp-2">
+                          <h3 className="font-bold text-lg  mb-2 line-clamp-2">
                             {book.bookName}
                           </h3>
                           <span className="badge badge-primary badge-sm mb-3">
@@ -143,11 +143,11 @@ const Wishlist = () => {
           ) : (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center py-12 sm:py-16 lg:py-20">
-                <FaHeart className="text-6xl sm:text-7xl lg:text-8xl text-gray-300 mx-auto mb-4 sm:mb-6" />
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-600 mb-2 sm:mb-3">
+                <FaHeart className="text-6xl sm:text-7xl lg:text-8xl  mx-auto mb-4 sm:mb-6" />
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold  mb-2 sm:mb-3">
                   Your Wishlist is Empty
                 </h3>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-500 mb-6 sm:mb-8">
+                <p className="text-sm sm:text-base lg:text-lg  mb-6 sm:mb-8">
                   Start adding books you love to your wishlist!
                 </p>
                 <Link to="/books">

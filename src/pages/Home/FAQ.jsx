@@ -97,6 +97,7 @@ const FAQ = () => {
                   margin: "0 0 16px 0",
                 },
               }}
+              className="dark:bg-base-100!"
             >
               <AccordionSummary
                 expandIcon={
@@ -115,6 +116,7 @@ const FAQ = () => {
                     fontWeight: 600,
                     color: "#1f2937",
                   }}
+                  className="dark:text-white!"
                 >
                   {faq.question}
                 </Typography>
@@ -124,6 +126,7 @@ const FAQ = () => {
                   padding: { xs: "12px 16px 20px", sm: "16px 20px 24px" },
                   backgroundColor: "#f9fafb",
                 }}
+                className="dark:bg-base-200!"
               >
                 <Typography
                   sx={{
@@ -131,6 +134,7 @@ const FAQ = () => {
                     color: "#4b5563",
                     lineHeight: 1.7,
                   }}
+                  className="dark:text-white/80!"
                 >
                   {faq.answer}
                 </Typography>
@@ -143,10 +147,10 @@ const FAQ = () => {
         <div className="mt-8 sm:mt-12 text-center">
           <div className="card bg-base-100 shadow-lg max-w-2xl mx-auto">
             <div className="card-body p-6 sm:p-8">
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-2">
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold  mb-2">
                 Still have questions?
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 mb-4">
+              <p className="text-sm sm:text-base mb-4">
                 Can't find the answer you're looking for? Our support team is
                 here to help.
               </p>

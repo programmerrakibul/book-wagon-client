@@ -83,12 +83,10 @@ const EditProfile = () => {
 
       {/* Header Section */}
       <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold  mb-2">
           Edit Profile
         </h2>
-        <p className="text-sm sm:text-base text-gray-600">
-          Update your profile information
-        </p>
+        <p className="text-sm sm:text-base ">Update your profile information</p>
       </div>
 
       {/* Edit Form */}
@@ -99,7 +97,7 @@ const EditProfile = () => {
         {/* Profile Image Section */}
         <div className="card bg-linear-to-br from-primary/5 to-secondary/5 border border-primary/20">
           <div className="card-body p-4 sm:p-6 lg:p-8">
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold  mb-4 sm:mb-6 flex items-center gap-2">
               <FaImage className="text-primary" />
               Profile Picture
             </h3>
@@ -128,7 +126,7 @@ const EditProfile = () => {
                 />
                 <ErrorMessage message={errors.photoURL?.message} />
 
-                <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                <p className="text-xs sm:text-sm  mt-2">
                   Recommended: Square image, at least 400x400px
                 </p>
               </div>
@@ -139,7 +137,7 @@ const EditProfile = () => {
         {/* Personal Information Section */}
         <div className="card bg-base-100 shadow-lg">
           <div className="card-body p-4 sm:p-6 lg:p-8">
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold  mb-4 sm:mb-6 flex items-center gap-2">
               <FaUser className="text-primary" />
               Personal Information
             </h3>
@@ -170,7 +168,7 @@ const EditProfile = () => {
               <div>
                 <MyLabel htmlFor="email">Email Address</MyLabel>
                 <MyInput type="email" id="email" value={user.email} disabled />
-                <p className="text-xs sm:text-sm text-gray-500 mt-2">
+                <p className="text-xs sm:text-sm  mt-2">
                   Email cannot be changed
                 </p>
               </div>

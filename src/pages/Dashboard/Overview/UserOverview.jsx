@@ -123,10 +123,8 @@ const UserOverview = () => {
                   >
                     <span className="text-2xl sm:text-3xl">{stat.icon}</span>
                   </div>
-                  <h3 className="text-xs sm:text-sm text-gray-600 mb-1">
-                    {stat.title}
-                  </h3>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-800">
+                  <h3 className="text-xs sm:text-sm  mb-1">{stat.title}</h3>
+                  <p className="text-2xl sm:text-3xl font-bold ">
                     {stat.value}
                   </p>
                 </div>
@@ -140,7 +138,7 @@ const UserOverview = () => {
               <div className="card bg-base-100 shadow-lg">
                 <div className="card-body p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold  flex items-center gap-2">
                       <FaShoppingCart className="text-primary" />
                       Recent Orders
                     </h2>
@@ -165,12 +163,10 @@ const UserOverview = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1 min-w-0">
-                                <h4 className="font-bold text-sm sm:text-base text-gray-800 truncate">
+                                <h4 className="font-bold text-sm sm:text-base  truncate">
                                   {order.book}
                                 </h4>
-                                <p className="text-xs text-gray-500">
-                                  {order.id}
-                                </p>
+                                <p className="text-xs ">{order.id}</p>
                               </div>
                               <span
                                 className={`badge badge-sm ${statusBadge.class} gap-1 ml-2`}
@@ -180,7 +176,7 @@ const UserOverview = () => {
                               </span>
                             </div>
                             <div className="flex justify-between items-center">
-                              <span className="text-xs sm:text-sm text-gray-600">
+                              <span className="text-xs sm:text-sm ">
                                 {order.date}
                               </span>
                               <span className="font-bold text-primary text-sm sm:text-base">
@@ -201,7 +197,7 @@ const UserOverview = () => {
               <div className="card bg-base-100 shadow-lg">
                 <div className="card-body p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold  flex items-center gap-2">
                       <FaHeart className="text-error" />
                       My Wishlist
                     </h2>
@@ -222,12 +218,10 @@ const UserOverview = () => {
                           className="w-12 h-16 object-cover rounded shadow"
                         />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-gray-800 truncate mb-1">
+                          <h4 className="font-semibold text-sm  truncate mb-1">
                             {book.title}
                           </h4>
-                          <p className="text-xs text-gray-600 mb-2">
-                            {book.author}
-                          </p>
+                          <p className="text-xs  mb-2">{book.author}</p>
                           <p className="font-bold text-primary text-sm">
                             {book.price}
                           </p>
@@ -244,30 +238,24 @@ const UserOverview = () => {
           <div className="mt-8 sm:mt-10">
             <div className="card bg-linear-to-br from-primary/10 to-secondary/10 shadow-lg">
               <div className="card-body p-4 sm:p-6">
-                <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">
+                <h2 className="text-lg sm:text-xl font-bold  mb-4 sm:mb-6">
                   Your Reading Journey
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                   <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                      Total Spent
-                    </p>
+                    <p className="text-xs sm:text-sm  mb-2">Total Spent</p>
                     <p className="text-2xl sm:text-3xl font-bold text-primary">
                       ৳ 6,840
                     </p>
                   </div>
                   <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                      Books This Month
-                    </p>
+                    <p className="text-xs sm:text-sm  mb-2">Books This Month</p>
                     <p className="text-2xl sm:text-3xl font-bold text-secondary">
                       3
                     </p>
                   </div>
                   <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                      Member Since
-                    </p>
+                    <p className="text-xs sm:text-sm  mb-2">Member Since</p>
                     <p className="text-2xl sm:text-3xl font-bold text-accent">
                       2024
                     </p>

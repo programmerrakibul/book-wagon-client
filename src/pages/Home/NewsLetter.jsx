@@ -40,10 +40,10 @@ const NewsLetter = () => {
                 <div className="inline-block p-4 sm:p-5 bg-primary/20 rounded-full mb-4 sm:mb-6">
                   <FaEnvelope className="text-4xl sm:text-5xl lg:text-6xl text-primary" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold  mb-3 sm:mb-4">
                   Subscribe to Our Newsletter
                 </h2>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                <p className="text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0">
                   Stay updated with the latest book arrivals, exclusive offers,
                   and reading recommendations delivered straight to your inbox.
                 </p>
@@ -54,7 +54,7 @@ const NewsLetter = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="form-control">
                     <div className="relative">
-                      <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+                      <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2  text-sm sm:text-base" />
                       <input
                         type="email"
                         placeholder="Enter your email address"
@@ -78,7 +78,7 @@ const NewsLetter = () => {
                     )}
                   </Button>
 
-                  <p className="text-xs sm:text-sm text-gray-500 text-center">
+                  <p className="text-xs sm:text-sm text-center">
                     We respect your privacy. Unsubscribe at any time.
                   </p>
                 </form>
@@ -91,19 +91,19 @@ const NewsLetter = () => {
                 <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">
                   10K+
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Subscribers</p>
+                <p className="text-xs sm:text-sm">Subscribers</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">
                   Weekly
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Updates</p>
+                <p className="text-xs sm:text-sm">Updates</p>
               </div>
               <div className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">
                   100%
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600">Free</p>
+                <p className="text-xs sm:text-sm">Free</p>
               </div>
             </div>
           </div>

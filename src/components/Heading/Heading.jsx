@@ -24,7 +24,7 @@ const Heading = ({
       className={`text-${align} ${className} w-full max-w-3xl mx-auto space-y-3 ${margin[size]}`}
     >
       <h2
-        className={`font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-3 sm:mb-4 ${sizeClasses[size]}`}
+        className={`font-bold bg-linear-to-r! from-primary! to-secondary! bg-clip-text! text-transparent! mb-3 sm:mb-4 ${sizeClasses[size]}`}
       >
         {title}
       </h2>

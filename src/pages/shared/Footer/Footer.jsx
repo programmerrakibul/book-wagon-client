@@ -44,7 +44,7 @@ const Footer = () => {
             <div className="space-y-3">
               <Logo />
 
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
+              <p className="text-sm sm:text-base  leading-relaxed mb-4">
                 Your trusted partner in the world of books. Discover, read, and
                 grow with our extensive collection.
               </p>
@@ -66,7 +66,7 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-gray-800 mb-4">
+              <h4 className="text-base sm:text-lg font-bold  mb-4">
                 Quick Links
               </h4>
               <ul className="space-y-2 sm:space-y-3">
@@ -74,7 +74,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={link.path}
-                      className="text-sm sm:text-base text-gray-600 hover:text-primary transition-colors inline-block"
+                      className="text-sm sm:text-base  hover:text-primary transition-colors inline-block"
                     >
                       {link.name}
                     </Link>
@@ -85,7 +85,7 @@ const Footer = () => {
 
             {/* Categories */}
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-gray-800 mb-4">
+              <h4 className="text-base sm:text-lg font-bold  mb-4">
                 Categories
               </h4>
               <ul className="space-y-2 sm:space-y-3">
@@ -93,7 +93,7 @@ const Footer = () => {
                   <li key={index}>
                     <Link
                       to={category.path}
-                      className="text-sm sm:text-base text-gray-600 hover:text-primary transition-colors inline-block"
+                      className="text-sm sm:text-base  hover:text-primary transition-colors inline-block"
                     >
                       {category.name}
                     </Link>
@@ -104,13 +104,13 @@ const Footer = () => {
 
             {/* Contact Info */}
             <div>
-              <h4 className="text-base sm:text-lg font-bold text-gray-800 mb-4">
+              <h4 className="text-base sm:text-lg font-bold  mb-4">
                 Contact Us
               </h4>
               <ul className="space-y-3 sm:space-y-4">
                 <li className="flex items-start gap-3">
                   <FaMapMarkerAlt className="text-primary mt-1 shrink-0 text-sm sm:text-base" />
-                  <span className="text-sm sm:text-base text-gray-600">
+                  <span className="text-sm sm:text-base ">
                     123 Library Street, Dhaka 1000, Bangladesh
                   </span>
                 </li>
@@ -118,7 +118,7 @@ const Footer = () => {
                   <FaPhone className="text-primary shrink-0 text-sm sm:text-base" />
                   <a
                     href="tel:+8801234567890"
-                    className="text-sm sm:text-base text-gray-600 hover:text-primary transition-colors"
+                    className="text-sm sm:text-base  hover:text-primary transition-colors"
                   >
                     +880 1234-567890
                   </a>
@@ -127,7 +127,7 @@ const Footer = () => {
                   <FaEnvelope className="text-primary shrink-0 text-sm sm:text-base" />
                   <a
                     href="mailto:info@bookwagon.com"
-                    className="text-sm sm:text-base text-gray-600 hover:text-primary transition-colors"
+                    className="text-sm sm:text-base  hover:text-primary transition-colors"
                   >
                     info@bookwagon.com
                   </a>
@@ -142,19 +142,19 @@ const Footer = () => {
       <div className="border-t border-base-300">
         <Container>
           <div className="py-4 sm:py-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-            <p className="text-xs sm:text-sm text-gray-600 text-center sm:text-left">
+            <p className="text-xs sm:text-sm  text-center sm:text-left">
               © {currentYear} BookWagon. All rights reserved.
             </p>
             <div className="flex gap-4 sm:gap-6">
               <Link
                 to="/privacy-policy"
-                className="text-xs sm:text-sm text-gray-600 hover:text-primary transition-colors"
+                className="text-xs sm:text-sm  hover:text-primary transition-colors"
               >
                 Privacy Policy
               </Link>
               <Link
                 to="/terms-of-service"
-                className="text-xs sm:text-sm text-gray-600 hover:text-primary transition-colors"
+                className="text-xs sm:text-sm  hover:text-primary transition-colors"
               >
                 Terms of Service
               </Link>

@@ -23,12 +23,12 @@ const Forbidden = () => {
             </h1>
 
             {/* Title */}
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2 sm:mb-3">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3">
               Access Forbidden
             </h2>
 
             {/* Description */}
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+            <p className="text-sm sm:text-base">
               You don't have permission to access this resource. Please contact
               an administrator if you believe this is an error.
             </p>

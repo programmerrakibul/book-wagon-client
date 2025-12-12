@@ -35,10 +35,10 @@ const Banner = () => {
               <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]">
                 {/* Left Side - Text Content */}
                 <div className="flex-1 text-center lg:text-left">
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary mb-4 sm:mb-6 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 bg-linear-to-r! from-primary! to-secondary! bg-clip-text! text-transparent!">
                     {slide.title}
                   </h1>
-                  <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-base-content/80 mb-6 sm:mb-8 lg:mb-10 leading-relaxed">
+                  <p className="text-sm sm:text-base lg:text-lg xl:text-xl mb-6 sm:mb-8 lg:mb-10 leading-relaxed">
                     {slide.description}
                   </p>
                   <Button handleClick={() => navigate("/books")}>

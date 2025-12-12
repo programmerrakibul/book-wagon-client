@@ -8,8 +8,12 @@ import useAuth from "../../../hooks/useAuth";
 import Logo from "../../../components/Logo/Logo";
 import { handleLogout } from "../../../utilities/handleLogout";
 import Avatar from "../../../components/Avatar/Avatar";
+import { FiSun } from "react-icons/fi";
+import { IoMoonOutline } from "react-icons/io5";
+import useTheme from "../../../hooks/useTheme";
 
 const Navbar = () => {
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const { user, logOutUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,6 +60,21 @@ const Navbar = () => {
 
             {/* Mobile Menu Button & Desktop CTA - Right Side */}
             <div className="navbar-end gap-3">
+              <label className="swap swap-rotate">
+                {/* this hidden checkbox controls the state */}
+                <input
+                  onChange={toggleTheme}
+                  type="checkbox"
+                  checked={theme === "dark"}
+                />
+
+                {/* sun icon */}
+                <FiSun className="size-7 lg:size-8 swap-off" />
+
+                {/* moon icon */}
+                <IoMoonOutline className="swap-on size-7 lg:size-8" />
+              </label>
+
               {/* Hamburger Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

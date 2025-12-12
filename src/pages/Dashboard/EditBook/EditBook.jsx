@@ -112,7 +112,7 @@ const EditBook = () => {
                       />
 
                       <div className="relative group">
-                        <FaBook className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                        <FaBook className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                         <MyInput
                           id="bookName"
@@ -148,7 +148,7 @@ const EditBook = () => {
                       />
 
                       <div className="relative group">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base font-semibold">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base font-semibold">
                           ৳
                         </span>
 
@@ -187,7 +187,7 @@ const EditBook = () => {
                       />
 
                       <div className="relative group">
-                        <BsFileText className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                        <BsFileText className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                         <MyInput
                           id="pageCount"
@@ -220,7 +220,7 @@ const EditBook = () => {
                       />
 
                       <div className="relative group">
-                        <BsBoxSeam className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                        <BsBoxSeam className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                         <MyInput
                           id="quantity"

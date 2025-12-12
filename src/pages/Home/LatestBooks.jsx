@@ -94,8 +94,8 @@ const LatestBooks = () => {
         ) : (
           <div className="card bg-base-100 shadow-lg">
             <div className="card-body text-center py-12 sm:py-16">
-              <FaBook className="text-6xl sm:text-7xl text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl sm:text-2xl font-semibold text-gray-600">
+              <FaBook className="text-6xl sm:text-7xl  mx-auto mb-4" />
+              <h3 className="text-xl sm:text-2xl font-semibold ">
                 No Books Available
               </h3>
             </div>

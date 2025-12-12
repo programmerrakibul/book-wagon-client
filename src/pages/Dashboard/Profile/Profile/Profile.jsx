@@ -34,10 +34,10 @@ const Profile = () => {
 
       {/* Header Section */}
       <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold  mb-2">
           Profile Overview
         </h2>
-        <p className="text-sm sm:text-base text-gray-600">
+        <p className="text-sm sm:text-base ">
           View your account information and activity
         </p>
       </div>
@@ -56,7 +56,7 @@ const Profile = () => {
             {/* User Info */}
             <div className="flex-1 text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold ">
                   {user.displayName}
                 </h3>
                 {user.emailVerified && (
@@ -66,7 +66,7 @@ const Profile = () => {
                   />
                 )}
               </div>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-3 sm:mb-4">
+              <p className="text-sm sm:text-base lg:text-lg  mb-3 sm:mb-4">
                 <FaEnvelope className="inline mr-2" />
                 {user.email}
               </p>
@@ -96,7 +96,7 @@ const Profile = () => {
                     <span className="text-xs sm:text-sm">Verified</span>
                   </div>
                 )}
-                <div className="badge badge-secondary badge-sm sm:badge-md gap-1">
+                <div className="badge badge-secondary text-neutral/60 badge-sm sm:badge-md gap-1">
                   <FaCalendarAlt className="text-xs" />
                   <span className="text-xs sm:text-sm">
                     Joined {joinedYear}
@@ -110,7 +110,7 @@ const Profile = () => {
 
       {/* Stats Grid */}
       <div className="mb-6 sm:mb-8">
-        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 mb-4">
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold  mb-4">
           Activity Statistics
         </h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
@@ -126,7 +126,7 @@ const Profile = () => {
                 <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
+                <div className="text-xs sm:text-sm lg:text-base  font-medium">
                   {stat.label}
                 </div>
               </div>
@@ -138,28 +138,28 @@ const Profile = () => {
       {/* Account Details */}
       <div className="card bg-base-100 shadow-lg">
         <div className="card-body p-4 sm:p-6 lg:p-8">
-          <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold  mb-4 sm:mb-6">
             Account Details
           </h3>
           <div className="space-y-3 sm:space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-3 sm:pb-4">
-              <span className="text-sm sm:text-base font-semibold text-gray-700 w-full sm:w-48 mb-1 sm:mb-0">
+              <span className="text-sm sm:text-base font-semibold  w-full sm:w-48 mb-1 sm:mb-0">
                 Full Name:
               </span>
-              <span className="text-sm sm:text-base text-gray-600">
+              <span className="text-sm sm:text-base ">
                 {user.displayName || "Not provided"}
               </span>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-3 sm:pb-4">
-              <span className="text-sm sm:text-base font-semibold text-gray-700 w-full sm:w-48 mb-1 sm:mb-0">
+              <span className="text-sm sm:text-base font-semibold  w-full sm:w-48 mb-1 sm:mb-0">
                 Email Address:
               </span>
-              <span className="text-sm sm:text-base text-gray-600">
+              <span className="text-sm sm:text-base ">
                 {user.email || "Not provided"}
               </span>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-3 sm:pb-4">
-              <span className="text-sm sm:text-base font-semibold text-gray-700 w-full sm:w-48 mb-1 sm:mb-0">
+              <span className="text-sm sm:text-base font-semibold  w-full sm:w-48 mb-1 sm:mb-0">
                 Email Verified:
               </span>
               <span className="text-sm sm:text-base">
@@ -176,18 +176,18 @@ const Profile = () => {
               </span>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-3 sm:pb-4">
-              <span className="text-sm sm:text-base font-semibold text-gray-700 w-full sm:w-48 mb-1 sm:mb-0">
+              <span className="text-sm sm:text-base font-semibold  w-full sm:w-48 mb-1 sm:mb-0">
                 Account Created:
               </span>
-              <span className="text-sm sm:text-base text-gray-600">
+              <span className="text-sm sm:text-base ">
                 {format(new Date(user.metadata.creationTime), "MMMM dd, yyyy")}
               </span>
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center">
-              <span className="text-sm sm:text-base font-semibold text-gray-700 w-full sm:w-48 mb-1 sm:mb-0">
+              <span className="text-sm sm:text-base font-semibold  w-full sm:w-48 mb-1 sm:mb-0">
                 Last Sign In:
               </span>
-              <span className="text-sm sm:text-base text-gray-600">
+              <span className="text-sm sm:text-base ">
                 {user.metadata.lastSignInTime
                   ? format(
                       new Date(user.metadata.lastSignInTime),

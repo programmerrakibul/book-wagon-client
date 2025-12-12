@@ -34,12 +34,10 @@ const Coverage = () => {
                     <Marker key={index} position={city.position}>
                       <Popup>
                         <div className="text-center p-2">
-                          <h3 className="font-bold text-base text-gray-800">
+                          <h3 className="font-bold text-base dark:text-neutral!">
                             {city.name}
                           </h3>
-                          <p className="text-sm text-gray-600">
-                            {city.population} people
-                          </p>
+                          <p className="text-sm">{city.population} people</p>
                           <p className="text-xs text-success mt-1">
                             ✓ Delivery Available
                           </p>
@@ -56,7 +54,7 @@ const Coverage = () => {
           <div className="flex-1 lg:max-w-md">
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body p-4 sm:p-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-bold  mb-4 sm:mb-6 flex items-center gap-2">
                   <FaMapMarkerAlt className="text-primary" />
                   Available Cities
                 </h3>
@@ -64,15 +62,15 @@ const Coverage = () => {
                   {availableCities.map((city, index) => (
                     <div
                       key={index}
-                      className="flex flex-col p-3 sm:p-4 bg-base-200 rounded-lg hover:bg-primary/10 transition-colors"
+                      className="flex flex-col p-3 sm:p-4 bg-base-200 rounded-lg hover:bg-primary/30 transition-colors"
                     >
                       <div className="flex items-center gap-2 mb-2">
                         <FaCheckCircle className="text-success text-base sm:text-lg shrink-0" />
-                        <h4 className="font-semibold text-sm sm:text-base text-gray-800">
+                        <h4 className="font-semibold text-sm sm:text-base">
                           {city.name}
                         </h4>
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2">
+                      <p className="text-xs sm:text-sm mb-2">
                         {city.population} people
                       </p>
                       <span className="badge badge-success badge-sm self-start">
@@ -83,7 +81,7 @@ const Coverage = () => {
                 </div>
 
                 <div className="mt-6 sm:mt-8 p-4 sm:p-5 bg-linear-to-br from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
-                  <p className="text-xs sm:text-sm text-gray-700 text-center leading-relaxed">
+                  <p className="text-xs sm:text-sm text-center">
                     <strong className="text-primary">Expanding Soon!</strong>{" "}
                     We're working to bring our services to more cities across
                     Bangladesh.

@@ -71,7 +71,7 @@ const Books = () => {
             {/* Search Input */}
             <div className="flex-1">
               <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base" />
                 <input
                   type="text"
                   placeholder="Search books by title, author, or category..."
@@ -85,7 +85,7 @@ const Books = () => {
             {/* Sort Dropdown */}
             <div className="sm:w-64">
               <div className="relative">
-                <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base pointer-events-none z-10" />
+                <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
                 <select
                   value={sort}
                   onChange={handleSort}
@@ -145,11 +145,11 @@ const Books = () => {
           ) : (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center py-12 sm:py-16 lg:py-20">
-                <FaBook className="text-6xl sm:text-7xl lg:text-8xl text-gray-300 mx-auto mb-4 sm:mb-6" />
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-600 mb-2 sm:mb-3">
+                <FaBook className="text-6xl sm:text-7xl lg:text-8xl mx-auto mb-4 sm:mb-6" />
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-2 sm:mb-3">
                   No Books Available
                 </h3>
-                <p className="text-sm sm:text-base lg:text-lg text-gray-500">
+                <p className="text-sm sm:text-base lg:text-lg">
                   Check back later for new additions to our collection.
                 </p>
               </div>

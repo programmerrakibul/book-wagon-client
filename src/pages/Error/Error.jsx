@@ -31,11 +31,11 @@ const Error = () => {
             </h1>
 
             {/* Error Message */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold  mb-3 sm:mb-4">
               Oops! Page Not Found
             </h2>
 
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mb-8 sm:mb-10 lg:mb-12 leading-relaxed px-4">
+            <p className="text-sm sm:text-base lg:text-lg  max-w-2xl mb-8 sm:mb-10 lg:mb-12 leading-relaxed px-4">
               The page you're looking for doesn't exist or has been moved. Don't
               worry, even the best readers sometimes lose their place. Let's get
               you back on track!
@@ -55,7 +55,7 @@ const Error = () => {
 
             {/* Helpful Links */}
             <div className="mt-12 sm:mt-16 lg:mt-20">
-              <p className="text-xs sm:text-sm text-gray-500 mb-4">
+              <p className="text-xs sm:text-sm  mb-4">
                 Looking for something specific?
               </p>
               <div className="flex flex-wrap justify-center gap-3 sm:gap-4 lg:gap-6">
@@ -65,14 +65,14 @@ const Error = () => {
                 >
                   Browse Books
                 </Link>
-                <span className="text-gray-300">|</span>
+                <span className="">|</span>
                 <Link
                   to="/about-us"
                   className="text-xs sm:text-sm lg:text-base text-primary hover:text-primary/80 font-medium transition-colors"
                 >
                   About Us
                 </Link>
-                <span className="text-gray-300">|</span>
+                <span className="">|</span>
                 <Link
                   to="/contact-us"
                   className="text-xs sm:text-sm lg:text-base text-primary hover:text-primary/80 font-medium transition-colors"

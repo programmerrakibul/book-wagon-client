@@ -37,7 +37,7 @@ const ContactUs = () => {
             <div className="space-y-6 sm:space-y-8">
               <div className="card bg-base-100 shadow-xl">
                 <div className="card-body p-6 sm:p-8">
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6">
                     Contact Information
                   </h2>
 
@@ -48,13 +48,13 @@ const ContactUs = () => {
                         <MdEmail className="text-xl sm:text-2xl text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+                        <h3 className="font-semibold text-base sm:text-lgmb-1">
                           Email
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
+                        <p className="text-sm sm:text-base">
                           support@bookwagon.com
                         </p>
-                        <p className="text-sm sm:text-base text-gray-600">
+                        <p className="text-sm sm:text-base">
                           info@bookwagon.com
                         </p>
                       </div>
@@ -66,15 +66,11 @@ const ContactUs = () => {
                         <FaPhone className="text-xl sm:text-2xl text-secondary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+                        <h3 className="font-semibold text-base sm:text-lg mb-1">
                           Phone
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          +880 1234-567890
-                        </p>
-                        <p className="text-sm sm:text-base text-gray-600">
-                          +880 9876-543210
-                        </p>
+                        <p className="text-sm sm:text-base">+880 1234-567890</p>
+                        <p className="text-sm sm:text-base">+880 9876-543210</p>
                       </div>
                     </div>
 
@@ -84,13 +80,13 @@ const ContactUs = () => {
                         <FaMapMarkerAlt className="text-xl sm:text-2xl text-primary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-base sm:text-lg text-gray-800 mb-1">
+                        <h3 className="font-semibold text-base sm:text-lg  mb-1">
                           Address
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600">
+                        <p className="text-sm sm:text-base ">
                           123 Library Street
                         </p>
-                        <p className="text-sm sm:text-base text-gray-600">
+                        <p className="text-sm sm:text-base ">
                           Dhaka 1000, Bangladesh
                         </p>
                       </div>
@@ -102,10 +98,10 @@ const ContactUs = () => {
               {/* Office Hours */}
               <div className="card bg-linear-to-br from-primary/10 to-secondary/10 border border-primary/20">
                 <div className="card-body p-6 sm:p-8">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4">
+                  <h2 className="text-xl sm:text-2xl font-bold  mb-4">
                     Office Hours
                   </h2>
-                  <div className="space-y-2 text-sm sm:text-base text-gray-700">
+                  <div className="space-y-2 text-sm sm:text-base ">
                     <div className="flex justify-between">
                       <span className="font-semibold">Monday - Friday:</span>
                       <span>9:00 AM - 6:00 PM</span>
@@ -126,7 +122,7 @@ const ContactUs = () => {
             {/* Contact Form */}
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body p-6 sm:p-8">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold  mb-4 sm:mb-6">
                   Send Us a Message
                 </h2>
 
@@ -142,7 +138,7 @@ const ContactUs = () => {
                       </span>
                     </label>
                     <div className="relative group">
-                      <BsFillPersonFill className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <BsFillPersonFill className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
                       <input
                         type="text"
                         id="name"
@@ -163,7 +159,7 @@ const ContactUs = () => {
                       </span>
                     </label>
                     <div className="relative group">
-                      <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <MdEmail className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
                       <input
                         type="email"
                         id="email"

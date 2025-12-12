@@ -40,12 +40,11 @@ const ProfileLayout = () => {
                     minHeight: { xs: "56px", md: "64px" },
                     "&.Mui-selected": {
                       fontWeight: 600,
-                      color: "#6439ff",
                     },
                   },
                   "& .MuiTabs-indicator": {
                     height: 3,
-                    bgcolor: "#6439ff",
+                    bgcolor: "#26ccc2",
                   },
                 }}
               >

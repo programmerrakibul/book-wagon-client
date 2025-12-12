@@ -14,10 +14,10 @@ const Loading = ({ message = "Loading..." }) => {
       </div>
 
       <div className="text-center max-w-md">
-        <p className="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-2 animate-pulse">
+        <p className="text-base sm:text-lg lg:text-xl font-semibold mb-2 animate-pulse">
           {message}
         </p>
-        <p className="text-xs sm:text-sm text-gray-500">
+        <p className="text-xs sm:text-sm">
           Please wait while we fetch your content
         </p>
       </div>

@@ -134,10 +134,8 @@ const AdminOverview = () => {
                       {stat.change}
                     </div>
                   </div>
-                  <h3 className="text-xs sm:text-sm text-gray-600 mb-1">
-                    {stat.title}
-                  </h3>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-800">
+                  <h3 className="text-xs sm:text-sm  mb-1">{stat.title}</h3>
+                  <p className="text-2xl sm:text-3xl font-bold ">
                     {stat.value}
                   </p>
                 </div>
@@ -151,7 +149,7 @@ const AdminOverview = () => {
               <div className="card bg-base-100 shadow-lg">
                 <div className="card-body p-4 sm:p-6">
                   <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold  flex items-center gap-2">
                       <FaShoppingCart className="text-primary" />
                       Recent Orders
                     </h2>
@@ -220,9 +218,7 @@ const AdminOverview = () => {
                         <p className="text-sm font-medium mb-1">
                           {order.customer}
                         </p>
-                        <p className="text-xs text-gray-600 mb-2">
-                          {order.book}
-                        </p>
+                        <p className="text-xs  mb-2">{order.book}</p>
                         <p className="text-sm font-bold text-primary">
                           {order.amount}
                         </p>
@@ -237,7 +233,7 @@ const AdminOverview = () => {
             <div>
               <div className="card bg-base-100 shadow-lg">
                 <div className="card-body p-4 sm:p-6">
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center gap-2">
+                  <h2 className="text-lg sm:text-xl font-bold  mb-4 sm:mb-6 flex items-center gap-2">
                     <FaChartLine className="text-primary" />
                     Top Selling Books
                   </h2>
@@ -249,10 +245,10 @@ const AdminOverview = () => {
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-gray-800 mb-1 truncate">
+                          <h4 className="font-semibold text-sm  mb-1 truncate">
                             {book.title}
                           </h4>
-                          <div className="flex items-center justify-between text-xs text-gray-600">
+                          <div className="flex items-center justify-between text-xs ">
                             <span>{book.sales} sales</span>
                             <span className="font-bold text-primary">
                               {book.revenue}

@@ -1,7 +1,14 @@
 import { Link } from "react-router";
 import { FaTag, FaUser } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
-import { Card, CardMedia, CardContent, Typography, Box, Chip } from "@mui/material";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Box,
+  Chip,
+} from "@mui/material";
 
 const BookCard = ({ book }) => {
   const { _id, bookName, bookImage, author, price, quantity } = book;
@@ -19,8 +26,15 @@ const BookCard = ({ book }) => {
             boxShadow: 6,
           },
         }}
+        className="dark:bg-base-100!"
       >
-        <Box sx={{ position: "relative", width: { xs: "40%", sm: "100%" }, flexShrink: 0 }}>
+        <Box
+          sx={{
+            position: "relative",
+            width: { xs: "40%", sm: "100%" },
+            flexShrink: 0,
+          }}
+        >
           <CardMedia
             component="img"
             image={bookImage}
@@ -62,7 +76,7 @@ const BookCard = ({ book }) => {
               fontWeight: 700,
               mb: { xs: 1, sm: 1.5 },
               fontSize: { xs: "0.875rem", sm: "1.125rem", lg: "1.25rem" },
-              color: "primary.main",
+              color: "#26ccc2",
               display: "-webkit-box",
               WebkitLineClamp: 1,
               WebkitBoxOrient: "vertical",
@@ -78,8 +92,8 @@ const BookCard = ({ book }) => {
               alignItems: "center",
               gap: 1,
               mb: { xs: 1, sm: 2 },
-              color: "text.secondary",
             }}
+            className="text-neutral/80! dark:text-white/80!"
           >
             <FaUser style={{ flexShrink: 0, fontSize: "0.75rem" }} />
             <Typography
@@ -95,7 +109,14 @@ const BookCard = ({ book }) => {
             </Typography>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "primary.main" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              color: "#26ccc2",
+            }}
+          >
             <FaTag style={{ flexShrink: 0, fontSize: "0.875rem" }} />
             <Typography
               variant="h6"
@@ -103,6 +124,7 @@ const BookCard = ({ book }) => {
                 fontWeight: 700,
                 fontSize: { xs: "1rem", sm: "1.25rem" },
               }}
+              className="text-primary!"
             >
               ৳ {price}
             </Typography>

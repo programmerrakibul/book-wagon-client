@@ -86,10 +86,10 @@ const AboutUs = () => {
 
             {/* Story Content */}
             <div className="flex-1 flex flex-col justify-center">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 sm:mb-6">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
                 Our Story
               </h2>
-              <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+              <div className="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg">
                 <p>
                   Founded in 2010, BookWagon began with a simple mission: to
                   make quality books accessible to everyone. What started as a
@@ -124,10 +124,10 @@ const AboutUs = () => {
                   <div className="text-3xl sm:text-4xl lg:text-5xl text-primary mb-2 sm:mb-3">
                     {stat.icon}
                   </div>
-                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-1">
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-xs sm:text-sm lg:text-base text-gray-600 font-medium">
+                  <div className="text-xs sm:text-sm lg:text-base font-medium">
                     {stat.label}
                   </div>
                 </div>
@@ -137,7 +137,7 @@ const AboutUs = () => {
 
           {/* Our Values */}
           <div className="mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8 sm:mb-12">
               Our Values
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
@@ -154,10 +154,10 @@ const AboutUs = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-2 sm:mb-3">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3">
                           {value.title}
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                        <p className="text-sm sm:text-base">
                           {value.description}
                         </p>
                       </div>
@@ -183,10 +183,10 @@ const AboutUs = () => {
                   />
                 </figure>
                 <div className="card-body p-6 sm:p-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
                     {item.title}
                   </h2>
-                  <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed">
+                  <p className="text-sm sm:text-base lg:text-lg leading-relaxed">
                     {item.description}
                   </p>
                 </div>

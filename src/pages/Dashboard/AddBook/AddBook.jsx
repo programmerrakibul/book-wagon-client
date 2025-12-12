@@ -90,7 +90,7 @@ const AddBook = () => {
               >
                 {/* Section: Basic Information */}
                 <div className="space-y-4 sm:space-y-6">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-700 border-l-4 border-primary pl-3 sm:pl-4">
+                  <h3 className="text-base sm:text-lg font-semibold  border-l-4 border-primary pl-3 sm:pl-4">
                     Basic Information
                   </h3>
 
@@ -106,7 +106,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <FaBook className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <FaBook className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="bookName"
@@ -146,7 +146,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <FaUser className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="author"
@@ -200,7 +200,7 @@ const AddBook = () => {
                 <div className="divider my-6 sm:my-8"></div>
 
                 {/* Section: Classification */}
-                <h3 className="text-base sm:text-lg font-semibold text-gray-700 border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold  border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
                   Classification
                 </h3>
 
@@ -217,7 +217,7 @@ const AddBook = () => {
                       }
                     />
                     <div className="relative">
-                      <MdCategory className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base z-10" />
+                      <MdCategory className="absolute left-3 top-1/2 -translate-y-1/2  text-sm sm:text-base z-10" />
 
                       <select
                         id="category"
@@ -254,7 +254,7 @@ const AddBook = () => {
                   <div className="space-y-1 sm:space-y-2">
                     <MyLabel htmlFor="subcategory" label="Subcategory" />
                     <div className="relative group">
-                      <MdCategory className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <MdCategory className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="subcategory"
@@ -271,7 +271,7 @@ const AddBook = () => {
                 <div className="divider my-6 sm:my-8"></div>
 
                 {/* Section: Details */}
-                <h3 className="text-base sm:text-lg font-semibold text-gray-700 border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold  border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
                   Book Details
                 </h3>
 
@@ -289,7 +289,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <FaCalendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <FaCalendar className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="publicationYear"
@@ -326,7 +326,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <BsFileText className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <BsFileText className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="pageCount"
@@ -362,7 +362,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative">
-                      <FaBook className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base z-10" />
+                      <FaBook className="absolute left-3 top-1/2 -translate-y-1/2  text-sm sm:text-base z-10" />
 
                       <select
                         id="format"
@@ -398,7 +398,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <BsBoxSeam className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base" />
+                      <BsBoxSeam className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base" />
 
                       <MyInput
                         id="quantity"
@@ -424,7 +424,7 @@ const AddBook = () => {
                 <div className="divider my-6 sm:my-8"></div>
 
                 {/* Section: Pricing & Availability */}
-                <h3 className="text-base sm:text-lg font-semibold text-gray-700 border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold  border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
                   Pricing & Availability
                 </h3>
 
@@ -442,7 +442,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative group">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-sm sm:text-base font-semibold">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2  group-focus-within:text-primary transition-colors text-sm sm:text-base font-semibold">
                         ৳
                       </span>
 
@@ -478,7 +478,7 @@ const AddBook = () => {
                     />
 
                     <div className="relative">
-                      <FaList className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm sm:text-base z-10" />
+                      <FaList className="absolute left-3 top-1/2 -translate-y-1/2  text-sm sm:text-base z-10" />
 
                       <select
                         id="status"
@@ -505,7 +505,7 @@ const AddBook = () => {
                 <div className="divider my-6 sm:my-8"></div>
 
                 {/* Section: Description */}
-                <h3 className="text-base sm:text-lg font-semibold text-gray-700 border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold  border-l-4 border-primary pl-3 sm:pl-4 mb-4 sm:mb-6">
                   Description
                 </h3>
 
