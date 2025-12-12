@@ -74,6 +74,7 @@ const BookCard = ({ book }) => {
             component="h2"
             sx={{
               fontWeight: 700,
+              fontFamily: "Montserrat Alternates",
               mb: { xs: 1, sm: 1.5 },
               fontSize: { xs: "0.875rem", sm: "1.125rem", lg: "1.25rem" },
               color: "#26ccc2",

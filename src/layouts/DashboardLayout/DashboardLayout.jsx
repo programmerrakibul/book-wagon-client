@@ -208,7 +208,7 @@ const DashboardLayout = () => {
                   alt="BookWagon"
                   className="size-10 object-cover"
                 />
-                <span className="text-[23px] font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <span className="text-[23px] font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent font-['Montserrat_Alternates']">
                   BookWagon
                 </span>
               </Link>
