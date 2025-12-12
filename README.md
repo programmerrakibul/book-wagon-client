@@ -167,7 +167,7 @@ The build output will be in the `dist` directory.
 
 **Your Name**
 
-- GitHub: [@yourusername](https://github.com/programmerrakibul)
+- GitHub: [@programmerrakibul](https://github.com/programmerrakibul)
 - Email: rakibul00206@gmail.com
 
 ## 🙏 Acknowledgments
