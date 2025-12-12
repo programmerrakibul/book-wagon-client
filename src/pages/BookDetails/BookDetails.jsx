@@ -47,6 +47,7 @@ const BookDetails = () => {
     refetch,
   } = useQuery({
     queryKey: ["inWishlist", id, user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
       const { data } = await secureAxios.get(
         `/wishlist/${user?.email}/check/${id}`
@@ -175,7 +176,8 @@ const BookDetails = () => {
                     <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-800">
                       {bookName}
                     </h1>
-                    {(user || !isLibrarian) &&
+                    {user &&
+                      !isLibrarian &&
                       (inWishlist ? (
                         <button
                           onClick={removeFromWishlist}
@@ -313,7 +315,7 @@ const BookDetails = () => {
                 )}
 
                 {/* Order Button */}
-                {!isLibrarian && (
+                {user && !isLibrarian && (
                   <Button
                     handleClick={() => setOpen(true)}
                     className="btn-block"
