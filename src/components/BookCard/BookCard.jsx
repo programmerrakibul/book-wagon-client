@@ -1,4 +1,9 @@
 import { Link } from "react-router";
+import { useEffect, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
+import {motion} from 'framer-motion'
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaTag, FaUser } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
 import {
@@ -10,128 +15,229 @@ import {
   Chip,
 } from "@mui/material";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const BookCard = ({ book }) => {
   const { _id, bookName, bookImage, author, price, quantity } = book;
+  const cardRef = useRef(null);
+  const imageRef = useRef(null);
+
+  useEffect(() => {
+    // GSAP scroll-triggered animation
+    gsap.fromTo(
+      cardRef.current,
+      {
+        opacity: 0,
+        y: 50,
+        scale: 0.9,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: cardRef.current,
+          start: "top 85%",
+          end: "top 60%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === cardRef.current) {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
+
+  // Framer Motion variants
+  const cardVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+    hover: {
+      y: -8,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const imageVariants = {
+    hover: {
+      scale: 1.1,
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const contentVariants = {
+    hover: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hover: {
+      x: 5,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
   return (
     <Link to={`/book-details/${_id}`}>
-      <Card
-        sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: { xs: "row", sm: "column" },
-          transition: "all 0.3s ease",
-          "&:hover": {
-            transform: "translateY(-8px)",
-            boxShadow: 6,
-          },
-        }}
-        className="dark:bg-base-100!"
+      <motion.div
+        ref={cardRef}
+        variants={cardVariants}
+        initial="initial"
+        animate="animate"
+        whileHover="hover"
       >
-        <Box
+        <Card
           sx={{
-            position: "relative",
-            width: { xs: "40%", sm: "100%" },
-            flexShrink: 0,
+            height: "100%",
+            display: "flex",
+            flexDirection: { xs: "row", sm: "column" },
+            overflow: "hidden",
           }}
+          className="dark:bg-base-100!"
         >
-          <CardMedia
-            component="img"
-            image={bookImage}
-            alt={bookName}
+          <Box
             sx={{
-              height: 150,
-              objectFit: "cover",
-              transition: "transform 0.3s ease",
-              "&:hover": {
-                transform: "scale(1.05)",
-              },
-            }}
-          />
-          <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-            {quantity > 0 ? (
-              <Chip
-                icon={<BsBoxSeam />}
-                label={quantity}
-                color="success"
-                size="small"
-                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
-              />
-            ) : (
-              <Chip
-                label="Out of Stock"
-                color="error"
-                size="small"
-                sx={{ fontWeight: 600, fontSize: "0.75rem" }}
-              />
-            )}
-          </Box>
-        </Box>
-
-        <CardContent sx={{ flexGrow: 1, p: { xs: 1.5, sm: 2.5 } }}>
-          <Typography
-            variant="h6"
-            component="h2"
-            sx={{
-              fontWeight: 700,
-              fontFamily: "Montserrat Alternates",
-              mb: { xs: 1, sm: 1.5 },
-              fontSize: { xs: "0.875rem", sm: "1.125rem", lg: "1.25rem" },
-              color: "#26ccc2",
-              display: "-webkit-box",
-              WebkitLineClamp: 1,
-              WebkitBoxOrient: "vertical",
+              position: "relative",
+              width: { xs: "40%", sm: "100%" },
+              flexShrink: 0,
               overflow: "hidden",
             }}
           >
-            {bookName}
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              mb: { xs: 1, sm: 2 },
-            }}
-            className="text-neutral/80! dark:text-white/80!"
-          >
-            <FaUser style={{ flexShrink: 0, fontSize: "0.75rem" }} />
-            <Typography
-              variant="body2"
-              sx={{
-                fontSize: { xs: "0.7rem", sm: "0.875rem" },
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
+            <motion.div ref={imageRef} variants={imageVariants}>
+              <CardMedia
+                component="img"
+                image={bookImage}
+                alt={bookName}
+                sx={{
+                  height: 150,
+                  objectFit: "cover",
+                }}
+              />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
             >
-              {author}
-            </Typography>
+              <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+                {quantity > 0 ? (
+                  <Chip
+                    icon={<BsBoxSeam />}
+                    label={quantity}
+                    color="success"
+                    size="small"
+                    sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+                  />
+                ) : (
+                  <Chip
+                    label="Out of Stock"
+                    color="error"
+                    size="small"
+                    sx={{ fontWeight: 600, fontSize: "0.75rem" }}
+                  />
+                )}
+              </Box>
+            </motion.div>
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              color: "#26ccc2",
-            }}
-          >
-            <FaTag style={{ flexShrink: 0, fontSize: "0.875rem" }} />
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 700,
-                fontSize: { xs: "1rem", sm: "1.25rem" },
-              }}
-              className="text-primary!"
-            >
-              ৳ {price}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
+          <motion.div variants={contentVariants}>
+            <CardContent sx={{ flexGrow: 1, p: { xs: 1.5, sm: 2.5 } }}>
+              <motion.div variants={itemVariants}>
+                <Typography
+                  variant="h6"
+                  component="h2"
+                  sx={{
+                    fontWeight: 700,
+                    fontFamily: "Montserrat Alternates",
+                    mb: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: "0.875rem", sm: "1.125rem", lg: "1.25rem" },
+                    color: "#26ccc2",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }}
+                >
+                  {bookName}
+                </Typography>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mb: { xs: 1, sm: 2 },
+                  }}
+                  className="text-neutral/80! dark:text-white/80!"
+                >
+                  <FaUser style={{ flexShrink: 0, fontSize: "0.75rem" }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: { xs: "0.7rem", sm: "0.875rem" },
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {author}
+                  </Typography>
+                </Box>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    color: "#26ccc2",
+                  }}
+                >
+                  <FaTag style={{ flexShrink: 0, fontSize: "0.875rem" }} />
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: { xs: "1rem", sm: "1.25rem" },
+                    }}
+                    className="text-primary!"
+                  >
+                    ৳ {price}
+                  </Typography>
+                </Box>
+              </motion.div>
+            </CardContent>
+          </motion.div>
+        </Card>
+      </motion.div>
     </Link>
   );
 };
