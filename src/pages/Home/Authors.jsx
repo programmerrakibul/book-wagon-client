@@ -106,19 +106,19 @@ const Authors = () => {
                     </div>
 
                     {/* Author Name */}
-                    <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">
+                    <h3 className="text-xl sm:text-2xl font-bold text-center mb-4">
                       {author.name}
                     </h3>
 
                     {/* Bio */}
-                    <p className="text-sm sm:text-base text-gray-600 text-center leading-relaxed mb-4 sm:mb-6 line-clamp-3">
+                    <p className="text-sm sm:text-base text-center leading-relaxed mb-4 sm:mb-6 line-clamp-3">
                       {author.bio}
                     </p>
 
                     {/* Quote */}
                     <div className="bg-primary/5 rounded-lg p-4 relative">
                       <FaQuoteLeft className="text-primary text-xl sm:text-2xl mb-2" />
-                      <p className="text-xs sm:text-sm italic text-gray-700 leading-relaxed">
+                      <p className="text-xs sm:text-sm italic">
                         {author.quote}
                       </p>
                     </div>
