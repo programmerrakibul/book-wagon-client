@@ -141,3 +141,20 @@ h6 {
 .swal2-confirm {
   @apply bg-linear-to-br from-primary/60 hover:from-primary/75 to-secondary/60 hover:to-secondary/75 duration-300 transition-colors text-neutral dark:text-white;
 }
+
+.authors-swiper .swiper-slide:not(.swiper-slide-active) {
+  @apply blur-sm! opacity-70!;
+}
+
+.authors-swiper .swiper-slide-next,
+.authors-swiper .swiper-slide-prev {
+  @apply blur-xs! opacity-90!;
+}
+
+.authors-swiper {
+  @apply w-full! py-12! 
+}
+
+.authors-swiper .swiper-slide {
+  @apply bg-center! bg-cover! w-[280px]! h-auto!;
+}

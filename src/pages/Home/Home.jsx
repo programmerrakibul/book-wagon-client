@@ -1,3 +1,4 @@
+import Authors from "./Authors";
 import Banner from "./Banner";
 import ChooseUs from "./ChooseUs";
 import Coverage from "./Coverage";
@@ -12,6 +13,7 @@ const Home = () => {
 
       <Banner />
       <LatestBooks />
+      <Authors />
       <ChooseUs />
       <Coverage />
       <FAQ />
