@@ -21,13 +21,6 @@ const Profile = () => {
     return <Loading />;
   }
 
-  const profileStats = [
-    { label: "Books Ordered", value: "12", icon: "📚" },
-    { label: "Pending Books", value: "3", icon: "📖" },
-    { label: "Returned", value: "9", icon: "✅" },
-    { label: "Member Since", value: joinedYear, icon: "🎯" },
-  ];
-
   return (
     <>
       <title>Profile Overview - BookWagon</title>
@@ -105,33 +98,6 @@ const Profile = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="mb-6 sm:mb-8">
-        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold  mb-4">
-          Activity Statistics
-        </h3>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-          {profileStats.map((stat, index) => (
-            <div
-              key={index}
-              className="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="card-body p-4 sm:p-5 lg:p-6 text-center">
-                <div className="text-3xl sm:text-4xl lg:text-5xl mb-2 sm:mb-3">
-                  {stat.icon}
-                </div>
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-xs sm:text-sm lg:text-base  font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
