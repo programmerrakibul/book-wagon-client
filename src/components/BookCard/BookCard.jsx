@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
-import {motion} from 'framer-motion'
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaTag, FaUser } from "react-icons/fa";
@@ -24,8 +24,9 @@ const BookCard = ({ book }) => {
 
   useEffect(() => {
     // GSAP scroll-triggered animation
+    const card = cardRef.current;
     gsap.fromTo(
-      cardRef.current,
+      card,
       {
         opacity: 0,
         y: 50,
@@ -48,7 +49,7 @@ const BookCard = ({ book }) => {
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === cardRef.current) {
+        if (trigger.trigger === card) {
           trigger.kill();
         }
       });

@@ -154,7 +154,7 @@ const BookDetails = () => {
   const handlePostComment = async () => {
     setError(null);
 
-    if (!comment) {
+    if (!comment.trim()) {
       return setError("Please write a comment before posting.");
     }
 
@@ -162,7 +162,7 @@ const BookDetails = () => {
       customerName: user.displayName,
       customerImage: user.photoURL,
       customerEmail: user.email,
-      comment,
+      comment: comment.trim(),
       bookId: _id,
     };
 
@@ -410,7 +410,7 @@ const BookDetails = () => {
                         </div>
                         <div className="flex-1">
                           <textarea
-                            onChange={(e) => setComment(e.target.value.trim())}
+                            onChange={(e) => setComment(e.target.value)}
                             value={comment}
                             placeholder="Share your thoughts about this book..."
                             className="textarea textarea-bordered w-full text-sm sm:text-base min-h-[100px] sm:min-h-[120px] focus:outline-primary"
