@@ -118,7 +118,7 @@ const Navbar = () => {
                 {navItems.map((item, index) => (
                   <NavLink
                     key={index}
-                    to={item.href}
+                    to={item.slug}
                     onClick={handleNavClick}
                     className="block py-3 px-4 text-base font-medium text-base-content/80 hover:bg-base-200/40 hover:text-primary transition-all duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
                   >
