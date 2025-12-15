@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
-import {motion} from 'framer-motion'
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -92,10 +92,6 @@ const LatestBooks = () => {
     },
   };
 
-  if (isLoading) {
-    return <Loading message="Loading latest books..." />;
-  }
-
   return (
     <section
       ref={sectionRef}
@@ -110,7 +106,9 @@ const LatestBooks = () => {
           />
         </div>
 
-        {books.length > 0 ? (
+        {isLoading ? (
+          <Loading message="Loading latest books..." />
+        ) : books.length > 0 ? (
           <>
             <div ref={swiperRef}>
               <Swiper

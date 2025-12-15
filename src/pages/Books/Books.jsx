@@ -7,6 +7,7 @@ import Container from "../shared/Container/Container";
 import BookCard from "../../components/BookCard/BookCard";
 import Heading from "../../components/Heading/Heading";
 import Loading from "../../components/Loading/Loading";
+import BookCardSkeleton from "../../components/skeletons/BookCardSkeleton";
 
 const Books = () => {
   const publicAxios = usePublicAxios();
@@ -105,7 +106,9 @@ const Books = () => {
 
           {/* Books Grid */}
           {isLoading ? (
-            <Loading message="Books is loading..." />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+              <BookCardSkeleton length={10} />
+            </div>
           ) : books.length > 0 ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
