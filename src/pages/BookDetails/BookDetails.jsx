@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { getAlert } from "../../utilities/getAlert";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Avatar from "../../components/Avatar/Avatar";
+import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -92,7 +93,7 @@ const BookDetails = () => {
   });
 
   if (bookLoading || wishlistLoading) {
-    return <Loading message="Book is loading..." />;
+    return <BookDetailsSkeleton />;
   }
 
   const closeModal = () => {
