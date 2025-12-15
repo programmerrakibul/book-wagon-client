@@ -35,7 +35,7 @@ const ProfileLayout = () => {
                   "& .MuiTab-root": {
                     textTransform: "none",
                     fontSize: { xs: "0.875rem", md: "1rem" },
-
+                    fontFamily: "Montserrat Alternates",
                     fontWeight: 500,
                     minHeight: { xs: "56px", md: "64px" },
                     "&.Mui-selected": {

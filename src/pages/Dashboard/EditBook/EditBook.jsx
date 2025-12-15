@@ -51,7 +51,9 @@ const EditBook = () => {
     setLoading(true);
 
     Object.entries(bookData).forEach(([key, value]) => {
-      bookData[key] = value.trim();
+      if (typeof value === "string") {
+        value = value.trim();
+      }
 
       if (["quantity", "pageCount", "price"].includes(key)) {
         bookData[key] = Number(value);

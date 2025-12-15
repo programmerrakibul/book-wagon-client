@@ -58,6 +58,8 @@ const MyOrders = () => {
       secureAxios
         .get(`/checkout-session/retrieve/${session_id}`)
         .then(({ data }) => {
+          refetch();
+
           MySwal.fire({
             icon: "success",
             title: "Payment Successful!",
@@ -76,8 +78,6 @@ const MyOrders = () => {
             ),
           }).then((result) => {
             if (result.isConfirmed) {
-              refetch();
-
               setSearchParams("");
             }
           });

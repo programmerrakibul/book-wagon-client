@@ -27,7 +27,11 @@ const DashboardLayout = () => {
   const { role, roleLoading } = useRole();
 
   if (roleLoading) {
-    return <Loading />;
+    return (
+      <div className="min-h-dvh grid place-items-center">
+        <Loading />
+      </div>
+    );
   }
 
   const menuItems = [
@@ -149,9 +153,7 @@ const DashboardLayout = () => {
                       className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
                     >
                       <li className="menu-title">
-                        <span className="text-xs">
-                          Signed in as
-                        </span>
+                        <span className="text-xs">Signed in as</span>
                       </li>
                       <li className="disabled">
                         <span className="text-sm font-semibold">
@@ -239,9 +241,7 @@ const DashboardLayout = () => {
                   <p className="text-sm font-semibold truncate">
                     {user?.displayName || "User"}
                   </p>
-                  <p className="text-xs truncate">
-                    {user?.email}
-                  </p>
+                  <p className="text-xs truncate">{user?.email}</p>
                 </div>
               </div>
             </div>

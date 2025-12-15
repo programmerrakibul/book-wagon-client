@@ -305,17 +305,21 @@ const BookDetails = () => {
                       </div>
 
                       {/* Subcategory */}
-                      <div className="flex items-start gap-3">
-                        <div className="p-2 sm:p-3 bg-secondary/10 rounded-lg">
-                          <FaLayerGroup className="text-lg sm:text-xl text-secondary" />
+                      {subcategory && (
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 sm:p-3 bg-secondary/10 rounded-lg">
+                            <FaLayerGroup className="text-lg sm:text-xl text-secondary" />
+                          </div>
+                          <div>
+                            <p className="text-xs sm:text-sm mb-1">
+                              Subcategory
+                            </p>
+                            <p className="text-sm sm:text-base font-semibold">
+                              {subcategory}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xs sm:text-sm mb-1">Subcategory</p>
-                          <p className="text-sm sm:text-base font-semibold">
-                            {subcategory}
-                          </p>
-                        </div>
-                      </div>
+                      )}
 
                       {/* Page Count */}
                       <div className="flex items-start gap-3">
