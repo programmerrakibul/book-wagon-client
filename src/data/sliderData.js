@@ -3,6 +3,8 @@ import slider2 from "../assets/slider_book_02.jpg";
 import slider3 from "../assets/slider_book_03.jpg";
 import slider4 from "../assets/slider_book_04.jpg";
 import slider5 from "../assets/slider_book_05.jpg";
+import slider6 from "../assets/slider_book_06.jpg";
+import slider7 from "../assets/slider_book_07.jpg";
 
 export const sliderData = [
   {
@@ -39,5 +41,19 @@ export const sliderData = [
     description:
       "The Vignes twin sisters will always be identical. But after growing up together in a small, southern black community and running away at age sixteen, their lives diverge—one lives with her black daughter in the same town she once tried to escape.",
     image: slider5,
+  },
+  {
+    id: "TuV8Wx9Yz0Ab1Cd2",
+    title: "The Silent Patient",
+    description:
+      "Alicia Berenson's life appears perfect until she shoots her husband five times and then never speaks another word. Forensic psychotherapist Theo Faber is determined to make her talk and unravel the mystery of why she shot her husband.",
+    image: slider6,
+  },
+  {
+    id: "Ij6Kl7Mn8Op9Qr0S",
+    title: "Where the Crawdads Sing",
+    description:
+      "For years, rumors of the 'Marsh Girl' have haunted Barkley Cove. So when handsome Chase Andrews is found dead, the locals immediately suspect Kya Clark. But Kya is not what they say. A beautiful and heartbreaking coming-of-age story.",
+    image: slider7,
   },
 ];
