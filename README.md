@@ -69,8 +69,8 @@ suitable for both individual readers and book management professionals.
 - **tailwindcss** (^4.1.17) - Utility-first CSS framework
 - **react-icons** (^5.5.0) - Icon library
 - **swiper** (^12.0.3) - Modern slider/carousel
-<!-- - **framer-motion** - Animation library
-- **gsap** - Animation library for advanced effects -->
+- **framer-motion** - Animation library
+- **gsap** - Animation library for advanced effects
 
 ### Data Management
 
