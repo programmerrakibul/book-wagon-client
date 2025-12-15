@@ -5,7 +5,7 @@ seamless book browsing and purchasing experience with role-based access control.
 
 ## 🌐 Live URL
 
-[BookWagon Live Site](https://your-live-url-here.com)
+[BookWagon](https://book-wagon-46880.web.app/)
 
 ## 📖 Purpose
 
