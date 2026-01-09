@@ -12,13 +12,18 @@ const Books = () => {
   const publicAxios = usePublicAxios();
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filterQuery, setFilterQuery] = useState("");
   const [sort, setSort] = useState("");
   const booksPerPage = 10;
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["all-books", page, searchQuery, sort],
+  const {
+    data = {},
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["all-books", page, searchQuery, sort, filterQuery],
     queryFn: async () => {
-      const { data } = await publicAxios.get("/books", {
+      const { data = {} } = await publicAxios.get("/books", {
         params: {
           fields: "bookName,bookImage,author,price,quantity,description",
           limit: booksPerPage,
@@ -26,9 +31,24 @@ const Books = () => {
           search: searchQuery,
           sortBy: sort.split("-")[0],
           sortOrder: sort.split("-")[1],
+          category: filterQuery,
         },
       });
+
       return data;
+    },
+  });
+
+  const { data: categories = [], isLoading: categoryLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data } = await publicAxios.get("/books/categories");
+
+      if (!data.success) {
+        return [];
+      }
+
+      return data.categories;
     },
   });
 
@@ -79,6 +99,27 @@ const Books = () => {
                   onChange={handleSearch}
                   className="input input-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary"
                 />
+              </div>
+            </div>
+
+            {/* Filter Dropdown */}
+            <div className="sm:w-64">
+              <div className="relative">
+                <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
+                <select
+                  value={filterQuery}
+                  onChange={(e) => setFilterQuery(e.currentTarget.value)}
+                  disabled={categoryLoading}
+                  className="select select-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary appearance-none"
+                >
+                  <option value="">Filter By</option>
+
+                  {categories.map((cat) => (
+                    <option key={cat._id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
