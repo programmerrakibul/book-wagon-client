@@ -45,7 +45,7 @@ const AvatarDropdown = () => {
             className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
           >
             <li className="menu-title">
-              <span className="text-xs">Signed in as</span>
+              <span className="text-xs text-neutral dark:text-white">Signed in as</span>
             </li>
             <li className="disabled">
               <span className="text-sm font-semibold">{user.displayName}</span>
