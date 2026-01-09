@@ -116,7 +116,7 @@ const Books = () => {
 
                   {categories.map((cat) => (
                     <option key={cat._id} value={cat.name}>
-                      {cat.name}
+                      Filter By: {cat.name}
                     </option>
                   ))}
                 </select>
