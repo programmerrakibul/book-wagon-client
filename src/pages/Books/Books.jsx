@@ -6,7 +6,6 @@ import usePublicAxios from "../../hooks/usePublicAxios";
 import Container from "../shared/Container/Container";
 import BookCard from "../../components/BookCard/BookCard";
 import Heading from "../../components/Heading/Heading";
-import Loading from "../../components/Loading/Loading";
 import BookCardSkeleton from "../../components/skeletons/BookCardSkeleton";
 
 const Books = () => {
@@ -21,7 +20,7 @@ const Books = () => {
     queryFn: async () => {
       const { data } = await publicAxios.get("/books", {
         params: {
-          fields: "bookName,bookImage,author,price,quantity",
+          fields: "bookName,bookImage,author,price,quantity,description",
           limit: booksPerPage,
           skip: (page - 1) * booksPerPage,
           search: searchQuery,
@@ -130,17 +129,7 @@ const Books = () => {
                     count={totalPages}
                     page={page}
                     onChange={handlePageChange}
-                    color="primary"
                     size="large"
-                    sx={{
-                      "& .MuiPaginationItem-root": {
-                        fontSize: { xs: "0.875rem", sm: "1rem" },
-                        fontWeight: 500,
-                        "&.Mui-selected": {
-                          fontWeight: 700,
-                        },
-                      },
-                    }}
                   />
                 </Box>
               )}

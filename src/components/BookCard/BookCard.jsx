@@ -18,7 +18,8 @@ import {
 gsap.registerPlugin(ScrollTrigger);
 
 const BookCard = ({ book }) => {
-  const { _id, bookName, bookImage, author, price, quantity } = book;
+  const { _id, bookName, bookImage, author, price, quantity, description } =
+    book;
   const cardRef = useRef(null);
   const imageRef = useRef(null);
 
@@ -140,6 +141,7 @@ const BookCard = ({ book }) => {
                 }}
               />
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -189,6 +191,15 @@ const BookCard = ({ book }) => {
               </motion.div>
 
               <motion.div variants={itemVariants}>
+                <Typography
+                  component="p"
+                  className="text-neutral/60 dark:text-white/80 overflow-hidden line-clamp-2 text-sm! md:text-base! mb-2!"
+                >
+                  {description}
+                </Typography>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
                 <Box
                   sx={{
                     display: "flex",
@@ -196,7 +207,7 @@ const BookCard = ({ book }) => {
                     gap: 1,
                     mb: { xs: 1, sm: 2 },
                   }}
-                  className="text-neutral/80! dark:text-white/80!"
+                  className="text-neutral/60 dark:text-white/80"
                 >
                   <FaUser style={{ flexShrink: 0, fontSize: "0.75rem" }} />
                   <Typography

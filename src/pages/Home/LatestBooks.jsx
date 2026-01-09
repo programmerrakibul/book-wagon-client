@@ -36,6 +36,7 @@ const LatestBooks = () => {
           limit: 6,
           sortBy: "createdAt",
           sortOrder: "desc",
+          fields: "bookName,bookImage,author,price,quantity,description",
         },
       });
       return data?.books;

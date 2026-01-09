@@ -13,17 +13,17 @@ import {
   FaFileInvoiceDollar,
   FaHeart,
 } from "react-icons/fa";
-import { IoLibrary, IoLogOut } from "react-icons/io5";
+import { IoLibrary,  } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
-import { handleLogout } from "../../utilities/handleLogout";
 import Avatar from "../../components/Avatar/Avatar";
 import Container from "../../pages/shared/Container/Container";
 import useRole from "../../hooks/useRole";
 import Loading from "../../components/Loading/Loading";
+import AvatarDropdown from "../../components/AvatarDropdown/AvatarDropdown";
 
 const DashboardLayout = () => {
-  const { user, logOutUser } = useAuth();
+  const { user,  } = useAuth();
   const { role, roleLoading } = useRole();
 
   if (roleLoading) {
@@ -137,52 +137,8 @@ const DashboardLayout = () => {
                   </h1>
                 </div>
 
-                {/* User Info */}
-                <div className="flex-none">
-                  <div className="dropdown dropdown-end">
-                    <label
-                      tabIndex={0}
-                      className="btn btn-ghost btn-circle avatar"
-                    >
-                      <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img src={user.photoURL} alt={user.displayName} />
-                      </div>
-                    </label>
-                    <ul
-                      tabIndex={0}
-                      className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
-                    >
-                      <li className="menu-title">
-                        <span className="text-xs">Signed in as</span>
-                      </li>
-                      <li className="disabled">
-                        <span className="text-sm font-semibold">
-                          {user.displayName}
-                        </span>
-                      </li>
-                      <div className="divider my-1"></div>
-                      <li>
-                        <Link to="/" className="text-sm">
-                          <FaHome /> Home
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/books" className="text-sm">
-                          <FaBook /> All Books
-                        </Link>
-                      </li>
-                      <div className="divider my-1"></div>
-                      <li>
-                        <button
-                          onClick={() => handleLogout(logOutUser)}
-                          className="text-error text-sm"
-                        >
-                          <IoLogOut /> Logout
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                {/* Avatar Dropdown */}
+                <AvatarDropdown/>
               </div>
             </Container>
           </nav>

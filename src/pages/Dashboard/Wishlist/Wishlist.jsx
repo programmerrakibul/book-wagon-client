@@ -151,7 +151,7 @@ const Wishlist = () => {
                   Start adding books you love to your wishlist!
                 </p>
                 <Link to="/books">
-                  <Button variant="primary" size="lg">
+                  <Button>
                     <FaBook />
                     Browse Books
                   </Button>

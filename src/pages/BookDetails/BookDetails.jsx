@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router";
+import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   FaBook,
@@ -9,7 +9,6 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaShoppingCart,
-  FaArrowLeft,
   FaRegHeart,
   FaHeart,
 } from "react-icons/fa";
@@ -29,6 +28,7 @@ import { getAlert } from "../../utilities/getAlert";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Avatar from "../../components/Avatar/Avatar";
 import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
+import BackButton from "../../components/BackButton/BackButton";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -193,13 +193,7 @@ const BookDetails = () => {
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
           {/* Back Button */}
-          <Link
-            to={-1}
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold mb-6 sm:mb-8 transition-colors"
-          >
-            <FaArrowLeft />
-            <span className="text-sm sm:text-base">Go Back</span>
-          </Link>
+          <BackButton label="Go Back" />
 
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12">
             {/* Book Image */}

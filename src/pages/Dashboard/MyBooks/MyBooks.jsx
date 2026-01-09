@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { FaEdit, FaBook } from "react-icons/fa";
 import {
   Table,
@@ -229,13 +229,12 @@ const MyBooks = () => {
             </>
           ) : (
             <div className="card bg-base-100 shadow-xl">
-              <div className="card-body text-center py-12">
+              <div className="card-body items-center text-center py-12">
                 <FaBook className="text-6xl  mx-auto mb-4" />
                 <h3 className="text-xl font-semibold  mb-2">No Books Found</h3>
                 <p className=" mb-4">You haven't added any books yet.</p>
                 <Button
                   handleClick={() => navigate("/dashboard/add-book")}
-                  className="btn btn-primary mx-auto"
                 >
                   Add Your First Book
                 </Button>

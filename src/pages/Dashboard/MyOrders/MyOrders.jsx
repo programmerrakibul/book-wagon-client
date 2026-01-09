@@ -7,6 +7,7 @@ import {
   FaCreditCard,
   FaCheckCircle,
   FaTimesCircle,
+  FaBook,
 } from "react-icons/fa";
 import {
   Table,
@@ -154,8 +155,11 @@ const MyOrders = () => {
                 <p className="text-sm sm:text-base  mb-4">
                   You haven't placed any orders yet.
                 </p>
-                <Link to="/books" className="btn btn-primary btn-sm sm:btn-md">
-                  Browse Books
+                <Link to="/books">
+                  <Button>
+                    <FaBook />
+                    Browse Books
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -247,7 +251,7 @@ const MyOrders = () => {
                                 <>
                                   <Button
                                     handleClick={() => handlePayment(order)}
-                                    className="btn-sm!"
+                                    className="btn-sm! text-xs!"
                                   >
                                     <FaCreditCard />
                                     Pay Now
@@ -257,7 +261,7 @@ const MyOrders = () => {
                                     onClick={() =>
                                       handleOrderStatus(order._id, "cancelled")
                                     }
-                                    className="btn btn-sm! btn-error text-xs"
+                                    className="btn btn-sm! btn-error text-xs!"
                                   >
                                     <FaTimes />
                                     Cancel

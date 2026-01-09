@@ -11,6 +11,9 @@ import Avatar from "../../../components/Avatar/Avatar";
 import { FiSun } from "react-icons/fi";
 import { IoMoonOutline } from "react-icons/io5";
 import useTheme from "../../../hooks/useTheme";
+import AvatarDropdown from "../../../components/AvatarDropdown/AvatarDropdown";
+
+
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -19,11 +22,11 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { label: "Home", slug: "/" },
-    { label: "Books", slug: "/books" },
-    { label: "About Us", slug: "/about-us" },
-    { label: "Contact Us", slug: "/contact-us" },
-  ];
+  { label: "Home", slug: "/" },
+  { label: "Books", slug: "/books" },
+  { label: "About Us", slug: "/about-us" },
+  { label: "Contact Us", slug: "/contact-us" },
+];
 
   if (user) {
     const dashboard = { label: "Dashboard", slug: "/dashboard" };
@@ -87,7 +90,7 @@ const Navbar = () => {
               {/* Desktop Auth Section */}
               {user ? (
                 <div className="hidden lg:flex items-center gap-3">
-                  <Avatar src={user.photoURL} alt={user.displayName} />
+                  <AvatarDropdown />
 
                   <Button onClick={() => handleLogout(logOutUser)}>
                     <LuLogOut />

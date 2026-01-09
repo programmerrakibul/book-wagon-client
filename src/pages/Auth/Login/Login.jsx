@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import MyInput from "../../../components/MyInput/MyInput";
 import MyLabel from "../../../components/MyLabel/MyLabel";
 import Button from "../../../components/Button/Button";
@@ -14,6 +13,8 @@ import { toast } from "sonner";
 import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { postUser } from "../../../utilities/postUser";
+import BackButton from "../../../components/BackButton/BackButton";
+import EyeButton from "../../../components/EyeButton/EyeButton";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,13 +57,7 @@ const Login = () => {
       <div className="min-h-dvh flex items-center justify-center bg-secondary/5 py-12 md:px-4">
         <div className="card w-full max-w-md bg-base-100 shadow-xl">
           <div className="card-body">
-            <Link
-              to="/"
-              className="group flex items-center gap-2 hover:text-primary transition-all duration-300 mb-4 w-fit"
-            >
-              <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-              <span className="text-sm font-medium">Back to Home</span>
-            </Link>
+            <BackButton to={"/"} label="Back to Home" />
 
             <h2 className="card-title text-3xl font-bold text-center text-primary! mb-6">
               Login to Your Account
@@ -102,18 +97,11 @@ const Login = () => {
                       required: "Password is required",
                     })}
                   />
-                  <button
-                    type="button"
-                    disabled={loading || googleLoading}
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-white/40 dark:hover:text-white/60 z-10"
-                  >
-                    {showPassword ? (
-                      <FaEyeSlash className="w-5 h-5" />
-                    ) : (
-                      <FaEye className="w-5 h-5" />
-                    )}
-                  </button>
+
+                  <EyeButton
+                    showPassword={showPassword}
+                    setShowPassword={setShowPassword}
+                  />
                 </div>
                 <ErrorMessage message={errors.password?.message} />
               </div>

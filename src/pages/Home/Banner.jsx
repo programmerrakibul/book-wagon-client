@@ -100,7 +100,7 @@ const Banner = () => {
               animate="visible"
             >
               <Container>
-                <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 min-h-[500px] sm:min-h-[600px] lg:min-h-[700px]">
+                <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 h-[70dvh]">
                   {/* Left Side - Text Content */}
                   <div className="flex-1 text-center lg:text-left">
                     <motion.h1

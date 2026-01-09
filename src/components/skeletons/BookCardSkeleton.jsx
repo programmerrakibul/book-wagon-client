@@ -62,6 +62,19 @@ const BookCardSkeleton = ({ length = 6 }) => {
               animation="wave"
             />
 
+            {/* Description Skeleton */}
+            <Skeleton
+              variant="text"
+              sx={{
+                fontSize: { xs: "0.813rem", sm: "0.875rem", md: "0.938rem" },
+                mb: { xs: 1, sm: 1.5 },
+                width: "80%",
+                bgcolor: "rgba(0, 0, 0, 0.11)",
+              }}
+              className="dark:bg-white/10!"
+              animation="wave"
+            />
+
             {/* Author Skeleton */}
             <Box
               sx={{

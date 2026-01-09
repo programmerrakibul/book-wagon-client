@@ -69,7 +69,7 @@ h6 {
 }
 
 .dashboard_nav_links.active {
-  @apply bg-primary shadow-lg scale-105;
+  @apply bg-primary shadow-lg scale-105 text-neutral dark:text-white;
 }
 
 .input,
@@ -95,8 +95,16 @@ h6 {
   @apply btn btn-square text-xl! w-fit sm:text-2xl! bg-transparent rounded-full shadow-none border-none tooltip tooltip-left;
 }
 
+.MuiPaginationItem-root:hover {
+  @apply bg-primary/20!;
+}
+
 .MuiPaginationItem-root {
-  @apply dark:text-white!;
+  @apply dark:text-white! font-medium! text-sm sm:text-base;
+}
+
+.MuiPaginationItem-root.Mui-selected {
+  @apply bg-primary/70! font-bold!;
 }
 
 .MuiTableRow-root {
@@ -152,7 +160,7 @@ h6 {
 }
 
 .authors-swiper {
-  @apply w-full! py-12! 
+  @apply w-full! py-12!;
 }
 
 .authors-swiper .swiper-slide {
