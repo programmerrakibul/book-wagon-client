@@ -87,9 +87,9 @@ const Books = () => {
           />
 
           {/* Search and Sort Section */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6 sm:mb-8 lg:mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 sm:mb-8 lg:mb-10">
             {/* Search Input */}
-            <div className="flex-1">
+            <div className="col-span-2">
               <div className="relative">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base" />
                 <input
@@ -103,7 +103,7 @@ const Books = () => {
             </div>
 
             {/* Filter Dropdown */}
-            <div className="sm:w-64">
+            <div className="col-span-1">
               <div className="relative">
                 <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
                 <select
@@ -124,7 +124,7 @@ const Books = () => {
             </div>
 
             {/* Sort Dropdown */}
-            <div className="sm:w-64">
+            <div className="col-span-1">
               <div className="relative">
                 <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
                 <select
