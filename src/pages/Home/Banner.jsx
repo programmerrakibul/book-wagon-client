@@ -100,7 +100,7 @@ const Banner = () => {
               animate="visible"
             >
               <Container>
-                <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 h-[70dvh]">
+                <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 min-h-[70dvh]">
                   {/* Left Side - Text Content */}
                   <div className="flex-1 text-center lg:text-left">
                     <motion.h1
@@ -131,12 +131,12 @@ const Banner = () => {
                     variants={slideVariants}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}
-                    className="flex-1 max-w-[350px] sm:max-w-[390px] md:max-w-[450px] lg:w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+                    className="flex-1 "
                   >
                     <img
                       src={slide.image}
                       alt={slide.title}
-                      className="w-full h-full object-cover"
+                      className="w-full  object-cover max-w-[350px] sm:max-w-[390px] md:max-w-[450px] lg:w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
                     />
                   </motion.div>
                 </div>
