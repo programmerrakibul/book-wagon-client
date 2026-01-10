@@ -8,6 +8,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
   FaBook,
+  FaShippingFast,
 } from "react-icons/fa";
 import {
   Table,
@@ -133,6 +134,40 @@ const MyOrders = () => {
     }
   };
 
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      pending: {
+        label: "Pending",
+        icon: <FaTimesCircle className="text-xs" />,
+        className: "badge-warning",
+      },
+      cancelled: {
+        label: "Cancelled",
+        icon: <FaTimesCircle className="text-xs" />,
+        className: "badge-error",
+      },
+      delivered: {
+        label: "Completed",
+        icon: <FaCheckCircle className="text-xs" />,
+        className: "badge-success",
+      },
+      shipped: {
+        label: "Shipped",
+        icon: <FaShippingFast className="text-xs" />,
+        className: "badge-info",
+      },
+    };
+
+    const badgeConfig = statusConfig[status] || "";
+
+    return (
+      <span className={`badge ${badgeConfig.className} gap-1 badge-sm`}>
+        {badgeConfig.icon}
+        {badgeConfig.label}
+      </span>
+    );
+  };
+
   return (
     <>
       <title>My Orders - BookWagon</title>
@@ -211,26 +246,7 @@ const MyOrders = () => {
                           <TableCell className="font-bold text-primary text-nowrap text-sm lg:text-base">
                             ৳ {order.orderedBook.price}
                           </TableCell>
-                          <TableCell>
-                            {order.status === "pending" && (
-                              <span className="badge badge-warning gap-1 badge-sm">
-                                <FaTimesCircle className="text-xs" />
-                                Pending
-                              </span>
-                            )}
-                            {order.status === "cancelled" && (
-                              <span className="badge badge-error gap-1 badge-sm">
-                                <FaTimesCircle className="text-xs" />
-                                Cancelled
-                              </span>
-                            )}
-                            {order.status === "completed" && (
-                              <span className="badge badge-success gap-1 badge-sm">
-                                <FaCheckCircle className="text-xs" />
-                                Completed
-                              </span>
-                            )}
-                          </TableCell>
+                          <TableCell>{getStatusBadge(order.status)}</TableCell>
                           <TableCell>
                             {order.paymentStatus === "paid" ? (
                               <span className="badge badge-success gap-1 badge-sm">
