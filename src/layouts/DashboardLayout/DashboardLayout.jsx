@@ -13,7 +13,7 @@ import {
   FaFileInvoiceDollar,
   FaHeart,
 } from "react-icons/fa";
-import { IoLibrary,  } from "react-icons/io5";
+import { IoLibrary } from "react-icons/io5";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
 import Avatar from "../../components/Avatar/Avatar";
@@ -21,10 +21,89 @@ import Container from "../../pages/shared/Container/Container";
 import useRole from "../../hooks/useRole";
 import Loading from "../../components/Loading/Loading";
 import AvatarDropdown from "../../components/AvatarDropdown/AvatarDropdown";
+import { useMemo } from "react";
 
 const DashboardLayout = () => {
-  const { user,  } = useAuth();
+  const { user } = useAuth();
   const { role, roleLoading } = useRole();
+
+  const menuItems = useMemo(() => {
+    const items = [
+      {
+        to: "/dashboard",
+        label: "Overview",
+        icon: <MdDashboard />,
+      },
+      {
+        to: "/dashboard/profile",
+        label: "Profile",
+        icon: <FaUser />,
+      },
+    ];
+
+    if (role === "user") {
+      const userMenu = [
+        {
+          to: "/dashboard/my-orders",
+          label: "My Orders",
+          icon: <MdShoppingCart />,
+        },
+        {
+          to: "/dashboard/my-wishlist",
+          label: "My Wishlist",
+          icon: <FaHeart />,
+        },
+        {
+          to: "/dashboard/invoices",
+          label: "Invoices",
+          icon: <FaFileInvoiceDollar />,
+        },
+      ];
+
+      items.splice(1, 0, ...userMenu);
+    }
+
+    if (role === "admin") {
+      const adminMenu = [
+        {
+          to: "/dashboard/manage-books",
+          label: "Manage Books",
+          icon: <IoLibrary />,
+        },
+        {
+          to: "/dashboard/manage-users",
+          label: "Manage Users",
+          icon: <FaUsers />,
+        },
+      ];
+
+      items.splice(1, 0, ...adminMenu);
+    }
+
+    if (role === "librarian") {
+      const librarianMenu = [
+        {
+          to: "/dashboard/add-book",
+          label: "Add Book",
+          icon: <MdLibraryAdd />,
+        },
+        {
+          to: "/dashboard/my-books",
+          label: "My Books",
+          icon: <IoLibrary />,
+        },
+        {
+          to: "/dashboard/all-orders",
+          label: "All Orders",
+          icon: <MdShoppingCart />,
+        },
+      ];
+
+      items.splice(1, 0, ...librarianMenu);
+    }
+
+    return items;
+  }, [role]);
 
   if (roleLoading) {
     return (
@@ -32,74 +111,6 @@ const DashboardLayout = () => {
         <Loading />
       </div>
     );
-  }
-
-  const menuItems = [
-    {
-      to: "/dashboard",
-      label: "Overview",
-      icon: <MdDashboard />,
-    },
-    {
-      to: "/dashboard/my-orders",
-      label: "My Orders",
-      icon: <MdShoppingCart />,
-    },
-    {
-      to: "/dashboard/my-wishlist",
-      label: "My Wishlist",
-      icon: <FaHeart />,
-    },
-    {
-      to: "/dashboard/invoices",
-      label: "Invoices",
-      icon: <FaFileInvoiceDollar />,
-    },
-
-    {
-      to: "/dashboard/profile",
-      label: "Profile",
-      icon: <FaUser />,
-    },
-  ];
-
-  if (role === "admin") {
-    const admin = [
-      {
-        to: "/dashboard/manage-books",
-        label: "Manage Books",
-        icon: <IoLibrary />,
-      },
-      {
-        to: "/dashboard/manage-users",
-        label: "Manage Users",
-        icon: <FaUsers />,
-      },
-    ];
-
-    menuItems.splice(3, 0, ...admin);
-  }
-
-  if (role === "librarian") {
-    const librarian = [
-      {
-        to: "/dashboard/all-orders",
-        label: "All Orders",
-        icon: <MdShoppingCart />,
-      },
-      {
-        to: "/dashboard/add-book",
-        label: "Add Book",
-        icon: <MdLibraryAdd />,
-      },
-      {
-        to: "/dashboard/my-books",
-        label: "My Books",
-        icon: <IoLibrary />,
-      },
-    ];
-
-    menuItems.splice(3, 0, ...librarian);
   }
 
   return (
@@ -138,7 +149,7 @@ const DashboardLayout = () => {
                 </div>
 
                 {/* Avatar Dropdown */}
-                <AvatarDropdown/>
+                <AvatarDropdown />
               </div>
             </Container>
           </nav>
