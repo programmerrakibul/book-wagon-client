@@ -5,98 +5,161 @@ import {
   FaCheckCircle,
   FaClock,
   FaTruck,
+  FaTimesCircle,
+  FaMoneyBillWave,
+  FaCreditCard,
 } from "react-icons/fa";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  LineChart,
+  Line,
+} from "recharts";
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
+import useAuth from "../../../hooks/useAuth";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import { useQuery } from "@tanstack/react-query";
+import useTheme from "../../../hooks/useTheme";
+import { Link } from "react-router";
 
 const UserOverview = () => {
-  const stats = [
-    {
-      title: "Total Orders",
-      value: "12",
-      icon: <FaShoppingCart />,
-      color: "primary",
-    },
-    {
-      title: "Wishlist Items",
-      value: "8",
-      icon: <FaHeart />,
-      color: "error",
-    },
-    {
-      title: "Books Purchased",
-      value: "15",
-      icon: <FaBook />,
-      color: "secondary",
-    },
-    {
-      title: "Completed Orders",
-      value: "9",
-      icon: <FaCheckCircle />,
-      color: "success",
-    },
-  ];
+  const { user } = useAuth();
+  const secureAxios = useSecureAxios();
+  const { theme } = useTheme();
 
-  const recentOrders = [
-    {
-      id: "ORD-501",
-      book: "The Great Gatsby",
-      image: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=100",
-      amount: "৳ 450",
-      status: "Delivered",
-      date: "Dec 8, 2025",
-    },
-    {
-      id: "ORD-502",
-      book: "To Kill a Mockingbird",
-      image:
-        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=100",
-      amount: "৳ 380",
-      status: "Shipped",
-      date: "Dec 10, 2025",
-    },
-    {
-      id: "ORD-503",
-      book: "1984",
-      image:
-        "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=100",
-      amount: "৳ 420",
-      status: "Processing",
-      date: "Dec 12, 2025",
-    },
-  ];
+  const { data: dashboardData, isLoading } = useQuery({
+    queryKey: [user.email, "user-dashboard-overview"],
+    queryFn: async () => {
+      const { data } = await secureAxios.get(`/dashboard/user/${user.email}`);
 
-  const wishlistBooks = [
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      price: "৳ 390",
-      image:
-        "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=100",
+      return data?.data;
     },
-    {
-      title: "The Catcher in the Rye",
-      author: "J.D. Salinger",
-      price: "৳ 420",
-      image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=100",
-    },
-    {
-      title: "Brave New World",
-      author: "Aldous Huxley",
-      price: "৳ 460",
-      image:
-        "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=100",
-    },
-  ];
+  });
 
-  const getStatusBadge = (status) => {
+  if (isLoading) {
+    return (
+      <section className="py-6 sm:py-8 lg:py-10">
+        <Container>
+          <div className="flex justify-center items-center h-64">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  console.log(dashboardData);
+
+  const stats = dashboardData
+    ? [
+        {
+          title: "Total Orders",
+          value: dashboardData?.stats?.totalOrders?.toString(),
+          icon: <FaShoppingCart />,
+          color: "primary",
+          trend: "+2",
+        },
+        {
+          title: "Wishlist Items",
+          value: dashboardData?.stats?.wishlistItems?.toString(),
+          icon: <FaHeart />,
+          color: "error",
+          trend: "+1",
+        },
+        {
+          title: "Books Purchased",
+          value: dashboardData?.stats?.booksPurchased?.toString(),
+          icon: <FaBook />,
+          color: "secondary",
+          trend: "+3",
+        },
+        {
+          title: "Completed Orders",
+          value: dashboardData?.stats?.completedOrders?.toString(),
+          icon: <FaCheckCircle />,
+          color: "success",
+          trend: "+1",
+        },
+      ]
+    : [];
+
+  const getStatusBadge = (status, paymentStatus) => {
     const badges = {
-      Delivered: { class: "badge-success", icon: <FaCheckCircle /> },
-      Shipped: { class: "badge-info", icon: <FaTruck /> },
-      Processing: { class: "badge-warning", icon: <FaClock /> },
+      delivered: {
+        class: "badge-success",
+        icon: <FaCheckCircle />,
+        label: "Delivered",
+      },
+      shipped: {
+        class: "badge-info",
+        icon: <FaTruck />,
+        label: "Shipped",
+      },
+      pending: {
+        class: "badge-warning",
+        icon: <FaClock />,
+        label: "Processing",
+      },
+      cancelled: {
+        class: "badge-error",
+        icon: <FaTimesCircle />,
+        label: "Cancelled",
+      },
     };
-    return badges[status] || { class: "badge-ghost", icon: null };
+
+    const paymentBadge =
+      paymentStatus === "paid"
+        ? { class: "badge-success", icon: <FaMoneyBillWave />, label: "Paid" }
+        : { class: "badge-error", icon: <FaCreditCard />, label: "Unpaid" };
+
+    return {
+      order: badges[status] || {
+        class: "badge-ghost",
+        icon: null,
+        label: status,
+      },
+      payment: paymentBadge,
+    };
   };
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
+  const STATUS_COLORS = {
+    pending: "#FFBB28",
+    shipped: "#0088FE",
+    delivered: "#00C49F",
+    cancelled: "#FF8042",
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-BD", {
+      style: "currency",
+      currency: "BDT",
+      minimumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  if (!dashboardData) {
+    return (
+      <section className="py-6 sm:py-8 lg:py-10">
+        <Container>
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-bold mb-4">No data available</h2>
+            <p>Start your reading journey by making your first purchase!</p>
+          </div>
+        </Container>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -115,102 +178,225 @@ const UserOverview = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="card bg-base-100 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="card bg-base-100 dark:bg-base-200 shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <div className="card-body p-4 sm:p-6 text-center">
-                  <div
-                    className={`mx-auto p-3 sm:p-4 rounded-full bg-${stat.color}/10 text-${stat.color} w-fit mb-3`}
-                  >
-                    <span className="text-2xl sm:text-3xl">{stat.icon}</span>
+                <div className="card-body items-center p-4 sm:p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <div
+                      className={`p-3 rounded-xl bg-${stat.color}/10 text-${stat.color}`}
+                    >
+                      <span className="text-2xl">{stat.icon}</span>
+                    </div>
                   </div>
-                  <h3 className="text-xs sm:text-sm  mb-1">{stat.title}</h3>
-                  <p className="text-2xl sm:text-3xl font-bold ">
-                    {stat.value}
-                  </p>
+                  <h3 className="text-sm mb-1">{stat.title}</h3>
+                  <p className="text-3xl font-bold">{stat.value}</p>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
+            {/* Orders Trend Chart */}
+            <div className="card bg-base-100 dark:bg-base-200 shadow-lg">
+              <div className="card-body">
+                <h2 className="card-title mb-6">Monthly Orders & Spending</h2>
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={dashboardData?.chartData}>
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        // stroke="hsl(var(--bc)/0.2)"
+                      />
+                      <XAxis
+                        dataKey="month"
+                        tickFormatter={(month) => `Month ${month}`}
+                        stroke={theme === "light" ? "black" : "white"}
+                      />
+                      <YAxis
+                        yAxisId="left"
+                        stroke={theme === "light" ? "black" : "white"}
+                      />
+                      <YAxis
+                        yAxisId="right"
+                        orientation="right"
+                        stroke={theme === "light" ? "black" : "white"}
+                      />
+                      <Tooltip
+                        formatter={(value, name) => {
+                          if (name === "amount")
+                            return [formatCurrency(value), "Amount"];
+                          return [value, "Orders"];
+                        }}
+                        contentStyle={{
+                          backgroundColor: "hsl(var(--b1))",
+                          borderColor: "hsl(var(--bc)/0.2)",
+                          color: theme === "light" ? "black" : "white",
+                        }}
+                      />
+                      <Legend />
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="amount"
+                        name="Amount"
+                        stroke="hsl(var(--s))"
+                        strokeWidth={2}
+                        dot={{ r: 4 }}
+                      />
+                      <Bar
+                        yAxisId="left"
+                        dataKey="orders"
+                        name="Orders"
+                        fill="#6aece1"
+                        radius={[4, 4, 0, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+
+            {/* Order Status Distribution */}
+            <div className="card bg-base-100 dark:bg-base-200 shadow-lg">
+              <div className="card-body">
+                <h2 className="card-title mb-6">Order Status Distribution</h2>
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={Object.entries(
+                          dashboardData.statusDistribution
+                        ).map(([name, value]) => ({
+                          name: name.charAt(0).toUpperCase() + name.slice(1),
+                          value,
+                          color: STATUS_COLORS[name] || "#8884d8",
+                        }))}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) =>
+                          `${name}: ${(percent * 100).toFixed(0)}%`
+                        }
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {Object.entries(dashboardData.statusDistribution).map(
+                          (entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={
+                                STATUS_COLORS[entry[0]] ||
+                                COLORS[index % COLORS.length]
+                              }
+                            />
+                          )
+                        )}
+                      </Pie>
+                      <Tooltip formatter={(value) => [value, "Orders"]} />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Recent Orders */}
             <div className="lg:col-span-2">
-              <div className="card bg-base-100 shadow-lg">
+              <div className="card bg-base-100 dark:bg-base-200 shadow-lg lg:sticky lg:top-20">
                 <div className="card-body p-4 sm:p-6">
-                  <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <h2 className="text-lg sm:text-xl font-bold  flex items-center gap-2">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
                       <FaShoppingCart className="text-primary" />
                       Recent Orders
                     </h2>
-                    <button className="btn btn-sm btn-ghost text-primary">
+                    <Link
+                      to={"my-orders"}
+                      className="link link-primary link-hover md:text-base font-semibold"
+                    >
                       View All
-                    </button>
+                    </Link>
                   </div>
 
-                  <div className="space-y-4">
-                    {recentOrders.map((order) => {
-                      const statusBadge = getStatusBadge(order.status);
-                      return (
-                        <div
-                          key={order.id}
-                          className="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-base-200 rounded-lg hover:shadow-md transition-shadow"
-                        >
-                          <img
-                            src={order.image}
-                            alt={order.book}
-                            className="w-16 h-20 sm:w-20 sm:h-24 object-cover rounded shadow"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-start mb-2">
-                              <div className="flex-1 min-w-0">
-                                <h4 className="font-bold text-sm sm:text-base  truncate">
-                                  {order.book}
-                                </h4>
-                                <p className="text-xs ">{order.id}</p>
-                              </div>
-                              <span
-                                className={`badge badge-sm ${statusBadge.class} gap-1 ml-2`}
-                              >
-                                {statusBadge.icon}
-                                {order.status}
-                              </span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                              <span className="text-xs sm:text-sm ">
-                                {order.date}
-                              </span>
-                              <span className="font-bold text-primary text-sm sm:text-base">
-                                {order.amount}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div className="overflow-x-auto">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Book</th>
+                          <th>Date</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {dashboardData.recentOrders.map((order) => {
+                          const badges = getStatusBadge(
+                            order.status,
+                            order.paymentStatus
+                          );
+                          return (
+                            <tr key={order.id} className="hover">
+                              <td>
+                                <div className="flex items-center gap-3 min-w-[200px]">
+                                  <div className="avatar">
+                                    <div className="mask mask-squircle w-12 h-12">
+                                      <img
+                                        src={order.bookImage}
+                                        alt={order.bookName}
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div className="font-bold line-clamp-1">
+                                      {order.bookName}
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="text-nowrap">{order.date}</td>
+                              <td className="font-bold">{order.amount}</td>
+                              <td>
+                                <span
+                                  className={`badge gap-1 ${badges.payment.class}`}
+                                >
+                                  {badges.payment.icon}
+                                  {badges.payment.label}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Wishlist */}
-            <div>
-              <div className="card bg-base-100 shadow-lg">
+            {/* Wishlist & Quick Stats */}
+            <div className="space-y-6 sm:gap-8">
+              {/* Wishlist */}
+              <div className="card bg-base-100 dark:bg-base-200 shadow-lg">
                 <div className="card-body p-4 sm:p-6">
-                  <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <h2 className="text-lg sm:text-xl font-bold  flex items-center gap-2">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
                       <FaHeart className="text-error" />
                       My Wishlist
                     </h2>
-                    <button className="btn btn-sm btn-ghost text-error">
+                    <Link to={'my-wishlist'} className="link link-primary link-hover font-semibold md:text-base">
                       View All
-                    </button>
+                    </Link>
                   </div>
 
                   <div className="space-y-4">
-                    {wishlistBooks.map((book, index) => (
+                    {dashboardData.wishlist.slice(0, 3).map((book, index) => (
                       <div
                         key={index}
-                        className="flex gap-3 p-3 bg-base-200 rounded-lg hover:shadow-md transition-shadow"
+                        className="flex gap-3 p-3 bg-base-200 dark:bg-base-300 rounded-lg hover:shadow-md transition-shadow"
                       >
                         <img
                           src={book.image}
@@ -218,47 +404,45 @@ const UserOverview = () => {
                           className="w-12 h-16 object-cover rounded shadow"
                         />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm  truncate mb-1">
+                          <h4 className="font-semibold text-sm truncate mb-1">
                             {book.title}
                           </h4>
-                          <p className="text-xs  mb-2">{book.author}</p>
-                          <p className="font-bold text-primary text-sm">
-                            {book.price}
-                          </p>
+                          <p className="text-xs mb-2">{book.author}</p>
+                          <div className="flex justify-between items-center">
+                            <p className="font-bold text-primary text-sm">
+                              {book.price}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Reading Stats */}
-          <div className="mt-8 sm:mt-10">
-            <div className="card bg-linear-to-br from-primary/10 to-secondary/10 shadow-lg">
-              <div className="card-body p-4 sm:p-6">
-                <h2 className="text-lg sm:text-xl font-bold  mb-4 sm:mb-6">
-                  Your Reading Journey
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                  <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm  mb-2">Total Spent</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-primary">
-                      ৳ 6,840
-                    </p>
-                  </div>
-                  <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm  mb-2">Books This Month</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-secondary">
-                      3
-                    </p>
-                  </div>
-                  <div className="text-center p-4 bg-base-100 rounded-lg">
-                    <p className="text-xs sm:text-sm  mb-2">Member Since</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-accent">
-                      2024
-                    </p>
+              {/* Quick Stats */}
+              <div className="card bg-linear-to-br from-primary/10 to-secondary/10 shadow-lg">
+                <div className="card-body p-6">
+                  <h2 className="card-title mb-6">Reading Summary</h2>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center pb-3 border-b border-base-300">
+                      <span>Total Spent</span>
+                      <span className="text-xl font-bold text-primary">
+                        {formatCurrency(dashboardData.stats.totalSpent)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center pb-3 border-b border-base-300">
+                      <span>Books This Month</span>
+                      <span className="text-xl font-bold text-primary">
+                        {dashboardData.stats.booksThisMonth}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Member Since</span>
+                      <span className="text-xl font-bold text-primary">
+                        {dashboardData.stats.memberSince}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

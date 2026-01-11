@@ -166,3 +166,7 @@ h6 {
 .authors-swiper .swiper-slide {
   @apply bg-center! bg-cover! w-[280px]! h-auto!;
 }
+
+.recharts-cartesian-axis-tick-value{
+  @apply text-neutral! dark:text-white!
+}
