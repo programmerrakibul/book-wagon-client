@@ -21,7 +21,6 @@ import {
   Pie,
   Cell,
   Legend,
-  LineChart,
   Line,
 } from "recharts";
 import Container from "../../shared/Container/Container";
@@ -31,6 +30,7 @@ import useSecureAxios from "../../../hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
 import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router";
+import Loading from "../../../components/Loading/Loading";
 
 const UserOverview = () => {
   const { user } = useAuth();
@@ -47,18 +47,8 @@ const UserOverview = () => {
   });
 
   if (isLoading) {
-    return (
-      <section className="py-6 sm:py-8 lg:py-10">
-        <Container>
-          <div className="flex justify-center items-center h-64">
-            <span className="loading loading-spinner loading-lg"></span>
-          </div>
-        </Container>
-      </section>
-    );
+    return <Loading />;
   }
-
-  console.log(dashboardData);
 
   const stats = dashboardData
     ? [
@@ -67,28 +57,24 @@ const UserOverview = () => {
           value: dashboardData?.stats?.totalOrders?.toString(),
           icon: <FaShoppingCart />,
           color: "primary",
-          trend: "+2",
         },
         {
           title: "Wishlist Items",
           value: dashboardData?.stats?.wishlistItems?.toString(),
           icon: <FaHeart />,
           color: "error",
-          trend: "+1",
         },
         {
           title: "Books Purchased",
           value: dashboardData?.stats?.booksPurchased?.toString(),
           icon: <FaBook />,
           color: "secondary",
-          trend: "+3",
         },
         {
           title: "Completed Orders",
           value: dashboardData?.stats?.completedOrders?.toString(),
           icon: <FaCheckCircle />,
           color: "success",
-          trend: "+1",
         },
       ]
     : [];
@@ -387,7 +373,10 @@ const UserOverview = () => {
                       <FaHeart className="text-error" />
                       My Wishlist
                     </h2>
-                    <Link to={'my-wishlist'} className="link link-primary link-hover font-semibold md:text-base">
+                    <Link
+                      to={"my-wishlist"}
+                      className="link link-primary link-hover font-semibold md:text-base"
+                    >
                       View All
                     </Link>
                   </div>
