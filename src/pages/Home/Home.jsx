@@ -5,6 +5,7 @@ import Coverage from "./Coverage";
 import FAQ from "./FAQ";
 import LatestBooks from "./LatestBooks";
 import NewsLetter from "./NewsLetter";
+import Values from "./Values";
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <LatestBooks />
       <Authors />
       <ChooseUs />
+      <Values />
       <Coverage />
       <FAQ />
       <NewsLetter />
