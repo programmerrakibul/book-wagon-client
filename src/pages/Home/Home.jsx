@@ -5,6 +5,7 @@ import Coverage from "./Coverage";
 import FAQ from "./FAQ";
 import LatestBooks from "./LatestBooks";
 import NewsLetter from "./NewsLetter";
+import ReadingTips from "./ReadingTips";
 import Values from "./Values";
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
 
       <Banner />
       <LatestBooks />
+      <ReadingTips />
       <Authors />
       <ChooseUs />
       <Values />
