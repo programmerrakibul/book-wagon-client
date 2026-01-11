@@ -57,7 +57,6 @@ const LibrarianOverview = () => {
           change: `${dashboardData.stats.myBooks > 0 ? "+" : ""}${Math.round(
             (dashboardData.stats.myBooks / 100) * 5
           )}%`,
-          trend: "up",
           icon: <FaBook />,
           color: "primary",
           description: "Total published books",
