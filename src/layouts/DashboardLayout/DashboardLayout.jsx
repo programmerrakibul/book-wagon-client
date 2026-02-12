@@ -41,8 +41,8 @@ const DashboardLayout = () => {
       },
     ];
 
-    if (role === "user") {
-      const userMenu = [
+    if (["user", "librarian"].includes(role)) {
+      const menu = [
         {
           to: "/dashboard/my-orders",
           label: "My Orders",
@@ -60,7 +60,7 @@ const DashboardLayout = () => {
         },
       ];
 
-      items.splice(1, 0, ...userMenu);
+      items.splice(1, 0, ...menu);
     }
 
     if (role === "admin") {
@@ -99,7 +99,7 @@ const DashboardLayout = () => {
         },
       ];
 
-      items.splice(1, 0, ...librarianMenu);
+      items.splice(4, 0, ...librarianMenu);
     }
 
     return items;
