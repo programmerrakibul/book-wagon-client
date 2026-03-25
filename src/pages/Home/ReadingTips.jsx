@@ -83,8 +83,6 @@ const ReadingTips = () => {
 
   return (
     <>
-      <title>Reading Tips - BookWagon</title>
-
       <section>
         <Container>
           {/* Header */}
