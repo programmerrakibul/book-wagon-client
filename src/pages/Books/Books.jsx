@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { FaBook, FaSearch, FaSort } from "react-icons/fa";
 import { Pagination, Box } from "@mui/material";
 import usePublicAxios from "../../hooks/usePublicAxios";
@@ -7,37 +6,41 @@ import Container from "../shared/Container/Container";
 import BookCard from "../../components/BookCard/BookCard";
 import Heading from "../../components/Heading/Heading";
 import BookCardSkeleton from "../../components/skeletons/BookCardSkeleton";
+import { useSearchParams } from "react-router";
 
 const Books = () => {
   const publicAxios = usePublicAxios();
-  const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filterQuery, setFilterQuery] = useState("");
-  const [sort, setSort] = useState("");
-  const booksPerPage = 10;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = searchParams.get("page") || 1;
+  const search = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const sortOrder = searchParams.get("sortOrder") || "";
+  const category = searchParams.get("category") || "";
 
   const {
     data = {},
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["all-books", page, searchQuery, sort, filterQuery],
+    queryKey: ["all-books", page, search, sortBy, sortOrder, category],
     queryFn: async () => {
       const { data = {} } = await publicAxios.get("/books", {
         params: {
           fields: "bookName,bookImage,author,price,quantity,description",
-          limit: booksPerPage,
-          skip: (page - 1) * booksPerPage,
-          search: searchQuery,
-          sortBy: sort.split("-")[0],
-          sortOrder: sort.split("-")[1],
-          category: filterQuery,
+          page,
+          search,
+          sortBy,
+          sortOrder,
+          category,
         },
       });
 
       return data;
     },
   });
+
+  console.log(data);
 
   const { data: categories = [], isLoading: categoryLoading } = useQuery({
     queryKey: ["categories"],
@@ -52,26 +55,75 @@ const Books = () => {
     },
   });
 
-  const books = data?.books || [];
-  const totalBooks = data?.total || 0;
-  const totalPages = Math.ceil(totalBooks / booksPerPage);
+  const books = data?.data || [];
+  const { totalPages, totalDocs, ...pagination } = data?.pagination || {};
 
   const handlePageChange = (_event, value) => {
-    setPage(value);
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set("page", value);
+        return newParams;
+      },
+      { replace: true },
+    );
+
+    refetch();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSearch = (e) => {
+    const value = e.target.value.trim();
+
+    console.log(value);
+
+    value && setSearchParams({ search: value, page: "1" }, { replace: true });
+
     refetch();
-    setSearchQuery(e.target.value.trim());
-    setPage(1);
+  };
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value.trim();
+
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+
+        newParams.set("category", value);
+        newParams.set("page", "1");
+
+        if (!value) newParams.delete("category");
+
+        return newParams;
+      },
+      { replace: true },
+    );
+
+    refetch();
   };
 
   const handleSort = (e) => {
     const sort = e.target.value;
-    setSort(sort);
+
+    const [sortBy, sortOrder] = sort.split("-");
+
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+
+        newParams.set("sortBy", sortBy);
+        newParams.set("sortOrder", sortOrder);
+        newParams.set("page", "1");
+
+        if (!sortBy) newParams.delete("sortBy");
+        if (!sortOrder) newParams.delete("sortOrder");
+
+        return newParams;
+      },
+      { replace: true },
+    );
+
     refetch();
-    setPage(1);
   };
 
   return (
@@ -95,7 +147,7 @@ const Books = () => {
                 <input
                   type="text"
                   placeholder="Search books by title, author, or category..."
-                  value={searchQuery}
+                  value={search}
                   onChange={handleSearch}
                   className="input input-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary"
                 />
@@ -107,8 +159,8 @@ const Books = () => {
               <div className="relative">
                 <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
                 <select
-                  value={filterQuery}
-                  onChange={(e) => setFilterQuery(e.currentTarget.value)}
+                  value={category}
+                  onChange={handleCategoryChange}
                   disabled={categoryLoading}
                   className="select select-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary appearance-none"
                 >
@@ -128,11 +180,11 @@ const Books = () => {
               <div className="relative">
                 <FaSort className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base pointer-events-none z-10" />
                 <select
-                  value={sort}
+                  value={`${sortBy}-${sortOrder}`}
                   onChange={handleSort}
                   className="select select-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary appearance-none"
                 >
-                  <option value="">Sort By</option>
+                  <option value="-">Sort By</option>
                   <option value="price-asc">Price: Low to High</option>
                   <option value="price-desc">Price: High to Low</option>
                   <option value="bookName-asc">Name: A to Z</option>
@@ -149,7 +201,7 @@ const Books = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
               <BookCardSkeleton length={10} />
             </div>
-          ) : books.length > 0 ? (
+          ) : totalDocs > 0 ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
                 {books.map((book) => (
@@ -168,7 +220,7 @@ const Books = () => {
                 >
                   <Pagination
                     count={totalPages}
-                    page={page}
+                    page={pagination.page}
                     onChange={handlePageChange}
                     size="large"
                   />

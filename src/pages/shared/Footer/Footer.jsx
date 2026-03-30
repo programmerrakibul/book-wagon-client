@@ -22,10 +22,10 @@ const Footer = () => {
   ];
 
   const categories = [
-    { name: "Fiction", path: "/books?category=fiction" },
-    { name: "Non-Fiction", path: "/books?category=non-fiction" },
-    { name: "Science", path: "/books?category=science" },
-    { name: "History", path: "/books?category=history" },
+    { name: "Fiction", path: "/books?category=Fiction" },
+    { name: "Technology", path: "/books?category=Technology" },
+    { name: "Science", path: "/books?category=Science" },
+    { name: "History", path: "/books?category=History" },
   ];
 
   const socialLinks = [
