@@ -40,8 +40,6 @@ const Books = () => {
     },
   });
 
-  console.log(data);
-
   const { data: categories = [], isLoading: categoryLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -51,7 +49,7 @@ const Books = () => {
         return [];
       }
 
-      return data.categories;
+      return data.data;
     },
   });
 

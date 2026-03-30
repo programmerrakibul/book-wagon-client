@@ -28,18 +28,17 @@ const LatestBooks = () => {
   const swiperRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const { data: books = [], isLoading } = useQuery({
+  const { data: books, isLoading } = useQuery({
     queryKey: ["latest-books", today],
     queryFn: async () => {
       const { data } = await publicAxios.get("/books", {
         params: {
           limit: 6,
-          sortBy: "createdAt",
-          sortOrder: "desc",
           fields: "bookName,bookImage,author,price,quantity,description",
         },
       });
-      return data?.books;
+      
+      return data?.data || [];
     },
   });
 
