@@ -71,11 +71,23 @@ const Books = () => {
   };
 
   const handleSearch = (e) => {
+    e.preventDefault();
+
     const value = e.target.value.trim();
 
-    console.log(value);
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
 
-    value && setSearchParams({ search: value, page: "1" }, { replace: true });
+        newParams.set("page", "1");
+        newParams.set("search", value);
+
+        if (!value) newParams.delete("search");
+
+        return newParams;
+      },
+      { replace: true },
+    );
 
     refetch();
   };
@@ -87,8 +99,8 @@ const Books = () => {
       (prev) => {
         const newParams = new URLSearchParams(prev);
 
-        newParams.set("category", value);
         newParams.set("page", "1");
+        newParams.set("category", value);
 
         if (!value) newParams.delete("category");
 
@@ -109,9 +121,9 @@ const Books = () => {
       (prev) => {
         const newParams = new URLSearchParams(prev);
 
+        newParams.set("page", "1");
         newParams.set("sortBy", sortBy);
         newParams.set("sortOrder", sortOrder);
-        newParams.set("page", "1");
 
         if (!sortBy) newParams.delete("sortBy");
         if (!sortOrder) newParams.delete("sortOrder");
@@ -143,10 +155,10 @@ const Books = () => {
               <div className="relative">
                 <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-sm sm:text-base" />
                 <input
-                  type="text"
+                  name="search"
+                  type="search"
+                  onChangeCapture={handleSearch}
                   placeholder="Search books by title, author, or category..."
-                  value={search}
-                  onChange={handleSearch}
                   className="input input-bordered w-full pl-11 pr-4 text-sm sm:text-base h-12 sm:h-14 focus:outline-primary"
                 />
               </div>
