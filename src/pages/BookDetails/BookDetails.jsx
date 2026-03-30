@@ -39,11 +39,11 @@ const BookDetails = () => {
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
 
-  const { data: book = {}, isLoading: bookLoading } = useQuery({
+  const { data: book, isLoading: bookLoading } = useQuery({
     queryKey: ["book-details", id],
     queryFn: async () => {
       const { data } = await publicAxios.get(`/books/${id}`);
-      return data?.book;
+      return data?.data || {};
     },
   });
 
@@ -69,7 +69,7 @@ const BookDetails = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const { data } = await secureAxios.get(
-        `/orders/${id}/user/${user?.email}`
+        `/orders/${id}/user/${user?.email}`,
       );
 
       return data;
@@ -85,7 +85,7 @@ const BookDetails = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const { data } = await secureAxios.get(
-        `/wishlist/${user?.email}/check/${id}`
+        `/wishlist/${user?.email}/check/${id}`,
       );
 
       return data?.inWishlist;
@@ -137,7 +137,7 @@ const BookDetails = () => {
   const removeFromWishlist = async () => {
     try {
       const { data } = await secureAxios.delete(
-        `/wishlist/${user.email}/remove/${id}`
+        `/wishlist/${user.email}/remove/${id}`,
       );
 
       if (data.success) {
@@ -188,7 +188,7 @@ const BookDetails = () => {
 
   return (
     <>
-      <title>{`${bookName} - BookWagon`}</title>
+      <title>{`${bookName || "Book Details"} - BookWagon`}</title>
 
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
@@ -449,7 +449,7 @@ const BookDetails = () => {
                                   new Date(comment.createdAt),
                                   {
                                     addSuffix: true,
-                                  }
+                                  },
                                 )}
                               </span>
                             </div>
