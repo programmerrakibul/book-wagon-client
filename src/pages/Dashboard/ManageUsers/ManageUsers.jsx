@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TablePagination,
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
@@ -17,28 +18,53 @@ import { getAlert } from "../../../utilities/getAlert";
 import Avatar from "../../../components/Avatar/Avatar";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
+import { useSearchParams } from "react-router";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
   const { user: currentUser } = useAuth();
+  const [searchParams] = useSearchParams();
 
-  const {
-    data: users,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["manage-users", currentUser.email],
+  const page = searchParams.get("page") || 1;
+  const limit = searchParams.get("limit") || 10;
+  const search = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const sortOrder = searchParams.get("sortOrder") || "";
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [
+      "manage-users",
+      currentUser.email,
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+    ],
     queryFn: async () => {
-      const { data } = await secureAxios.get("/users");
-      return data?.users;
+      const { data } = await secureAxios.get("/users", {
+        params: {
+          page,
+          limit,
+          search,
+          sortBy,
+          sortOrder,
+        },
+      });
+
+      return data || {};
     },
   });
 
   const handleRoleChange = async (email, role) => {
     try {
-      const { data } = await secureAxios.put(`/users/${email}/role`, { role });
+      const { data } = await secureAxios.put("/users/update-role", {
+        role,
+        email,
+      });
 
-      if (data.modifiedCount) {
+      if (data.success) {
         refetch();
 
         getAlert({
@@ -54,6 +80,9 @@ const ManageUsers = () => {
   if (isLoading) {
     return <Loading />;
   }
+
+  const users = data?.data || [];
+  const { totalDocs } = data?.pagination || {};
 
   return (
     <>
@@ -75,159 +104,84 @@ const ManageUsers = () => {
           {/* Users Table */}
           {users?.length > 0 ? (
             <>
-              {/* Desktop Table */}
-              <div className="hidden md:block">
-                <TableContainer component={Paper} className="shadow-lg!">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold! text-base!">
-                          #
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Avatar
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Name
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Email
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Current Role
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Change Role
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {users.map(
-                        (user, index) =>
-                          currentUser.email !== user.email && (
-                            <TableRow
-                              key={user._id}
-                              className="hover:bg-base-200 transition-colors"
-                            >
-                              <TableCell>
-                                <span className="font-semibold ">
-                                  {index + 1}
-                                </span>
-                              </TableCell>
-                              <TableCell>
-                                <Avatar
-                                  src={user.photoURL}
-                                  alt={user.displayName}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <span className="font-medium  text-sm lg:text-base">
-                                  {user.name}
-                                </span>
-                              </TableCell>
-                              <TableCell className=" text-sm lg:text-base">
-                                {user.email}
-                              </TableCell>
-                              <TableCell>
-                                <div className="badge badge-primary badge-sm gap-1">
-                                  {user.role === "admin" && <FaUserShield />}
-                                  {user.role === "librarian" && <FaUserTie />}
-                                  {user.role === "user" && <FaUsers />}
-                                  <span className="capitalize">
-                                    {user.role}
-                                  </span>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <select
-                                  value={user.role}
-                                  onChange={(e) =>
-                                    handleRoleChange(user.email, e.target.value)
-                                  }
-                                  className="select select-bordered select-sm"
-                                >
-                                  <option value="user">User</option>
-                                  <option value="librarian">Librarian</option>
-                                  <option value="admin">Admin</option>
-                                </select>
-                              </TableCell>
-                            </TableRow>
-                          )
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="md:hidden p-4 space-y-4">
-                {users.map(
-                  (user, index) =>
-                    currentUser.email !== user.email && (
-                      <div
-                        key={user._id}
-                        className="card bg-base-100 border border-primary/20 shadow-md hover:shadow-xl transition-shadow"
-                      >
-                        <div className="card-body p-4">
-                          <div className="flex gap-4">
-                            {/* User Avatar */}
-                            <Avatar
-                              src={user.photoURL}
-                              alt={user.displayName}
-                              size="size-16"
-                            />
-
-                            {/* User Info */}
-                            <div className="flex-1 min-w-0">
-                              <div className="badge badge-neutral badge-sm mb-2">
-                                #{index + 1}
+              <TableContainer component={Paper} className="shadow-lg!">
+                <Table aria-label="users table">
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold! text-base!">#</TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Avatar
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Name
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Email
+                      </TableCell>
+                      <TableCell className="font-bold! text-base! min-w-40">
+                        Current Role
+                      </TableCell>
+                      <TableCell className="font-bold! text-base! min-w-[130px]">
+                        Change Role
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.map(
+                      (user, index) =>
+                        currentUser.email !== user.email && (
+                          <TableRow
+                            key={user._id}
+                            className="hover:bg-base-200 transition-colors"
+                          >
+                            <TableCell>
+                              <span className="font-semibold ">
+                                {index + 1}
+                              </span>
+                            </TableCell>
+                            <TableCell>
+                              <Avatar
+                                src={user.photoURL}
+                                alt={user.displayName}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <span className="font-medium  text-sm lg:text-base">
+                                {user.name}
+                              </span>
+                            </TableCell>
+                            <TableCell className=" text-sm lg:text-base">
+                              {user.email}
+                            </TableCell>
+                            <TableCell>
+                              <div className="badge badge-primary badge-sm gap-1">
+                                {user.role === "admin" && <FaUserShield />}
+                                {user.role === "librarian" && <FaUserTie />}
+                                {user.role === "user" && <FaUsers />}
+                                <span className="capitalize">{user.role}</span>
                               </div>
-                              <h3 className="font-bold text-base mb-1 flex items-center gap-2">
-                                <span className="truncate">{user.name}</span>
-                              </h3>
-                              <p className="text-sm  mb-3 truncate">
-                                {user.email}
-                              </p>
+                            </TableCell>
+                            <TableCell>
+                              <select
+                                value={user.role}
+                                onChange={(e) =>
+                                  handleRoleChange(user.email, e.target.value)
+                                }
+                                className="select select-bordered select-sm"
+                              >
+                                <option value="user">User</option>
+                                <option value="librarian">Librarian</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                            </TableCell>
+                          </TableRow>
+                        ),
+                    )}
+                  </TableBody>
+                </Table>
 
-                              {/* Current Role Badge */}
-                              <div className="mb-3">
-                                <span className="text-xs  block mb-1">
-                                  Current Role:
-                                </span>
-                                <div className="badge badge-primary badge-sm gap-1">
-                                  {user.role === "admin" && <FaUserShield />}
-                                  {user.role === "librarian" && <FaUserTie />}
-                                  {user.role === "user" && <FaUsers />}
-                                  <span className="capitalize">
-                                    {user.role}
-                                  </span>
-                                </div>
-                              </div>
-
-                              {/* Role Change Select */}
-                              <div>
-                                <label className="text-xs  block mb-1">
-                                  Change Role:
-                                </label>
-                                <select
-                                  value={user.role}
-                                  onChange={(e) =>
-                                    handleRoleChange(user.email, e.target.value)
-                                  }
-                                  className="select select-bordered select-sm w-full"
-                                >
-                                  <option value="user">User</option>
-                                  <option value="librarian">Librarian</option>
-                                  <option value="admin">Admin</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                )}
-              </div>
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           ) : (
             <div className="card bg-base-100 shadow-xl">
