@@ -9,6 +9,8 @@ import {
   TableRow,
   Paper,
   TablePagination,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
@@ -165,17 +167,26 @@ const ManageUsers = () => {
                               </div>
                             </TableCell>
                             <TableCell>
-                              <select
+                              <Select
+                                variant="standard"
+                                labelId="change-role-label"
+                                id="change-role"
                                 value={user.role}
+                                className="capitalize"
                                 onChange={(e) =>
                                   handleRoleChange(user.email, e.target.value)
                                 }
-                                className="select select-bordered select-sm"
                               >
-                                <option value="user">User</option>
-                                <option value="librarian">Librarian</option>
-                                <option value="admin">Admin</option>
-                              </select>
+                                {["user", "librarian", "admin"].map((role) => (
+                                  <MenuItem
+                                    key={role}
+                                    value={role}
+                                    className="capitalize"
+                                  >
+                                    {role}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                           </TableRow>
                         ),
