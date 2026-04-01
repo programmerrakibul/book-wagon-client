@@ -100,11 +100,16 @@ const MyOrders = () => {
     try {
       const { data } = await secureAxios.put(`/orders/${id}`, { status });
 
-      if (data.modifiedCount) {
+      if (data.success) {
         refetch();
 
         getAlert({
-          title: "Order cancelled successfully",
+          title: "Order cancelled successfully!",
+        });
+      } else {
+        getAlert({
+          title: data.message || "Order cancellation failed! Please try again.",
+          icon: "error",
         });
       }
     } catch {
@@ -125,7 +130,7 @@ const MyOrders = () => {
     try {
       const { data } = await secureAxios.post(
         "/checkout-session/create",
-        paymentInfo
+        paymentInfo,
       );
 
       window.location.assign(data.url);

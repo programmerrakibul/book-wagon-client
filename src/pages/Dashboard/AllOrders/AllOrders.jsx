@@ -77,11 +77,16 @@ const AllOrders = () => {
     try {
       const { data } = await secureAxios.put(`/orders/${orderId}`, { status });
 
-      if (data.modifiedCount) {
+      if (data.success) {
         refetch();
 
         getAlert({
           title: `Order ${status} successfully`,
+        });
+      } else {
+        getAlert({
+          title: data.message || "Status update failed! Please try again.",
+          icon: "error",
         });
       }
     } catch {
