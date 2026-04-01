@@ -27,7 +27,7 @@ const EditBook = () => {
     queryKey: ["book", id],
     queryFn: async () => {
       const { data } = await secureAxios.get(`/books/${id}`);
-      return data.book;
+      return data.data || {};
     },
   });
 
@@ -50,22 +50,27 @@ const EditBook = () => {
   const onSubmit = async (bookData) => {
     setLoading(true);
 
-    Object.entries(bookData).forEach(([key, value]) => {
-      if (typeof value === "string") {
-        value = value.trim();
-      }
-
-      if (["quantity", "pageCount", "price"].includes(key)) {
-        bookData[key] = Number(value);
-      }
-    });
-
     try {
+      Object.entries(bookData).forEach(([key, value]) => {
+        if (typeof value === "string") {
+          value = value.trim();
+        }
+
+        if (["quantity", "pageCount", "price"].includes(key)) {
+          bookData[key] = Number(value);
+        }
+      });
+
       const { data } = await secureAxios.patch(`/books/${id}`, bookData);
 
-      if (data.modifiedCount) {
+      if (data.success) {
         getAlert({ title: "Book updated successfully!" });
         navigate("/dashboard/my-books");
+      } else {
+        getAlert({
+          title: data.message || "Failed to update the book. Please try again.",
+          icon: "error",
+        });
       }
     } catch {
       toast.error("Failed to update the book. Please try again.");

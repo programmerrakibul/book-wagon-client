@@ -8,6 +8,10 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
@@ -16,23 +20,45 @@ import { toast } from "sonner";
 import Swal from "sweetalert2";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
+import useAuth from "../../../hooks/useAuth";
+import { useSearchParams } from "react-router";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const ManageBooks = () => {
+  const { user } = useAuth();
   const secureAxios = useSecureAxios();
-  const {
-    data: books,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["manage-books", "admin"],
+  const [searchParams] = useSearchParams();
+
+  const page = searchParams.get("page") || 1;
+  const limit = searchParams.get("limit") || 10;
+  const search = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const sortOrder = searchParams.get("sortOrder") || "";
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [
+      "manage-books",
+      "admin",
+      user.email,
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+    ],
     queryFn: async () => {
       const { data } = await secureAxios.get("/books", {
         params: {
-          role: "admin",
+          email: user.email,
+          page,
+          limit,
+          search,
+          sortBy,
+          sortOrder,
         },
       });
 
-      return data?.books;
+      return data || {};
     },
   });
 
@@ -40,9 +66,15 @@ const ManageBooks = () => {
     try {
       const { data } = await secureAxios.patch(`/books/${bookId}`, { status });
 
-      if (data.modifiedCount) {
+      if (data.success) {
         refetch();
         getAlert({ title: `Book status updated with ${status}` });
+      } else {
+        getAlert({
+          title:
+            data.message || "Failed to update book status. Please try again.",
+          icon: "error",
+        });
       }
     } catch (err) {
       const errorMessage = err?.response?.data?.message || err.message;
@@ -64,13 +96,18 @@ const ManageBooks = () => {
       if (result.isConfirmed) {
         const { data } = await secureAxios.delete(`/books/${id}`);
 
-        if (data.deletedCount) {
+        if (data.success) {
           refetch();
 
           Swal.fire({
             title: "Deleted!",
             text: "Book data deleted successfully.",
             icon: "success",
+          });
+        } else {
+          getAlert({
+            title: data.message || "Failed to delete book. Please try again.",
+            icon: "error",
           });
         }
       }
@@ -80,8 +117,11 @@ const ManageBooks = () => {
   };
 
   if (isLoading) {
-    return <Loading message="Books is loading..." />;
+    return <Loading message="Books data is loading..." />;
   }
+
+  const books = data?.data || [];
+  const { totalDocs } = data?.pagination || {};
 
   return (
     <>
@@ -101,136 +141,79 @@ const ManageBooks = () => {
           />
 
           {/* Books Table */}
-          {books.length > 0 ? (
+          {totalDocs > 0 ? (
             <>
-              {/* Desktop Table */}
-              <div className="hidden md:block">
-                <TableContainer component={Paper} className="shadow-lg">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell>#</TableCell>
-                        <TableCell>Image</TableCell>
-                        <TableCell>Book Name</TableCell>
-                        <TableCell>Author</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell align="center">Actions</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {books.map((book, index) => (
-                        <TableRow
-                          key={book._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell>
-                            <span className="font-semibold">{index + 1}</span>
-                          </TableCell>
-                          <TableCell>
-                            <img
-                              src={book.bookImage}
-                              alt={book.bookName}
-                              className="w-12 h-16 object-cover rounded shadow"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-medium text-sm lg:text-base">
-                              {book.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-sm lg:text-base">
-                            {book.author}
-                          </TableCell>
-                          <TableCell>
-                            <select
-                              value={book.status}
-                              onChange={(e) =>
-                                handleStatusChange(book._id, e.target.value)
-                              }
-                              className={`select select-bordered select-sm ${
-                                book.status === "published"
-                                  ? "select-success"
-                                  : "select-warning"
-                              }`}
-                            >
-                              <option value="published">Published</option>
-                              <option value="unpublished">Unpublished</option>
-                            </select>
-                          </TableCell>
-                          <TableCell align="center">
-                            <button
-                              onClick={() => handleDeleteBook(book._id)}
-                              className="btn btn-error btn-sm gap-1"
-                            >
-                              <FaTrash />
-                              Delete
-                            </button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="md:hidden p-4 space-y-4">
-                {books.map((book, index) => (
-                  <div
-                    key={book._id}
-                    className="card bg-base-100 border border-primary/20 shadow-md hover:shadow-xl transition-shadow"
-                  >
-                    <div className="card-body p-4">
-                      <div className="flex gap-4">
-                        {/* Book Image */}
-                        <div className="avatar shrink-0">
-                          <div className="w-20 h-28 rounded">
-                            <img
-                              src={book.bookImage}
-                              alt={book.bookName}
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Book Info */}
-                        <div className="flex-1 min-w-0">
-                          <div className="badge badge-neutral badge-sm mb-2">
-                            #{index + 1}
-                          </div>
-                          <h3 className="font-bold text-base mb-1 truncate">
+              <TableContainer component={Paper} className="shadow-lg">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell>#</TableCell>
+                      <TableCell>Image</TableCell>
+                      <TableCell className="min-w-[170px]">Book Name</TableCell>
+                      <TableCell>Author</TableCell>
+                      <TableCell className="min-w-40">Status</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {books.map((book, index) => (
+                      <TableRow
+                        key={book._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell>
+                          <span className="font-semibold">{index + 1}</span>
+                        </TableCell>
+                        <TableCell>
+                          <img
+                            src={book.bookImage}
+                            alt={book.bookName}
+                            className="w-12 h-16 object-cover rounded shadow"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <span className="font-medium text-sm lg:text-base">
                             {book.bookName}
-                          </h3>
-                          <p className="text-sm  mb-3 truncate">
-                            by {book.author}
-                          </p>
-
-                          {/* Status Select */}
-                          <select
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-sm lg:text-base">
+                          {book.author}
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            variant="standard"
+                            labelId="change-book-status-label"
+                            id="change-book-status"
                             value={book.status}
+                            color="primary"
+                            label="Age"
                             onChange={(e) =>
                               handleStatusChange(book._id, e.target.value)
                             }
-                            className="select select-bordered select-sm w-full mb-3"
+                            size="small"
                           >
-                            <option value="published">Published</option>
-                            <option value="unpublished">Unpublished</option>
-                          </select>
-
-                          {/* Edit Button */}
-                          <button
+                            <MenuItem value="published">Published</MenuItem>
+                            <MenuItem value="unpublished">Unpublished</MenuItem>
+                          </Select>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="contained"
                             onClick={() => handleDeleteBook(book._id)}
-                            className="btn btn-error btn-sm gap-2 w-full"
+                            startIcon={<FaTrash />}
+                            color="error"
+                            aria-label="Delete a book"
+                            size="small"
                           >
-                            <FaTrash />
-                            Delete Book
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           ) : (
             <div className="card bg-base-100 shadow-xl">

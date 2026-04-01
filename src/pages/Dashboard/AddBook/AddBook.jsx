@@ -62,6 +62,11 @@ const AddBook = () => {
         reset();
 
         getAlert({ title: "The book has been added successfully!" });
+      } else {
+        getAlert({
+          title: data.message || "Failed to add the book. Please try again.",
+          icon: "error",
+        });
       }
     } catch {
       toast.error("Failed to add the book. Please try again.");

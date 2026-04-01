@@ -16,11 +16,11 @@ const TablePaginationComponent = ({ total }) => {
 
       return newParams;
     });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleRowsPerPageChange = (event) => {
-    console.log(event.target.value);
-
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
@@ -29,6 +29,8 @@ const TablePaginationComponent = ({ total }) => {
 
       return newParams;
     });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
