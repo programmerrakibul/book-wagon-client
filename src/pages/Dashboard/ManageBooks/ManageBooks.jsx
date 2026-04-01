@@ -187,13 +187,21 @@ const ManageBooks = () => {
                             value={book.status}
                             color="primary"
                             label="Age"
+                            size="small"
+                            className="capitalize"
                             onChange={(e) =>
                               handleStatusChange(book._id, e.target.value)
                             }
-                            size="small"
                           >
-                            <MenuItem value="published">Published</MenuItem>
-                            <MenuItem value="unpublished">Unpublished</MenuItem>
+                            {["published", "unpublished"].map((status) => (
+                              <MenuItem
+                                key={status}
+                                value={status}
+                                className="capitalize"
+                              >
+                                {status}
+                              </MenuItem>
+                            ))}
                           </Select>
                         </TableCell>
                         <TableCell align="center">
