@@ -72,7 +72,10 @@ const ManageUsers = () => {
         });
       }
     } catch (err) {
-      const errorMessage = err?.response?.data?.message || err.message;
+      const errorMessage =
+        err?.response?.data?.message ||
+        err.message ||
+        "An unexpected error occurred!";
       toast.error(errorMessage);
     }
   };
