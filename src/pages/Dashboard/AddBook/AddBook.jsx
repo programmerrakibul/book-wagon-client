@@ -36,27 +36,29 @@ const AddBook = () => {
   const onSubmit = async (bookData) => {
     setLoading(true);
 
-    Object.entries(bookData).forEach(([key, value]) => {
-      if (typeof value === "string") {
-        bookData[key] = value.trim();
-      }
-
-      if (["quantity", "pageCount", "publicationYear", "price"].includes(key)) {
-        bookData[key] = Number(value);
-      }
-    });
-
-    const imageFile = bookData.bookImage[0];
-    bookData.librarianEmail = user.email;
-
     try {
+      Object.entries(bookData).forEach(([key, value]) => {
+        if (typeof value === "string") {
+          bookData[key] = value.trim();
+        }
+
+        if (
+          ["quantity", "pageCount", "publicationYear", "price"].includes(key)
+        ) {
+          bookData[key] = Number(value);
+        }
+      });
+
+      const imageFile = bookData.bookImage[0];
+      bookData.librarianEmail = user.email;
+
       const bookImage = await uploadImage(imageFile);
       const { data } = await secureAxios.post("/books", {
         ...bookData,
         bookImage,
       });
 
-      if (data.insertedId) {
+      if (data.success) {
         reset();
 
         getAlert({ title: "The book has been added successfully!" });
