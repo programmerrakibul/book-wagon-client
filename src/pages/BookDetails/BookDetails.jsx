@@ -68,11 +68,9 @@ const BookDetails = () => {
     queryKey: ["is-ordered", user?.email, id],
     enabled: !!user?.email,
     queryFn: async () => {
-      const { data } = await secureAxios.get(
-        `/orders/${id}/user/${user?.email}`,
-      );
+      const { data } = await secureAxios.get(`/orders/check-ordered/${id}`);
 
-      return data;
+      return data?.data || false;
     },
   });
 
