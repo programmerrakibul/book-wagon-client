@@ -33,16 +33,13 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
 
     const orderData = {
       bookId: book._id,
-      librarianEmail: book.librarianEmail,
-      customerName: user.displayName,
-      customerEmail: user.email,
       ...data,
     };
 
     try {
       const { data } = await secureAxios.post("/orders", orderData);
 
-      if (data.insertedId) {
+      if (data.success) {
         refetch();
 
         getAlert({
@@ -51,6 +48,11 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
 
         reset();
         closeModal();
+      } else {
+        getAlert({
+          title: data.message || "Order failed. Please try again.",
+          icon: "error",
+        });
       }
     } catch {
       toast.error("Order failed. Please try again.");
@@ -98,9 +100,7 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
                   <h4 className="font-bold text-sm sm:text-base line-clamp-1">
                     {book.bookName}
                   </h4>
-                  <p className="text-xs sm:text-sm">
-                    {book.author}
-                  </p>
+                  <p className="text-xs sm:text-sm">{book.author}</p>
                   <p className="text-base sm:text-lg font-bold text-primary mt-1">
                     ৳ {book.price}
                   </p>
@@ -128,9 +128,7 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
             <FaEnvelope className="text-primary text-base sm:text-lg" />
             <div>
               <p className="text-xs">Email</p>
-              <p className="font-semibold text-sm sm:text-base">
-                {user.email}
-              </p>
+              <p className="font-semibold text-sm sm:text-base">{user.email}</p>
             </div>
           </div>
         </div>
