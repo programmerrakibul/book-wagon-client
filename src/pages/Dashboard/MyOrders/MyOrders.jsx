@@ -30,24 +30,37 @@ import { useEffect } from "react";
 import { getAlert } from "../../../utilities/getAlert";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const MySwal = withReactContent(Swal);
 
 const MyOrders = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
-  const [searchParams, setSearchParams] = useSearchParams();
   const session_id = searchParams.get("session_id");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sortOrder = searchParams.get("sortOrder") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const limit = searchParams.get("limit") || 10;
+  const page = searchParams.get("page") || 1;
 
   const {
-    data: orders = [],
+    data = {},
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["my-orders", "customer", user.email],
+    queryKey: ["my-orders", user.email],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/orders/customer/${user.email}`);
-      return data?.orders;
+      const { data } = await secureAxios.get("/orders", {
+        params: {
+          page,
+          limit,
+          sortBy,
+          sortOrder,
+        },
+      });
+      return data || {};
     },
   });
 
@@ -95,6 +108,9 @@ const MyOrders = () => {
   if (isLoading) {
     return <Loading message="Loading your orders..." />;
   }
+
+  const orders = data.data || [];
+  const { totalDocs } = data.pagination || {};
 
   const handleOrderStatus = async (id, status) => {
     try {
@@ -206,188 +222,99 @@ const MyOrders = () => {
           ) : (
             <>
               {/* Desktop Table */}
-              <div className="hidden sm:block">
-                <TableContainer component={Paper} className="shadow-lg">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold! text-base!">
-                          Book Title
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Order Date
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Price
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Status
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Payment
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          className="font-bold! text-base!"
-                        >
-                          Actions
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {orders.map((order) => (
-                        <TableRow
-                          key={order._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell className="min-w-40">
-                            <span className="font-semibold  text-sm lg:text-base">
-                              {order.orderedBook.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell className=" text-sm lg:text-base text-nowrap">
-                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                          </TableCell>
-                          <TableCell className="font-bold text-primary text-nowrap text-sm lg:text-base">
-                            ৳ {order.orderedBook.price}
-                          </TableCell>
-                          <TableCell>{getStatusBadge(order.status)}</TableCell>
-                          <TableCell>
-                            {order.paymentStatus === "paid" ? (
-                              <span className="badge badge-success gap-1 badge-sm">
-                                <FaCheckCircle className="text-xs" />
-                                Paid
-                              </span>
-                            ) : (
-                              <span className="badge badge-warning gap-1 badge-sm">
-                                <FaTimesCircle className="text-xs" />
-                                Unpaid
-                              </span>
-                            )}
-                          </TableCell>
-                          <TableCell align="center">
-                            <div className="flex gap-2 justify-center">
-                              {order.status === "pending" &&
-                              order.paymentStatus !== "paid" ? (
-                                <>
-                                  <Button
-                                    handleClick={() => handlePayment(order)}
-                                    className="btn-sm! text-xs!"
-                                  >
-                                    <FaCreditCard />
-                                    Pay Now
-                                  </Button>
-
-                                  <button
-                                    onClick={() =>
-                                      handleOrderStatus(order._id, "cancelled")
-                                    }
-                                    className="btn btn-sm! btn-error text-xs!"
-                                  >
-                                    <FaTimes />
-                                    Cancel
-                                  </button>
-                                </>
-                              ) : (
-                                <span>No Action</span>
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="sm:hidden space-y-4">
-                {orders.map((order) => (
-                  <div key={order._id} className="card bg-base-100 shadow-lg">
-                    <div className="card-body p-4 sm:p-5">
-                      <h3 className="font-bold text-base sm:text-lg  mb-2">
-                        {order.orderedBook.bookName}
-                      </h3>
-
-                      <div className="space-y-2 text-sm sm:text-base">
-                        <div className="flex justify-between">
-                          <span className="">Order Date:</span>
-                          <span className="font-semibold">
-                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
+              <TableContainer component={Paper} className="shadow-lg">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold! text-base!">
+                        Book Title
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Order Date
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Price
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Status
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Payment
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        className="font-bold! text-base!"
+                      >
+                        Actions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {orders.map((order) => (
+                      <TableRow
+                        key={order._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell className="min-w-40">
+                          <span className="font-semibold  text-sm lg:text-base">
+                            {order.orderedBook.bookName}
                           </span>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <span className="">Price:</span>
-                          <span className="font-bold text-primary">
-                            ৳ {order.orderedBook.price}
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <span className="">Status:</span>
-                          {order.status === "pending" && (
-                            <span className="badge badge-warning gap-1 text-xs sm:text-sm">
-                              <FaTimesCircle className="text-xs" />
-                              Pending
-                            </span>
-                          )}
-                          {order.status === "cancelled" && (
-                            <span className="badge badge-error gap-1 text-xs sm:text-sm">
-                              <FaTimesCircle className="text-xs" />
-                              Cancelled
-                            </span>
-                          )}
-                          {order.status === "completed" && (
-                            <span className="badge badge-success gap-1 text-xs sm:text-sm">
-                              <FaCheckCircle className="text-xs" />
-                              Completed
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <span className="">Payment:</span>
+                        </TableCell>
+                        <TableCell className=" text-sm lg:text-base text-nowrap">
+                          {format(new Date(order.createdAt), "MMM dd, yyyy")}
+                        </TableCell>
+                        <TableCell className="font-bold text-primary text-nowrap text-sm lg:text-base">
+                          ৳ {order.orderedBook.price}
+                        </TableCell>
+                        <TableCell>{getStatusBadge(order.status)}</TableCell>
+                        <TableCell>
                           {order.paymentStatus === "paid" ? (
-                            <span className="badge badge-success gap-1 text-xs sm:text-sm">
+                            <span className="badge badge-success gap-1 badge-sm">
                               <FaCheckCircle className="text-xs" />
                               Paid
                             </span>
                           ) : (
-                            <span className="badge badge-warning gap-1 text-xs sm:text-sm">
+                            <span className="badge badge-warning gap-1 badge-sm">
                               <FaTimesCircle className="text-xs" />
                               Unpaid
                             </span>
                           )}
-                        </div>
-                      </div>
+                        </TableCell>
+                        <TableCell align="center">
+                          <div className="flex gap-2 justify-center">
+                            {order.status === "pending" &&
+                            order.paymentStatus !== "paid" ? (
+                              <>
+                                <Button
+                                  handleClick={() => handlePayment(order)}
+                                  className="btn-sm! text-xs!"
+                                >
+                                  <FaCreditCard />
+                                  Pay Now
+                                </Button>
 
-                      {order.status === "pending" &&
-                        order.paymentStatus !== "paid" && (
-                          <div className="flex gap-2 mt-4">
-                            <Button
-                              handleClick={() => handlePayment(order)}
-                              className="btn-sm! btn-block flex-1"
-                            >
-                              <FaCreditCard />
-                              Pay Now
-                            </Button>
-
-                            <button
-                              onClick={() =>
-                                handleOrderStatus(order._id, "cancelled")
-                              }
-                              className="btn btn-sm! btn-error flex-1"
-                            >
-                              <FaTimes />
-                              Cancel
-                            </button>
+                                <button
+                                  onClick={() =>
+                                    handleOrderStatus(order._id, "cancelled")
+                                  }
+                                  className="btn btn-sm! btn-error text-xs!"
+                                >
+                                  <FaTimes />
+                                  Cancel
+                                </button>
+                              </>
+                            ) : (
+                              <span>No Action</span>
+                            )}
                           </div>
-                        )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           )}
         </Container>

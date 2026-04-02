@@ -32,9 +32,9 @@ const AllOrders = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["all-orders", "librarian", user.email],
+    queryKey: ["all-orders", user.email],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/orders/librarian/${user.email}`);
+      const { data } = await secureAxios.get("/orders");
       return data?.orders || [];
     },
   });

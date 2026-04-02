@@ -167,6 +167,30 @@ h6 {
   @apply bg-center! bg-cover! w-[280px]! h-auto!;
 }
 
-.recharts-cartesian-axis-tick-value{
-  @apply text-neutral! dark:text-white!
+.recharts-cartesian-axis-tick-value {
+  @apply text-neutral! dark:text-white!;
+}
+
+.MuiPaper-root{
+  @apply dark:bg-base-100! dark:text-white!
+}
+
+.MuiTablePagination-root {
+  @apply dark:bg-base-100 dark:text-white!;
+}
+
+.MuiTablePaginationActions-root .MuiIconButton-root {
+  @apply dark:text-white! disabled:opacity-50!
+}
+
+.MuiTablePagination-input{
+  @apply dark:text-white!
+}
+
+.MuiSelect-select{
+  @apply dark:text-white!
+}
+
+.MuiSelect-icon{
+  @apply dark:text-white!
 }
