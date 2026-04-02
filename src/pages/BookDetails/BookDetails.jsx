@@ -153,20 +153,16 @@ const BookDetails = () => {
   const handlePostComment = async () => {
     setError(null);
 
-    if (!comment.trim()) {
-      return setError("Please write a comment before posting.");
-    }
-
-    const newComment = {
-      customerName: user.displayName,
-      customerImage: user.photoURL,
-      customerEmail: user.email,
-      comment: comment.trim(),
-      bookId: _id,
-    };
-
     try {
-      const { data } = await secureAxios.post("/comments", newComment);
+      if (!comment.trim()) {
+        return setError("Please write a comment before posting.");
+      }
+
+      const newComment = {
+        comment: comment.trim(),
+      };
+
+      const { data } = await secureAxios.post(`/comments/${id}`, newComment);
 
       if (data.success) {
         setError(null);
@@ -175,6 +171,11 @@ const BookDetails = () => {
 
         getAlert({
           title: `Successfully reviewed for ${bookName} book!`,
+        });
+      } else {
+        getAlert({
+          title: data.message || "Comment failed! Please try  again.",
+          icon: "error",
         });
       }
     } catch {
