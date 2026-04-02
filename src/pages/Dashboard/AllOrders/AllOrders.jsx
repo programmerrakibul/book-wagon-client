@@ -22,20 +22,35 @@ import Heading from "../../../components/Heading/Heading";
 import Container from "../../shared/Container/Container";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import { useSearchParams } from "react-router";
 
 const AllOrders = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
+  const [searchParams] = useSearchParams();
+
+  const sortOrder = searchParams.get("sortOrder") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const limit = searchParams.get("limit") || 10;
+  const page = searchParams.get("page") || 1;
 
   const {
-    data: orders = [],
+    data = {},
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["all-orders", user.email],
+    queryKey: ["all-orders", "admin", user.email],
     queryFn: async () => {
-      const { data } = await secureAxios.get("/orders");
-      return data?.orders || [];
+      const { data } = await secureAxios.get("/orders", {
+        params: {
+          page,
+          limit,
+          sortBy,
+          sortOrder,
+        },
+      });
+      return data || {};
     },
   });
 
@@ -72,6 +87,9 @@ const AllOrders = () => {
   if (isLoading) {
     return <Loading message="Loading orders..." />;
   }
+
+  const orders = data.data || [];
+  const { totalDocs } = data.pagination || {};
 
   const handleStatusChange = async (orderId, status) => {
     try {
@@ -121,185 +139,102 @@ const AllOrders = () => {
             </div>
           ) : (
             <>
-              {/* Desktop Table */}
-              <div className="hidden sm:block">
-                <TableContainer component={Paper} className="shadow-lg!">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold! text-base!">
-                          Book Name
+              <TableContainer component={Paper} className="shadow-lg!">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold! text-base!">
+                        Book Name
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Customer
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Order Date
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Price
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Payment
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Status
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Actions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {orders.map((order) => (
+                      <TableRow
+                        key={order._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell>
+                          <span className="font-semibold  text-sm lg:text-base">
+                            {order.orderedBook.bookName}
+                          </span>
                         </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Customer
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Order Date
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Price
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Payment
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Status
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Actions
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {orders.map((order) => (
-                        <TableRow
-                          key={order._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell>
-                            <span className="font-semibold  text-sm lg:text-base">
-                              {order.orderedBook.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              <div className="font-medium  text-sm">
-                                {order.customerName}
-                              </div>
-                              <div className="text-xs ">
-                                {order.customerEmail}
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className=" text-sm lg:text-base text-nowrap">
-                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                          </TableCell>
-                          <TableCell className="font-bold text-primary text-sm lg:text-base whitespace-nowrap">
-                            ৳ {order.orderedBook.price}
-                          </TableCell>
-                          <TableCell>
-                            {order.paymentStatus === "paid" ? (
-                              <span className="badge badge-success gap-1 badge-sm">
-                                <FaCheckCircle className="text-xs" />
-                                Paid
-                              </span>
-                            ) : (
-                              <span className="badge badge-warning gap-1 badge-sm">
-                                <FaTimesCircle className="text-xs" />
-                                Unpaid
-                              </span>
-                            )}
-                          </TableCell>
-                          <TableCell>{getStatusBadge(order.status)}</TableCell>
-                          <TableCell>
-                            {order.status !== "cancelled" &&
-                            order.status !== "delivered" ? (
-                              <select
-                                value={order.status}
-                                onChange={(e) =>
-                                  handleStatusChange(order._id, e.target.value)
-                                }
-                                className="select select-bordered select-sm text-xs"
-                              >
-                                <option value="pending">Pending</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancelled">Cancelled</option>
-                              </select>
-                            ) : (
-                              <span className="text-xs  whitespace-nowrap">
-                                No actions
-                              </span>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="sm:hidden space-y-4">
-                {orders.map((order) => (
-                  <div key={order._id} className="card bg-base-100 shadow-lg">
-                    <div className="card-body p-4 sm:p-5">
-                      <h3 className="font-bold text-base sm:text-lg  mb-3">
-                        {order.orderedBook.bookName}
-                      </h3>
-
-                      <div className="space-y-2 text-sm sm:text-base">
-                        <div className="flex justify-between">
-                          <span className="">Customer:</span>
-                          <div className="text-right">
-                            <div className="font-medium">
+                        <TableCell>
+                          <div>
+                            <div className="font-medium  text-sm">
                               {order.customerName}
                             </div>
                             <div className="text-xs ">
                               {order.customerEmail}
                             </div>
                           </div>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <span className="">Order Date:</span>
-                          <span className="font-semibold">
-                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <span className="">Price:</span>
-                          <span className="font-bold text-primary">
-                            ৳ {order.orderedBook.price}
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <span className="">Payment:</span>
+                        </TableCell>
+                        <TableCell className=" text-sm lg:text-base text-nowrap">
+                          {format(new Date(order.createdAt), "MMM dd, yyyy")}
+                        </TableCell>
+                        <TableCell className="font-bold text-primary text-sm lg:text-base whitespace-nowrap">
+                          ৳ {order.orderedBook.price}
+                        </TableCell>
+                        <TableCell>
                           {order.paymentStatus === "paid" ? (
-                            <span className="badge badge-success gap-1 text-xs sm:text-sm">
+                            <span className="badge badge-success gap-1 badge-sm">
                               <FaCheckCircle className="text-xs" />
                               Paid
                             </span>
                           ) : (
-                            <span className="badge badge-warning gap-1 text-xs sm:text-sm">
+                            <span className="badge badge-warning gap-1 badge-sm">
                               <FaTimesCircle className="text-xs" />
                               Unpaid
                             </span>
                           )}
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <span className="">Status:</span>
-                          {getStatusBadge(order.status)}
-                        </div>
-                      </div>
-
-                      {order.status !== "cancelled" &&
-                        order.status !== "delivered" && (
-                          <div className="mt-4">
-                            <label className="text-xs  mb-1 block">
-                              Update Status:
-                            </label>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(order.status)}</TableCell>
+                        <TableCell>
+                          {order.status !== "cancelled" &&
+                          order.status !== "delivered" ? (
                             <select
-                              className="select select-bordered select-sm w-full text-sm"
                               value={order.status}
                               onChange={(e) =>
                                 handleStatusChange(order._id, e.target.value)
                               }
+                              className="select select-bordered select-sm text-xs"
                             >
                               <option value="pending">Pending</option>
                               <option value="shipped">Shipped</option>
                               <option value="delivered">Delivered</option>
                               <option value="cancelled">Cancelled</option>
                             </select>
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                          ) : (
+                            <span className="text-xs  whitespace-nowrap">
+                              No actions
+                            </span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           )}
         </Container>

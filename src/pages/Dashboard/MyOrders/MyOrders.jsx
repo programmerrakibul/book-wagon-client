@@ -37,8 +37,8 @@ const MySwal = withReactContent(Swal);
 const MyOrders = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
-  const session_id = searchParams.get("session_id");
   const [searchParams, setSearchParams] = useSearchParams();
+  const session_id = searchParams.get("session_id");
 
   const sortOrder = searchParams.get("sortOrder") || "";
   const sortBy = searchParams.get("sortBy") || "";
