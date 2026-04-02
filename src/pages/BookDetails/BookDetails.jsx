@@ -48,7 +48,7 @@ const BookDetails = () => {
   });
 
   const {
-    data: comments = [],
+    data = {},
     isLoading: commentLoading,
     refetch: refetchComments,
   } = useQuery({
@@ -56,7 +56,7 @@ const BookDetails = () => {
     queryFn: async () => {
       const { data } = await secureAxios.get(`/comments/${id}`);
 
-      return data;
+      return data || {};
     },
   });
 
@@ -93,6 +93,8 @@ const BookDetails = () => {
   if (bookLoading || wishlistLoading) {
     return <BookDetailsSkeleton />;
   }
+
+  const comments = data?.data || [];
 
   const closeModal = () => {
     setOpen(false);
