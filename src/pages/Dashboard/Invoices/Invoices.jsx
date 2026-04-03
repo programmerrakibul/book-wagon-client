@@ -15,22 +15,36 @@ import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
 import Heading from "../../../components/Heading/Heading";
 import Container from "../../shared/Container/Container";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import { useSearchParams } from "react-router";
 
 const Invoices = () => {
   const secureAxios = useSecureAxios();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
 
-  const { data: invoices = [], isLoading } = useQuery({
+  const limit = searchParams.get("limit") || 10;
+  const page = searchParams.get("page") || 1;
+
+  const { data, isLoading } = useQuery({
     queryKey: ["invoices", "paid", user.email],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/payments/${user.email}`);
-      return data;
+      const { data } = await secureAxios.get("/payments", {
+        params: {
+          page,
+          limit,
+        },
+      });
+      return data || {};
     },
   });
 
   if (isLoading) {
     return <Loading message="Loading your invoices..." />;
   }
+
+  const invoices = data?.data || [];
+  const { totalDocs } = data?.pagination || {};
 
   return (
     <>
@@ -44,7 +58,7 @@ const Invoices = () => {
             size="large"
           />
 
-          {invoices.length === 0 ? (
+          {totalDocs === 0 ? (
             <div className="card bg-base-100 shadow-lg">
               <div className="card-body text-center py-12 sm:py-16">
                 <FaFileInvoice className="text-6xl sm:text-7xl  mx-auto mb-4" />
@@ -58,121 +72,62 @@ const Invoices = () => {
             </div>
           ) : (
             <>
-              {/* Desktop Table */}
-              <div className="hidden sm:block">
-                <TableContainer component={Paper} className="shadow-lg!">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold! text-base!">
-                          Book Name
+              <TableContainer component={Paper} className="shadow-lg!">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold! text-base!">
+                        Book Name
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Payment ID
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Payment Date
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Amount
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Status
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {invoices.map((invoice) => (
+                      <TableRow
+                        key={invoice._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell className="min-w-20!">
+                          <span className="font-semibold  text-sm lg:text-base">
+                            {invoice.bookName}
+                          </span>
                         </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Payment ID
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Payment Date
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Amount
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Status
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {invoices.map((invoice) => (
-                        <TableRow
-                          key={invoice._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell className="min-w-20!">
-                            <span className="font-semibold  text-sm lg:text-base">
-                              {invoice.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-mono text-xs sm:text-sm ">
-                              {invoice.transactionId}
-                            </span>
-                          </TableCell>
-                          <TableCell className=" text-sm lg:text-base text-nowrap">
-                            {format(
-                              new Date(invoice.createdAt),
-                              "MMM dd, yyyy"
-                            )}
-                          </TableCell>
-                          <TableCell className="font-bold text-primary text-sm lg:text-base">
-                            ৳ {invoice.price}
-                          </TableCell>
-                          <TableCell>
-                            <span className="badge badge-success gap-1 badge-sm">
-                              <FaCheckCircle className="text-xs" />
-                              Paid
-                            </span>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="sm:hidden space-y-4">
-                {invoices.map((invoice) => (
-                  <div key={invoice._id} className="card bg-base-100 shadow-lg">
-                    <div className="card-body p-4 sm:p-5">
-                      {/* Book Name */}
-                      <div className="flex items-start gap-2 mb-3">
-                        <FaBook className="text-primary mt-1 shrink-0" />
-                        <h3 className="font-bold text-base sm:text-lg ">
-                          {invoice.bookName}
-                        </h3>
-                      </div>
-
-                      <div className="space-y-2 text-sm sm:text-base">
-                        {/* Payment ID */}
-                        <div className="flex justify-between items-start gap-2">
-                          <span className=" shrink-0">Payment ID:</span>
-                          <span className="font-mono text-xs sm:text-sm text-right break-all">
+                        <TableCell>
+                          <span className="font-mono text-xs sm:text-sm ">
                             {invoice.transactionId}
                           </span>
-                        </div>
-
-                        {/* Amount */}
-                        <div className="flex justify-between">
-                          <span className="">Amount:</span>
-                          <span className="font-bold text-primary text-base sm:text-lg">
-                            ৳ {invoice.price}
-                          </span>
-                        </div>
-
-                        {/* Date */}
-                        <div className="flex justify-between">
-                          <span className="">Payment Date:</span>
-                          <span className="font-semibold">
-                            {format(
-                              new Date(invoice.createdAt),
-                              "MMM dd, yyyy"
-                            )}
-                          </span>
-                        </div>
-
-                        {/* Status */}
-                        <div className="flex justify-between items-center">
-                          <span className="">Status:</span>
-                          <span className="badge badge-success gap-1 text-xs sm:text-sm">
+                        </TableCell>
+                        <TableCell className=" text-sm lg:text-base text-nowrap">
+                          {format(new Date(invoice.createdAt), "MMM dd, yyyy")}
+                        </TableCell>
+                        <TableCell className="font-bold text-primary text-sm lg:text-base">
+                          ৳ {invoice.price}
+                        </TableCell>
+                        <TableCell>
+                          <span className="badge badge-success gap-1 badge-sm">
                             <FaCheckCircle className="text-xs" />
                             Paid
                           </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
 
               {/* Summary Card */}
               <div className="card bg-linear-to-br from-primary/10 to-secondary/10 border-2 border-primary/20 mt-6 sm:mt-8">
