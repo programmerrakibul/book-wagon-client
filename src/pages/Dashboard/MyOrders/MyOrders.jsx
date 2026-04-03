@@ -71,31 +71,38 @@ const MyOrders = () => {
       refetch();
 
       secureAxios
-        .get(`/checkout-session/retrieve/${session_id}`)
+        .get(`/checkout/retrieve/${session_id}`)
         .then(({ data }) => {
           refetch();
 
-          MySwal.fire({
-            icon: "success",
-            title: "Payment Successful!",
-            allowOutsideClick: false,
-            html: (
-              <div className="space-y-3">
-                <p className="space-x-1.5">
-                  <strong>Transaction ID:</strong>
-                  <span>{data.transactionId}</span>
-                </p>
-                <p className="space-x-1.5">
-                  <strong>Order ID:</strong>
-                  <span>{data.orderID}</span>
-                </p>
-              </div>
-            ),
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setSearchParams("");
-            }
-          });
+          if (data.success) {
+            MySwal.fire({
+              icon: "success",
+              title: "Payment Successful!",
+              allowOutsideClick: false,
+              html: (
+                <div className="space-y-3">
+                  <p className="space-x-1.5">
+                    <strong>Transaction ID:</strong>
+                    <span>{data.data.transactionId}</span>
+                  </p>
+                  <p className="space-x-1.5">
+                    <strong>Order ID:</strong>
+                    <span>{data.data.orderID}</span>
+                  </p>
+                </div>
+              ),
+            }).then((result) => {
+              if (result.isConfirmed) {
+                setSearchParams("");
+              }
+            });
+          } else {
+            getAlert({
+              title: data.message || "Payment failed! Please try again.",
+              icon: "error",
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -134,22 +141,17 @@ const MyOrders = () => {
   };
 
   const handlePayment = async (order) => {
-    const paymentInfo = {
-      customerEmail: order.customerEmail,
-      price: order.orderedBook.price,
-      bookId: order.bookId,
-      description: order.orderedBook.description,
-      bookName: order.orderedBook.bookName,
-      orderID: order.orderID,
-    };
-
     try {
-      const { data } = await secureAxios.post(
-        "/checkout-session/create",
-        paymentInfo,
-      );
+      const { data } = await secureAxios.post(`/checkout/${order.orderID}`);
 
-      window.location.assign(data.url);
+      if (data.success) {
+        window.location.assign(data.data);
+      } else {
+        getAlert({
+          title: data.message || "Payment failed! Please try again.",
+          icon: "error",
+        });
+      }
     } catch {
       toast.error("Payment failed! Please try again.");
     }

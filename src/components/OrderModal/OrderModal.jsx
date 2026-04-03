@@ -34,6 +34,7 @@ const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
     const orderData = {
       bookId: book._id,
       ...data,
+      price: book.price,
     };
 
     try {
