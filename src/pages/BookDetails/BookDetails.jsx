@@ -75,18 +75,18 @@ const BookDetails = () => {
   });
 
   const {
-    data: inWishlist,
+    data: isFavorite,
     isLoading: wishlistLoading,
     refetch,
   } = useQuery({
-    queryKey: ["inWishlist", id, user?.email],
+    queryKey: ["isFavorite", id, user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
       const { data } = await secureAxios.get(
-        `/wishlist/${user?.email}/check/${id}`,
+        `/favorites/is-in-favorites/${id}`,
       );
 
-      return data?.inWishlist;
+      return data?.data;
     },
   });
 
@@ -101,7 +101,6 @@ const BookDetails = () => {
   };
 
   const {
-    _id,
     bookName,
     bookImage,
     author,
@@ -116,36 +115,36 @@ const BookDetails = () => {
 
   const isLibrarian = librarianEmail === user?.email;
 
-  const addToWishlist = async () => {
+  const addToFavorites = async () => {
     try {
-      const { data } = await secureAxios.post(`/wishlist/${user.email}/add`, {
-        bookId: _id,
-      });
+      const { data } = await secureAxios.post(`/favorites/${id}`);
 
       if (data.success) {
         refetch();
 
-        getAlert({
-          title: "Successfully added to wishlist.",
-        });
+        toast.success("Successfully added to wishlist.");
+      } else {
+        toast.error(
+          data.message || "Add to wishlist failed! Please try again.",
+        );
       }
     } catch {
       toast.error("Add to wishlist failed! Please try again.");
     }
   };
 
-  const removeFromWishlist = async () => {
+  const removeFromFavorites = async () => {
     try {
-      const { data } = await secureAxios.delete(
-        `/wishlist/${user.email}/remove/${id}`,
-      );
+      const { data } = await secureAxios.delete(`/favorites/${id}`);
 
       if (data.success) {
         refetch();
 
-        getAlert({
-          title: "Successfully removed from wishlist.",
-        });
+        toast.success("Successfully removed from wishlist.");
+      } else {
+        toast.error(
+          data.message || "Remove from wishlist failed! Please try again.",
+        );
       }
     } catch {
       toast.error("Remove from wishlist failed! Please try again.");
@@ -238,9 +237,9 @@ const BookDetails = () => {
                     </h1>
                     {user &&
                       !isLibrarian &&
-                      (inWishlist ? (
+                      (isFavorite ? (
                         <button
-                          onClick={removeFromWishlist}
+                          onClick={removeFromFavorites}
                           data-tip="Remove from Wishlist"
                           className="wish_heart"
                         >
@@ -248,7 +247,7 @@ const BookDetails = () => {
                         </button>
                       ) : (
                         <button
-                          onClick={addToWishlist}
+                          onClick={addToFavorites}
                           data-tip="Add to Wishlist"
                           className="wish_heart"
                         >

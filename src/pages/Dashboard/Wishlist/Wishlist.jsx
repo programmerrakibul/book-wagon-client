@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { FaHeart, FaBook } from "react-icons/fa";
 import {
   Table,
@@ -16,22 +16,37 @@ import Loading from "../../../components/Loading/Loading";
 import Button from "../../../components/Button/Button";
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const Wishlist = () => {
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
+  const [searchParams] = useSearchParams();
 
-  const { data: books = [], isLoading } = useQuery({
-    queryKey: ["wishlist-books", user.email],
+  const limit = searchParams.get("limit") || 10;
+  const page = searchParams.get("page") || 1;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["favorite-books", user.email, page, limit],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/wishlist/${user.email}/books`);
-      return data?.books || [];
+      const { data } = await secureAxios.get("/favorites/books", {
+        params: {
+          page,
+          limit,
+        },
+      });
+      return data || {};
     },
   });
 
   if (isLoading) {
     return <Loading message="Loading your wishlist..." />;
   }
+
+  console.log(data);
+
+  const books = data?.data || [];
+  const { totalDocs } = data?.pagination || {};
 
   return (
     <>
@@ -53,92 +68,57 @@ const Wishlist = () => {
 
           {books.length > 0 ? (
             <>
-              {/* Desktop Table View */}
-              <div className="hidden md:block">
-                <TableContainer component={Paper} className="shadow-lg">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold text-base">
-                          Image
+              <TableContainer component={Paper} className="shadow-lg">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold text-base">
+                        Image
+                      </TableCell>
+                      <TableCell className="font-bold text-base">
+                        Book Name
+                      </TableCell>
+                      <TableCell className="font-bold text-base">
+                        Category
+                      </TableCell>
+                      <TableCell className="font-bold text-base">
+                        Price
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {books.map((book) => (
+                      <TableRow
+                        key={book._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell>
+                          <img
+                            src={book.bookImage}
+                            alt={book.bookName}
+                            className="w-16 h-20 object-cover rounded shadow"
+                          />
                         </TableCell>
-                        <TableCell className="font-bold text-base">
-                          Book Name
-                        </TableCell>
-                        <TableCell className="font-bold text-base">
-                          Category
-                        </TableCell>
-                        <TableCell className="font-bold text-base">
-                          Price
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {books.map((book) => (
-                        <TableRow
-                          key={book._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell>
-                            <img
-                              src={book.bookImage}
-                              alt={book.bookName}
-                              className="w-16 h-20 object-cover rounded shadow"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-semibold  text-base">
-                              {book.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            <span className="badge badge-primary badge-md">
-                              {book.category}
-                            </span>
-                          </TableCell>
-                          <TableCell className="font-bold text-primary text-lg">
-                            ৳ {book.price}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Card View */}
-              <div className="md:hidden space-y-4">
-                {books.map((book) => (
-                  <div
-                    key={book._id}
-                    className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <div className="card-body p-4">
-                      <div className="flex gap-4">
-                        {/* Book Image */}
-                        <img
-                          src={book.bookImage}
-                          alt={book.bookName}
-                          className="w-20 h-28 object-cover rounded shadow"
-                        />
-
-                        {/* Book Info */}
-                        <div className="flex-1">
-                          <h3 className="font-bold text-lg  mb-2 line-clamp-2">
+                        <TableCell>
+                          <span className="font-semibold  text-base">
                             {book.bookName}
-                          </h3>
-                          <span className="badge badge-primary badge-sm mb-3">
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <span className="badge badge-primary badge-md">
                             {book.category}
                           </span>
-                          <p className="text-xl font-bold text-primary">
-                            ৳ {book.price}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                        </TableCell>
+                        <TableCell className="font-bold text-primary text-lg">
+                          ৳ {book.price}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           ) : (
             <div className="card bg-base-100 shadow-xl">
