@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { FaEdit, FaBook } from "react-icons/fa";
 import {
   Table,
@@ -9,6 +9,8 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useAuth from "../../../hooks/useAuth";
@@ -18,26 +20,44 @@ import { toast } from "sonner";
 import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const MyBooks = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const secureAxios = useSecureAxios();
-  const {
-    data: books,
-    isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["books", "librarian", user.email],
+  const [searchParams] = useSearchParams();
+
+  const page = searchParams.get("page") || 1;
+  const limit = searchParams.get("limit") || 10;
+  const search = searchParams.get("search") || "";
+  const sortBy = searchParams.get("sortBy") || "";
+  const sortOrder = searchParams.get("sortOrder") || "";
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [
+      "my-books",
+      "librarian",
+      user.email,
+      page,
+      limit,
+      search,
+      sortBy,
+      sortOrder,
+    ],
     queryFn: async () => {
       const { data } = await secureAxios.get("/books", {
         params: {
           email: user.email,
-          role: "librarian",
+          page,
+          limit,
+          search,
+          sortBy,
+          sortOrder,
         },
       });
 
-      return data?.books;
+      return data || {};
     },
   });
 
@@ -45,9 +65,13 @@ const MyBooks = () => {
     try {
       const { data } = await secureAxios.patch(`/books/${bookId}`, { status });
 
-      if (data.modifiedCount) {
+      if (data.success) {
         refetch();
         getAlert({ title: `Book status updated with ${status}` });
+      } else {
+        toast.error(
+          data.message || "Failed to update book status. Please try again.",
+        );
       }
     } catch (err) {
       const errorMessage = err?.response?.data?.message || err.message;
@@ -58,6 +82,9 @@ const MyBooks = () => {
   if (isLoading) {
     return <Loading message="Loading your books..." />;
   }
+
+  const books = data?.data || [];
+  const { totalDocs } = data?.pagination || {};
 
   return (
     <>
@@ -77,140 +104,83 @@ const MyBooks = () => {
           />
 
           {/* Books Table */}
-          {books.length > 0 ? (
+          {totalDocs > 0 ? (
             <>
-              {/* Desktop Table */}
-              <div className="hidden md:block">
-                <TableContainer component={Paper} className="shadow-lg!">
-                  <Table>
-                    <TableHead>
-                      <TableRow className="bg-primary/10">
-                        <TableCell className="font-bold! text-base!">
-                          #
+              <TableContainer component={Paper} className="shadow-lg!">
+                <Table>
+                  <TableHead>
+                    <TableRow className="bg-primary/10">
+                      <TableCell className="font-bold! text-base!">#</TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Image
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Book Name
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Author
+                      </TableCell>
+                      <TableCell className="font-bold! text-base!">
+                        Status
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        className="font-bold! text-base!"
+                      >
+                        Actions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {books.map((book, index) => (
+                      <TableRow
+                        key={book._id}
+                        className="hover:bg-base-200 transition-colors"
+                      >
+                        <TableCell>
+                          <span className="font-semibold ">{index + 1}</span>
                         </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Image
+                        <TableCell>
+                          <img
+                            src={book.bookImage}
+                            alt={book.bookName}
+                            className="w-12 h-16 object-cover rounded shadow"
+                          />
                         </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Book Name
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Author
-                        </TableCell>
-                        <TableCell className="font-bold! text-base!">
-                          Status
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          className="font-bold! text-base!"
-                        >
-                          Actions
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {books.map((book, index) => (
-                        <TableRow
-                          key={book._id}
-                          className="hover:bg-base-200 transition-colors"
-                        >
-                          <TableCell>
-                            <span className="font-semibold ">{index + 1}</span>
-                          </TableCell>
-                          <TableCell>
-                            <img
-                              src={book.bookImage}
-                              alt={book.bookName}
-                              className="w-12 h-16 object-cover rounded shadow"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <span className="font-medium  text-sm lg:text-base">
-                              {book.bookName}
-                            </span>
-                          </TableCell>
-                          <TableCell className=" text-sm lg:text-base">
-                            {book.author}
-                          </TableCell>
-                          <TableCell>
-                            <select
-                              value={book.status}
-                              onChange={(e) =>
-                                handleStatusChange(book._id, e.target.value)
-                              }
-                              className={`select select-bordered select-sm ${
-                                book.status === "published"
-                                  ? "select-success"
-                                  : "select-warning"
-                              }`}
-                            >
-                              <option value="published">Published</option>
-                              <option value="unpublished">Unpublished</option>
-                            </select>
-                          </TableCell>
-                          <TableCell align="center">
-                            <Button
-                              handleClick={() =>
-                                navigate(`/dashboard/edit-book/${book._id}`)
-                              }
-                              className="btn-sm!"
-                            >
-                              <FaEdit />
-                              Edit
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              {/* Mobile Cards */}
-              <div className="md:hidden py-4 space-y-4">
-                {books.map((book, index) => (
-                  <div
-                    key={book._id}
-                    className="card bg-base-100 border border-primary/20 shadow-md hover:shadow-xl transition-shadow"
-                  >
-                    <div className="card-body p-4">
-                      <div className="flex gap-4">
-                        {/* Book Image */}
-                        <div className="avatar shrink-0">
-                          <div className="w-20 h-28 rounded">
-                            <img
-                              src={book.bookImage}
-                              alt={book.bookName}
-                              className="object-cover"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Book Info */}
-                        <div className="flex-1 min-w-0">
-                          <div className="badge badge-neutral badge-sm mb-2">
-                            #{index + 1}
-                          </div>
-                          <h3 className="font-bold text-base mb-1 truncate">
+                        <TableCell>
+                          <span className="font-medium  text-sm lg:text-base">
                             {book.bookName}
-                          </h3>
-                          <p className="text-sm  mb-3 truncate">
-                            by {book.author}
-                          </p>
-
-                          {/* Status Select */}
-                          <select
+                          </span>
+                        </TableCell>
+                        <TableCell className=" text-sm lg:text-base">
+                          {book.author}
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            variant="standard"
+                            labelId="change-book-status-label"
+                            id="change-book-status"
                             value={book.status}
+                            color="primary"
+                            label="Age"
+                            size="small"
+                            className="capitalize"
                             onChange={(e) =>
                               handleStatusChange(book._id, e.target.value)
                             }
-                            className="select select-bordered select-sm w-full mb-3"
                           >
-                            <option value="published">Published</option>
-                            <option value="unpublished">Unpublished</option>
-                          </select>
-
-                          {/* Edit Button */}
+                            {["published", "unpublished"].map((status) => (
+                              <MenuItem
+                                key={status}
+                                value={status}
+                                className="capitalize"
+                              >
+                                {status}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </TableCell>
+                        <TableCell align="center">
                           <Button
                             handleClick={() =>
                               navigate(`/dashboard/edit-book/${book._id}`)
@@ -218,14 +188,16 @@ const MyBooks = () => {
                             className="btn-sm!"
                           >
                             <FaEdit />
-                            Edit Book
+                            Edit
                           </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+
+                <TablePaginationComponent total={totalDocs} />
+              </TableContainer>
             </>
           ) : (
             <div className="card bg-base-100 shadow-xl">
@@ -233,9 +205,7 @@ const MyBooks = () => {
                 <FaBook className="text-6xl  mx-auto mb-4" />
                 <h3 className="text-xl font-semibold  mb-2">No Books Found</h3>
                 <p className=" mb-4">You haven't added any books yet.</p>
-                <Button
-                  handleClick={() => navigate("/dashboard/add-book")}
-                >
+                <Button handleClick={() => navigate("/dashboard/add-book")}>
                   Add Your First Book
                 </Button>
               </div>

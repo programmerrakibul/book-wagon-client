@@ -85,7 +85,7 @@ const LibrarianOverview = () => {
         },
         {
           title: "Completed Orders",
-          value: dashboardData.stats.completedOrders.toString(),
+          value: dashboardData?.stats?.completedOrders?.toString(),
           change: `${
             Math.round(
               (dashboardData.stats.completedOrders /
