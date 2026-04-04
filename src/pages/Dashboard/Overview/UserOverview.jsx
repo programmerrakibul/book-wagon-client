@@ -34,13 +34,13 @@ import Loading from "../../../components/Loading/Loading";
 
 const UserOverview = () => {
   const { user } = useAuth();
-  const secureAxios = useSecureAxios();
   const { theme } = useTheme();
+  const secureAxios = useSecureAxios();
 
   const { data: dashboardData, isLoading } = useQuery({
-    queryKey: [user.email, "user-dashboard-overview"],
+    queryKey: [user.email, "user-dashboard"],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/dashboard/user/${user.email}`);
+      const { data } = await secureAxios.get('/dashboard/user');
 
       return data?.data;
     },
@@ -72,7 +72,7 @@ const UserOverview = () => {
         },
         {
           title: "Completed Orders",
-          value: dashboardData?.stats?.completedOrders?.toString(),
+          value: dashboardData?.stats?.totalCompletedOrder?.toString(),
           icon: <FaCheckCircle />,
           color: "success",
         },
