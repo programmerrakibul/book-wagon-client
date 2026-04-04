@@ -52,7 +52,7 @@ const AdminOverview = () => {
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "admin-overview"],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/dashboard/admin/${user.email}`);
+      const { data } = await secureAxios.get("/dashboard/admin");
 
       return data?.data;
     },
@@ -72,7 +72,7 @@ const AdminOverview = () => {
           value: dashboardData.stats.totalUsers.toLocaleString(),
           change: `+${Math.round(
             (dashboardData.stats.activeUsers / dashboardData.stats.totalUsers) *
-              100
+              100,
           )}% active`,
           icon: <FaUsers />,
           color: "secondary",
@@ -300,9 +300,11 @@ const AdminOverview = () => {
                         fill="#26ccc2"
                         radius={[4, 4, 0, 0]}
                       />
-                      <Tooltip contentStyle={{
-                        color: 'black'
-                      }} />
+                      <Tooltip
+                        contentStyle={{
+                          color: "black",
+                        }}
+                      />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -325,7 +327,7 @@ const AdminOverview = () => {
                         <PieChart>
                           <Pie
                             data={Object.entries(
-                              dashboardData.orderStatusDistribution
+                              dashboardData.orderStatusDistribution,
                             ).map(([name, value]) => ({
                               name:
                                 name.charAt(0).toUpperCase() + name.slice(1),
@@ -340,7 +342,7 @@ const AdminOverview = () => {
                             dataKey="value"
                           >
                             {Object.entries(
-                              dashboardData.orderStatusDistribution
+                              dashboardData.orderStatusDistribution,
                             ).map((entry, index) => (
                               <Cell
                                 key={`cell-${index}`}
@@ -364,7 +366,7 @@ const AdminOverview = () => {
                         <PieChart>
                           <Pie
                             data={Object.entries(
-                              dashboardData.bookStatusDistribution
+                              dashboardData.bookStatusDistribution,
                             ).map(([name, value]) => ({
                               name:
                                 name.charAt(0).toUpperCase() + name.slice(1),
@@ -379,7 +381,7 @@ const AdminOverview = () => {
                             dataKey="value"
                           >
                             {Object.entries(
-                              dashboardData.bookStatusDistribution
+                              dashboardData.bookStatusDistribution,
                             ).map((entry, index) => (
                               <Cell
                                 key={`cell-${index}`}
@@ -423,7 +425,7 @@ const AdminOverview = () => {
                         {dashboardData.recentOrders.map((order) => {
                           const badges = getStatusBadge(
                             order.status,
-                            order.paymentStatus
+                            order.paymentStatus,
                           );
                           return (
                             <tr key={order.id}>
@@ -554,7 +556,7 @@ const AdminOverview = () => {
                           {Math.round(
                             (dashboardData.stats.activeUsers /
                               dashboardData.stats.totalUsers) *
-                              100
+                              100,
                           )}
                           %
                         </span>

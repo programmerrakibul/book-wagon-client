@@ -41,9 +41,7 @@ const LibrarianOverview = () => {
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "librarian-overview"],
     queryFn: async () => {
-      const { data } = await secureAxios.get(
-        `/dashboard/librarian/${user.email}`
-      );
+      const { data } = await secureAxios.get("/dashboard/librarian");
 
       return data?.data;
     },
@@ -55,7 +53,7 @@ const LibrarianOverview = () => {
           title: "My Books",
           value: dashboardData.stats.myBooks.toString(),
           change: `${dashboardData.stats.myBooks > 0 ? "+" : ""}${Math.round(
-            (dashboardData.stats.myBooks / 100) * 5
+            (dashboardData.stats.myBooks / 100) * 5,
           )}%`,
           icon: <FaBook />,
           color: "primary",
@@ -85,12 +83,12 @@ const LibrarianOverview = () => {
         },
         {
           title: "Completed Orders",
-          value: dashboardData?.stats?.completedOrders?.toString(),
+          value: dashboardData?.stats?.totalCompletedOrder?.toString(),
           change: `${
             Math.round(
               (dashboardData.stats.completedOrders /
                 dashboardData.stats.totalOrders) *
-                100
+                100,
             ) || 0
           }% rate`,
           trend: "up",
@@ -234,7 +232,7 @@ const LibrarianOverview = () => {
                         <PieChart>
                           <Pie
                             data={Object.entries(
-                              dashboardData.statusDistribution
+                              dashboardData.statusDistribution,
                             ).map(([name, value]) => ({
                               name:
                                 name.charAt(0).toUpperCase() + name.slice(1),
@@ -249,7 +247,7 @@ const LibrarianOverview = () => {
                             dataKey="value"
                           >
                             {Object.entries(
-                              dashboardData.statusDistribution
+                              dashboardData.statusDistribution,
                             ).map((entry, index) => (
                               <Cell
                                 key={`cell-${index}`}
@@ -272,7 +270,7 @@ const LibrarianOverview = () => {
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                           data={Object.entries(
-                            dashboardData.paymentDistribution
+                            dashboardData.paymentDistribution,
                           ).map(([name, value]) => ({
                             name: name.charAt(0).toUpperCase() + name.slice(1),
                             value,
@@ -298,7 +296,7 @@ const LibrarianOverview = () => {
                           <Tooltip formatter={(value) => [value, "Orders"]} />
                           <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                             {Object.entries(
-                              dashboardData.paymentDistribution
+                              dashboardData.paymentDistribution,
                             ).map((entry, index) => (
                               <Cell
                                 key={`cell-${index}`}
@@ -417,7 +415,7 @@ const LibrarianOverview = () => {
                           <p className="text-sm font-medium">Avg Order Value</p>
                           <p className="text-2xl font-bold">
                             {formatCurrency(
-                              dashboardData.stats.averageOrderValue
+                              dashboardData.stats.averageOrderValue,
                             )}
                           </p>
                         </div>
@@ -439,7 +437,7 @@ const LibrarianOverview = () => {
                           {Math.round(
                             (dashboardData.stats.completedOrders /
                               dashboardData.stats.totalOrders) *
-                              100
+                              100,
                           ) || 0}
                           %
                         </div>
@@ -486,8 +484,8 @@ const LibrarianOverview = () => {
                   <tbody>
                     {dashboardData.recentOrders.map((order) => {
                       const badges = getStatusBadge(
-                        order.status,
-                        order.paymentStatus
+                        order?.status,
+                        order?.paymentStatus,
                       );
                       return (
                         <tr key={order.id} className="hover">
