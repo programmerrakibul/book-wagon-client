@@ -129,7 +129,7 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
 VITE_CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset_name
-VITE_API_URL=your_backend_api_url
+VITE_SERVER_URL=your_backend_api_url
 ```
 
 4. Start the development server
