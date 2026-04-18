@@ -104,9 +104,7 @@ const MyOrders = () => {
             });
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => toast.error("Payment failed! Please try again."));
     }
 
     mount = false;

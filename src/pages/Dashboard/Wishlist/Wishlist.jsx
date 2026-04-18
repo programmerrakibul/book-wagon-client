@@ -43,8 +43,6 @@ const Wishlist = () => {
     return <Loading message="Loading your wishlist..." />;
   }
 
-  console.log(data);
-
   const books = data?.data || [];
   const { totalDocs } = data?.pagination || {};
 
