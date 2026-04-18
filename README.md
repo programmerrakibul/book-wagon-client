@@ -35,7 +35,7 @@ suitable for both individual readers and book management professionals.
 - 💳 **Payment Integration** - Secure payment processing with Stripe
 - 🧾 **Invoice History** - View all payment invoices
 - 👤 **Profile Management** - Update personal information
-<!-- - 📊 **Dashboard** - Personal overview with statistics -->
+- 📊 **Dashboard** - Personal overview with statistics
 
 ### For Librarians
 
@@ -50,7 +50,7 @@ suitable for both individual readers and book management professionals.
 - 👥 **User Management** - Manage user roles and permissions
 - 📚 **Book Management** - Full control over all books in the system
 - 📦 **Order Oversight** - Monitor all orders across the platform
-<!-- - 📊 **Dashboard** - Comprehensive analytics and statistics -->
+- 📊 **Dashboard** - Comprehensive analytics and statistics
 - 🔧 **System Configuration** - Platform-wide settings management
 
 ## 🛠️ NPM Packages Used
@@ -87,7 +87,6 @@ suitable for both individual readers and book management professionals.
 - **date-fns** (^4.1.0) - Date formatting and manipulation
 - **sonner** (^2.0.7) - Toast notifications
 - **sweetalert2** (^11.26.4) - Beautiful alert modals
-<!-- - **react-spinners** (^0.17.0) - Loading spinners -->
 - **react-leaflet** (^5.0.0-rc.2) - Interactive maps
 - **leaflet** (^1.9.4) - Map library
 
@@ -128,6 +127,8 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
+VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
+VITE_CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset_name
 VITE_API_URL=your_backend_api_url
 ```
 
@@ -137,7 +138,7 @@ VITE_API_URL=your_backend_api_url
 npm run dev
 ```
 
-5. Open your browser and navigate to `http://localhost:5173`
+5. Open your browser and navigate to `http://localhost:3000`
 
 ## 📦 Build for Production
 
@@ -167,16 +168,9 @@ The build output will be in the `dist` directory.
 
 **Md. Rakibul Islam**
 
-- GitHub: [@programmerrakibul](https://github.com/programmerrakibul)
-- Email: rakibul00206@gmail.com
-
-## 🙏 Acknowledgments
-
-- React team for the amazing framework
-- Material-UI for beautiful components
-- DaisyUI for the component library
-- All open-source contributors
-
----
+- [Portfolio](<[rakibul00206@gmail.com](https://programmer-rakibul.netlify.app/)>)
+- [LinkedIn](https://www.linkedin.com/in/programmer-rakibul/)
+- [GitHub](https://github.com/programmerrakibul)
+- [Email](rakibul00206@gmail.com)
 
 Made with ❤️ by Md. Rakibul Islam
