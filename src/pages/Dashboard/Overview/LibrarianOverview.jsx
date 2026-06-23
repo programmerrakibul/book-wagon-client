@@ -24,11 +24,11 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import Container from "../../shared/Container/Container";
-import Heading from "../../../components/Heading/Heading";
-import useSecureAxios from "../../../hooks/useSecureAxios";
+import Container from "@/pages/shared/Container/Container";
+import Heading from "@/components/Heading/Heading";
+import useSecureAxios from "@/hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "../../../components/Loading/Loading";
+import Loading from "@/components/Loading/Loading";
 import { Link } from "react-router";
 import useAuthStore from "@/stores/useAuthStore";
 import useThemeStore, { THEMES } from "@/stores/useThemeStore";

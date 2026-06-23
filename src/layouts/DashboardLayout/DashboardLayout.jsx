@@ -1,30 +1,68 @@
-import { Link, NavLink, Outlet } from "react-router";
+import logo from "@/assets/logo.png";
+import Avatar from "@/components/Avatar/Avatar";
+import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
+import useRole from "@/hooks/useRole";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/useAuthStore";
+import { useMemo } from "react";
+import { FaFileInvoiceDollar, FaHeart, FaUser, FaUsers } from "react-icons/fa";
+import { IoLibrary } from "react-icons/io5";
 import {
-  MdLibraryAdd,
   MdDashboard,
+  MdLibraryAdd,
   MdMenu,
   MdShoppingCart,
 } from "react-icons/md";
-import {
-  FaUser,
-  FaBook,
-  FaHome,
-  FaUsers,
-  FaFileInvoiceDollar,
-  FaHeart,
-} from "react-icons/fa";
-import { IoLibrary } from "react-icons/io5";
-import logo from "../../assets/logo.png";
-import Avatar from "../../components/Avatar/Avatar";
-import Container from "../../pages/shared/Container/Container";
-import useRole from "../../hooks/useRole";
-import Loading from "../../components/Loading/Loading";
-import AvatarDropdown from "../../components/AvatarDropdown/AvatarDropdown";
-import { useMemo } from "react";
-import useAuthStore from "@/stores/useAuthStore";
+import { Link, NavLink, Outlet } from "react-router";
+
+const DashboardNavSkeleton = () => {
+  const skeletonItems = Array.from({ length: 6 });
+
+  return (
+    <>
+      {skeletonItems.map((_, index) => (
+        <li key={index}>
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300
+                       bg-base-300 dark:bg-neutral-800 animate-pulse"
+          >
+            {/* Icon Skeleton */}
+            <div className="w-8 h-8 rounded-md bg-gray-300 dark:bg-neutral-700 shrink-0" />
+
+            {/* Label Skeleton */}
+            <div className="flex-1 space-y-1">
+              <div
+                className={`h-4 bg-gray-300 dark:bg-neutral-700 rounded w-${[80, 65, 90, 55, 75, 85][index % 6]}%`}
+              />
+            </div>
+          </div>
+        </li>
+      ))}
+    </>
+  );
+};
+
+const UserProfileSkeleton = () => {
+  return (
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20 animate-pulse">
+      {/* Avatar Skeleton */}
+      <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-neutral-700 shrink-0" />
+
+      {/* Text Content Skeleton */}
+      <div className="flex-1 min-w-0 space-y-2">
+        {/* Name Line */}
+        <div className="h-4 bg-gray-300 dark:bg-neutral-700 rounded w-3/4" />
+
+        {/* Email Line */}
+        <div className="h-3 bg-gray-300 dark:bg-neutral-700 rounded w-5/6" />
+      </div>
+    </div>
+  );
+};
 
 const DashboardLayout = () => {
-  const  user  = useAuthStore( s=> s.user);
+  const user = useAuthStore((s) => s.user);
+  const userLoading = useAuthStore((s) => s.authLoading);
   const { role, roleLoading } = useRole();
 
   const menuItems = useMemo(() => {
@@ -105,14 +143,6 @@ const DashboardLayout = () => {
     return items;
   }, [role]);
 
-  if (roleLoading) {
-    return (
-      <div className="min-h-dvh grid place-items-center">
-        <Loading />
-      </div>
-    );
-  }
-
   return (
     <>
       <title>Dashboard - BookWagon</title>
@@ -185,32 +215,40 @@ const DashboardLayout = () => {
 
             {/* Menu Items */}
             <ul className="menu w-full menu-vertical p-4 space-y-2 flex-1">
-              {menuItems.map((item, index) => (
-                <li key={index}>
-                  <NavLink
-                    to={item.to}
-                    end={item.to === "/dashboard"}
-                    className="dashboard_nav_links"
-                  >
-                    <span className="text-xl">{item.icon}</span>
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </NavLink>
-                </li>
-              ))}
+              {roleLoading ? (
+                <DashboardNavSkeleton />
+              ) : (
+                menuItems.map((item, index) => (
+                  <li key={index}>
+                    <NavLink
+                      to={item.to}
+                      end={item.to === "/dashboard"}
+                      className="dashboard_nav_links"
+                    >
+                      <span className="text-xl">{item.icon}</span>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </NavLink>
+                  </li>
+                ))
+              )}
             </ul>
 
             {/* User Card at Bottom */}
             <div className="sticky bottom-0 bg-base-100/40 backdrop-blur-sm border-t border-primary/20 p-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20">
-                <Avatar src={user?.photoURL} alt={user?.displayName} />
+              {userLoading ? (
+                <UserProfileSkeleton />
+              ) : (
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20">
+                  <Avatar src={user?.photoURL} alt={user?.displayName} />
 
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate">
-                    {user?.displayName || "User"}
-                  </p>
-                  <p className="text-xs truncate">{user?.email}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold truncate">
+                      {user?.displayName || "User"}
+                    </p>
+                    <p className="text-xs truncate">{user?.email}</p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </aside>
         </div>

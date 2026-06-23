@@ -1,8 +1,8 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import Container from "@/pages/shared/Container/Container";
+import { Box, Tab, Tabs } from "@mui/material";
 import { FaEdit } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
-import { Tabs, Tab, Box } from "@mui/material";
-import Container from "../../pages/shared/Container/Container";
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 const ProfileLayout = () => {
   const location = useLocation();

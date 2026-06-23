@@ -1,5 +1,5 @@
-import Loading from "../../../components/Loading/Loading";
-import useRole from "../../../hooks/useRole";
+import Loading from "@/components/Loading/Loading";
+import useRole from "@/hooks/useRole";
 import AdminOverview from "./AdminOverview";
 import LibrarianOverview from "./LibrarianOverview";
 import UserOverview from "./UserOverview";

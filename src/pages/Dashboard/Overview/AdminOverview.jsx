@@ -1,54 +1,48 @@
+import Heading from "@/components/Heading/Heading";
+import Loading from "@/components/Loading/Loading";
+import useSecureAxios from "@/hooks/useSecureAxios";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/useAuthStore";
+import useThemeStore, { THEMES } from "@/stores/useThemeStore";
+import { useQuery } from "@tanstack/react-query";
 import {
   FaBook,
-  FaUsers,
-  FaShoppingCart,
-  FaUserCheck,
-  FaArrowUp,
-  FaArrowDown,
-  FaChartLine,
-  FaUserTie,
   FaBookReader,
-  FaHeart,
+  FaChartLine,
   FaCheckCircle,
   FaClock,
-  FaTruck,
-  FaTimesCircle,
-  FaMoneyBillWave,
   FaCreditCard,
-  FaChartBar,
-  FaFilter,
-  FaTable,
-  FaUserPlus,
-  FaBookMedical,
+  FaHeart,
+  FaMoneyBillWave,
+  FaShoppingCart,
+  FaTimesCircle,
+  FaTruck,
+  FaUserCheck,
+  FaUsers,
+  FaUserTie,
 } from "react-icons/fa";
+import { LuLoaderCircle } from "react-icons/lu";
 import {
+  Area,
   Bar,
+  CartesianGrid,
+  Cell,
+  ComposedChart,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  Area,
-  ComposedChart,
 } from "recharts";
-import Container from "../../shared/Container/Container";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
-import { useQuery } from "@tanstack/react-query";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import useAuthStore from "@/stores/useAuthStore";
-import useThemeStore, { THEMES }  from "@/stores/useThemeStore";
 
 const AdminOverview = () => {
-  const  user  = useAuthStore(s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
-  const  theme  = useThemeStore(s=> s.theme);
+  const theme = useThemeStore((s) => s.theme);
 
-  const { data: dashboardData, isLoading } = useQuery({
+  const { data: dashboardData = {}, isLoading } = useQuery({
     queryKey: [user.email, "admin-overview"],
     queryFn: async () => {
       const { data } = await secureAxios.get("/dashboard/admin");
@@ -57,73 +51,70 @@ const AdminOverview = () => {
     },
   });
 
-  const stats = dashboardData
-    ? [
-        {
-          title: "Total Books",
-          value: dashboardData.stats.totalBooks.toLocaleString(),
-          icon: <FaBook />,
-          color: "primary",
-          description: "Across all librarians",
-        },
-        {
-          title: "Total Users",
-          value: dashboardData.stats.totalUsers.toLocaleString(),
-          change: `+${Math.round(
-            (dashboardData.stats.activeUsers / dashboardData.stats.totalUsers) *
-              100,
-          )}% active`,
-          icon: <FaUsers />,
-          color: "secondary",
-          description: `${dashboardData.stats.activeUsers} active users`,
-        },
-        {
-          title: "Total Orders",
-          value: dashboardData.stats.totalOrders.toLocaleString(),
-          change: `${dashboardData.stats.successRate}% success rate`,
-          icon: <FaShoppingCart />,
-          color: "accent",
-          description: `${dashboardData.stats.completedOrders} completed`,
-        },
-        {
-          title: "Platform Health",
-          value: `${dashboardData.stats.successRate}%`,
-          change: `${dashboardData.stats.booksPerLibrarian} books/librarian`,
-          icon: <FaChartLine />,
-          color: "success",
-          description: "Order success rate",
-        },
-      ]
-    : [];
+  const stats = [
+    {
+      title: "Total Books",
+      value: dashboardData.stats?.totalBooks?.toLocaleString() ?? 0,
+      icon: <FaBook />,
+      color: "primary",
+      description: "Across all librarians",
+    },
+    {
+      title: "Total Users",
+      value: dashboardData.stats?.totalUsers?.toLocaleString() ?? 0,
+      change: `+${Math.round(
+        ((dashboardData.stats?.activeUsers ?? 0) /
+          (dashboardData.stats?.totalUsers ?? 0)) *
+          100,
+      )}% active`,
+      icon: <FaUsers />,
+      color: "secondary",
+      description: `${dashboardData.stats?.activeUsers ?? 0} active users`,
+    },
+    {
+      title: "Total Orders",
+      value: dashboardData.stats?.totalOrders?.toLocaleString() ?? 0,
+      change: `${dashboardData.stats?.successRate ?? 0}% success rate`,
+      icon: <FaShoppingCart />,
+      color: "accent",
+      description: `${dashboardData.stats?.completedOrders ?? 0} completed`,
+    },
+    {
+      title: "Platform Health",
+      value: `${dashboardData.stats?.successRate ?? 0}%`,
+      change: `${dashboardData.stats?.booksPerLibrarian ?? 0} books/librarian`,
+      icon: <FaChartLine />,
+      color: "success",
+      description: "Order success rate",
+    },
+  ];
 
-  const userStats = dashboardData
-    ? [
-        {
-          title: "Total Readers",
-          value: dashboardData.stats.totalReaders.toLocaleString(),
-          icon: <FaBookReader />,
-          color: "info",
-        },
-        {
-          title: "Total Librarians",
-          value: dashboardData.stats.totalLibrarians.toLocaleString(),
-          icon: <FaUserTie />,
-          color: "warning",
-        },
-        {
-          title: "Active Users",
-          value: dashboardData.stats.activeUsers.toLocaleString(),
-          icon: <FaUserCheck />,
-          color: "success",
-        },
-        {
-          title: "Wishlist Items",
-          value: dashboardData.stats.totalWishlistItems.toLocaleString(),
-          icon: <FaHeart />,
-          color: "error",
-        },
-      ]
-    : [];
+  const userStats = [
+    {
+      title: "Total Readers",
+      value: dashboardData.stats?.totalReaders?.toLocaleString() ?? 0,
+      icon: <FaBookReader />,
+      color: "info",
+    },
+    {
+      title: "Total Librarians",
+      value: dashboardData.stats?.totalLibrarians?.toLocaleString() ?? 0,
+      icon: <FaUserTie />,
+      color: "warning",
+    },
+    {
+      title: "Active Users",
+      value: dashboardData.stats?.activeUsers?.toLocaleString() ?? 0,
+      icon: <FaUserCheck />,
+      color: "success",
+    },
+    {
+      title: "Wishlist Items",
+      value: dashboardData.stats?.totalWishlistItems?.toLocaleString() ?? 0,
+      icon: <FaHeart />,
+      color: "error",
+    },
+  ];
 
   const getStatusBadge = (status, paymentStatus) => {
     const badges = {
@@ -231,7 +222,13 @@ const AdminOverview = () => {
                     <span className="text-2xl">{stat.icon}</span>
                   </div>
                   <h3 className="text-sm opacity-70 mb-1">{stat.title}</h3>
-                  <p className="text-3xl font-bold mb-2">{stat.value}</p>
+                  {isLoading ? (
+                    <span>
+                      <LuLoaderCircle className="animate-spin text-2xl font-bold mb-2" />
+                    </span>
+                  ) : (
+                    <p className="text-3xl font-bold mb-2">{stat.value}</p>
+                  )}
                   <p className="text-xs opacity-70">{stat.description}</p>
                 </div>
               </div>
@@ -252,7 +249,13 @@ const AdminOverview = () => {
                     <span className="text-xl">{stat.icon}</span>
                   </div>
                   <h3 className="text-xs opacity-70 mb-1">{stat.title}</h3>
-                  <p className="text-xl font-bold">{stat.value}</p>
+                  {isLoading ? (
+                    <span>
+                      <LuLoaderCircle className="animate-spin text-xl font-bold mb-2" />
+                    </span>
+                  ) : (
+                    <p className="text-xl font-bold">{stat.value}</p>
+                  )}
                 </div>
               </div>
             ))}

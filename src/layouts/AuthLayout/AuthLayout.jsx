@@ -5,8 +5,9 @@ import { Navigate, Outlet } from "react-router";
 
 const AuthLayout = () => {
   const user = useAuthStore((s) => s.user);
+  const isLoading = useAuthStore((s) => s.authLoading);
 
-  if (user) {
+  if (!isLoading && user) {
     return <Navigate to="/" />;
   }
 
