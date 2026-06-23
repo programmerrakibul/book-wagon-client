@@ -27,14 +27,14 @@ import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
-import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router";
 import Loading from "../../../components/Loading/Loading";
 import useAuthStore from "@/stores/useAuthStore";
+import useThemeStore, { THEMES } from "@/stores/useThemeStore";
 
 const UserOverview = () => {
   const  user  = useAuthStore(s=> s.state.user);
-  const { theme } = useTheme();
+  const  theme = useThemeStore(s=> s.theme);
   const secureAxios = useSecureAxios();
 
   const { data: dashboardData, isLoading } = useQuery({
@@ -197,16 +197,16 @@ const UserOverview = () => {
                       <XAxis
                         dataKey="month"
                         tickFormatter={(month) => `Month ${month}`}
-                        stroke={theme === "light" ? "black" : "white"}
+                        stroke={theme === THEMES.LIGHT ? "black" : "white"}
                       />
                       <YAxis
                         yAxisId="left"
-                        stroke={theme === "light" ? "black" : "white"}
+                        stroke={theme === THEMES.LIGHT? "black" : "white"}
                       />
                       <YAxis
                         yAxisId="right"
                         orientation="right"
-                        stroke={theme === "light" ? "black" : "white"}
+                        stroke={theme === THEMES.LIGHT ? "black" : "white"}
                       />
                       <Tooltip
                         formatter={(value, name) => {
@@ -217,7 +217,7 @@ const UserOverview = () => {
                         contentStyle={{
                           backgroundColor: "hsl(var(--b1))",
                           borderColor: "hsl(var(--bc)/0.2)",
-                          color: theme === "light" ? "black" : "white",
+                          color: theme === THEMES.LIGHT ? "black" : "white",
                         }}
                       />
                       <Legend />

@@ -40,14 +40,13 @@ import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
 import { useQuery } from "@tanstack/react-query";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import { Link } from "react-router";
-import useTheme from "../../../hooks/useTheme";
 import useAuthStore from "@/stores/useAuthStore";
+import useThemeStore, { THEMES }  from "@/stores/useThemeStore";
 
 const AdminOverview = () => {
   const  user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
-  const { theme } = useTheme();
+  const  theme  = useThemeStore(s=> s.theme);
 
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "admin-overview"],
@@ -275,9 +274,11 @@ const AdminOverview = () => {
                       />
                       <XAxis
                         dataKey="monthName"
-                        stroke={theme === "light" ? "black" : "white"}
+                        stroke={theme === THEMES.LIGHT ? "black" : "white"}
                       />
-                      <YAxis stroke={theme === "light" ? "black" : "white"} />
+                      <YAxis
+                        stroke={theme === THEMES.LIGHT ? "black" : "white"}
+                      />
 
                       <Legend />
                       <Area

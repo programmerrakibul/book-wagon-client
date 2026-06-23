@@ -29,14 +29,14 @@ import Heading from "../../../components/Heading/Heading";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading/Loading";
-import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router";
 import useAuthStore from "@/stores/useAuthStore";
+import useThemeStore, { THEMES } from "@/stores/useThemeStore";
 
 const LibrarianOverview = () => {
   const  user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
-  const { theme } = useTheme();
+  const  theme  = useThemeStore(s=> s.theme);
 
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "librarian-overview"],
@@ -284,14 +284,14 @@ const LibrarianOverview = () => {
                           />
                           <XAxis
                             type="number"
-                            stroke={theme === "light" ? "black" : "white"}
+                            stroke={theme === THEMES.LIGHT? "black" : "white"}
                           />
                           <YAxis
                             type="category"
                             dataKey="name"
                             width={60}
                             tick={{ fontSize: 12 }}
-                            stroke={theme === "light" ? "black" : "white"}
+                            stroke={theme === THEMES.LIGHT ? "black" : "white"}
                           />
                           <Tooltip formatter={(value) => [value, "Orders"]} />
                           <Bar dataKey="value" radius={[0, 4, 4, 0]}>

@@ -2,9 +2,9 @@ import Avatar from "@/components/Avatar/Avatar";
 import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
 import Button from "@/components/Button/Button";
 import Logo from "@/components/Logo/Logo";
-import useTheme from "@/hooks/useTheme";
 import Container from "@/pages/shared/Container/Container";
 import useAuthStore from "@/stores/useAuthStore";
+import useThemeStore, { THEMES, toggleTheme } from "@/stores/useThemeStore";
 import { handleLogout } from "@/utilities/handleLogout";
 import { useState } from "react";
 import { FiSun } from "react-icons/fi";
@@ -14,7 +14,7 @@ import { LuLoader, LuLogIn, LuLogOut } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router";
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
+  const theme = useThemeStore(s=> s.theme);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isLoading = useAuthStore((s) => s.state.loading.authLoading);
@@ -67,7 +67,7 @@ const Navbar = () => {
                 <input
                   onChange={toggleTheme}
                   type="checkbox"
-                  checked={theme === "dark"}
+                  checked={theme === THEMES.DARK}
                 />
 
                 {/* sun icon */}
