@@ -34,7 +34,7 @@ import useAuthStore from "@/stores/useAuthStore";
 import useThemeStore, { THEMES } from "@/stores/useThemeStore";
 
 const LibrarianOverview = () => {
-  const  user  = useAuthStore(s=> s.state.user);
+  const  user  = useAuthStore(s=> s.user);
   const secureAxios = useSecureAxios();
   const  theme  = useThemeStore(s=> s.theme);
 

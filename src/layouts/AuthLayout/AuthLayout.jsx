@@ -4,7 +4,7 @@ import useAuthStore from "@/stores/useAuthStore";
 import { Navigate, Outlet } from "react-router";
 
 const AuthLayout = () => {
-  const user = useAuthStore((s) => s.state.user);
+  const user = useAuthStore((s) => s.user);
 
   if (user) {
     return <Navigate to="/" />;

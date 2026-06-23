@@ -19,7 +19,7 @@ import TablePaginationComponent from "../../../components/TablePaginationCompone
 import useAuthStore from "@/stores/useAuthStore";
 
 const Wishlist = () => {
-  const  user  = useAuthStore(s=> s.state.user);
+  const  user  = useAuthStore(s=> s.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

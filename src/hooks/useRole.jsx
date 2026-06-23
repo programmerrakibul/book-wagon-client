@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useSecureAxios from "./useSecureAxios";
 
 const useRole = () => {
-  const user = useAuthStore((s) => s.state.user);
-  const isLoading = useAuthStore((s) => s.state.loading.authLoading);
+  const user = useAuthStore((s) => s.user);
+  const isLoading = useAuthStore((s) => s.authLoading);
   const secureAxios = useSecureAxios();
 
   const { data = {}, isLoading: roleLoading } = useQuery({

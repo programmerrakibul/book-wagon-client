@@ -13,7 +13,7 @@ import Loading from "../../../../components/Loading/Loading";
 import useAuthStore from "@/stores/useAuthStore";
 
 const Profile = () => {
-  const  user  = useAuthStore(s=> s.state.user);
+  const  user  = useAuthStore(s=> s.user);
   const { role, roleLoading } = useRole();
   const joinedYear = getYear(new Date(user.metadata.creationTime));
 

@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 const Register = () => {
   const navigate = useNavigate();
-  const loading = useAuthStore((s) => s.state.loading.authLoading);
+  const loading = useAuthStore((s) => s.authLoading);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,

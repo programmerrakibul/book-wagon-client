@@ -20,7 +20,7 @@ import useAuthStore from "@/stores/useAuthStore";
 
 const Invoices = () => {
   const secureAxios = useSecureAxios();
-  const  user  = useAuthStore(s=>s.state.user);
+  const  user  = useAuthStore(s=>s.user);
   const [searchParams] = useSearchParams();
 
   const limit = searchParams.get("limit") || 10;

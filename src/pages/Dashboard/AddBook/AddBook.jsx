@@ -19,7 +19,7 @@ import useAuthStore from "@/stores/useAuthStore";
 const AddBook = () => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
-  const  user  = useAuthStore(s=>s.state.user);
+  const  user  = useAuthStore(s=>s.user);
   const {
     register,
     handleSubmit,

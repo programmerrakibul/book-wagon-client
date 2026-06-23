@@ -20,7 +20,7 @@ import MyLabel from "../MyLabel/MyLabel";
 const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
-  const user = useAuthStore((s) => s.state.user);
+  const user = useAuthStore((s) => s.user);
   const {
     register,
     handleSubmit,

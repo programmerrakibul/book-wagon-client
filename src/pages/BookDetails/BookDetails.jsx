@@ -35,7 +35,7 @@ const BookDetails = () => {
   const publicAxios = usePublicAxios();
   const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
-  const  user  = useAuthStore(s=>s.state.user);
+  const  user  = useAuthStore( s=> s.user);
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
 

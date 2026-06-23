@@ -26,7 +26,7 @@ import { useSearchParams } from "react-router";
 import useAuthStore from "@/stores/useAuthStore";
 
 const AllOrders = () => {
-  const  user  = useAuthStore(s=>s.state.user);
+  const  user  = useAuthStore(s=>s.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

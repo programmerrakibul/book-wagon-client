@@ -18,8 +18,8 @@ import { toast } from "sonner";
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const emailLoading = useAuthStore((s) => s.state.loading.email);
-  const googleLoading = useAuthStore((s) => s.state.loading.google);
+  const emailLoading = useAuthStore((s) => s.emailLoading);
+  const googleLoading = useAuthStore((s) => s.googleLoading);
   const loading = emailLoading || googleLoading;
 
   const {

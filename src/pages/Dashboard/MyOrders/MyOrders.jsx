@@ -35,7 +35,7 @@ import useAuthStore from "@/stores/useAuthStore";
 const MySwal = withReactContent(Swal);
 
 const MyOrders = () => {
-  const  user  = useAuthStore(s=> s.state.user);
+  const  user  = useAuthStore(s=> s.user);
   const secureAxios = useSecureAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const session_id = searchParams.get("session_id");

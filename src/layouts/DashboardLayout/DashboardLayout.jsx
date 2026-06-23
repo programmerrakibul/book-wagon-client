@@ -24,7 +24,7 @@ import { useMemo } from "react";
 import useAuthStore from "@/stores/useAuthStore";
 
 const DashboardLayout = () => {
-  const  user  = useAuthStore(s=>s.state.user);
+  const  user  = useAuthStore( s=> s.user);
   const { role, roleLoading } = useRole();
 
   const menuItems = useMemo(() => {

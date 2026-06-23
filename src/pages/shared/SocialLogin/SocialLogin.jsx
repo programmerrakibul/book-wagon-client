@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const SocialLogin = ({ disabled = false }) => {
   const navigate = useNavigate();
-  const isLoading = useAuthStore((s) => s.state.loading.google);
+  const isLoading = useAuthStore((s) => s.googleLoading);
 
   const handleGoogleLogin = async () => {
     try {

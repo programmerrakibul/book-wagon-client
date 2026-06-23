@@ -14,7 +14,7 @@ import Avatar from "../../../../components/Avatar/Avatar";
 import useAuthStore, { updateUserProfile } from "@/stores/useAuthStore";
 
 const EditProfile = () => {
-  const  user = useAuthStore(s=> s.state.user);
+  const  user = useAuthStore(s=> s.user);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(user.photoURL);
 

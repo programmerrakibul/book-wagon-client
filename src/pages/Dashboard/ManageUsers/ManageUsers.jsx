@@ -25,7 +25,7 @@ import useAuthStore from "@/stores/useAuthStore";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
-  const currentUser  = useAuthStore(s=> s.state.user);
+  const currentUser  = useAuthStore(s=> s.user);
   const [searchParams] = useSearchParams();
 
   const page = searchParams.get("page") || 1;

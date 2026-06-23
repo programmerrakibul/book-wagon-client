@@ -17,8 +17,8 @@ const Navbar = () => {
   const theme = useThemeStore(s=> s.theme);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isLoading = useAuthStore((s) => s.state.loading.authLoading);
-  const user = useAuthStore((s) => s.state.user);
+  const isLoading = useAuthStore((s) => s.authLoading);
+  const user = useAuthStore((s) => s.user);
 
   const navItems = [
     { label: "Home", slug: "/" },
