@@ -20,12 +20,12 @@ import { toast } from "sonner";
 import Swal from "sweetalert2";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
-import useAuth from "../../../hooks/useAuth";
 import { useSearchParams } from "react-router";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import useAuthStore from "@/stores/useAuthStore";
 
 const ManageBooks = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

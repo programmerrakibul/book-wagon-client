@@ -15,16 +15,16 @@ import {
 } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";
 import logo from "../../assets/logo.png";
-import useAuth from "../../hooks/useAuth";
 import Avatar from "../../components/Avatar/Avatar";
 import Container from "../../pages/shared/Container/Container";
 import useRole from "../../hooks/useRole";
 import Loading from "../../components/Loading/Loading";
 import AvatarDropdown from "../../components/AvatarDropdown/AvatarDropdown";
 import { useMemo } from "react";
+import useAuthStore from "@/stores/useAuthStore";
 
 const DashboardLayout = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const { role, roleLoading } = useRole();
 
   const menuItems = useMemo(() => {

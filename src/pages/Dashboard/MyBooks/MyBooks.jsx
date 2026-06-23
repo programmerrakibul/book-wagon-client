@@ -13,7 +13,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
@@ -21,10 +20,11 @@ import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import useAuthStore from "@/stores/useAuthStore";
 
 const MyBooks = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

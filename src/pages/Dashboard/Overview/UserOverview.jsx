@@ -25,15 +25,15 @@ import {
 } from "recharts";
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
 import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router";
 import Loading from "../../../components/Loading/Loading";
+import useAuthStore from "@/stores/useAuthStore";
 
 const UserOverview = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=> s.state.user);
   const { theme } = useTheme();
   const secureAxios = useSecureAxios();
 

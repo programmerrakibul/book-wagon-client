@@ -1,8 +1,8 @@
 import { Navigate } from "react-router";
-import useAuth from "../hooks/useAuth";
+import useAuthStore from "@/stores/useAuthStore";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
+  const user  = useAuthStore(s=> s.state.user);
 
   if (user) {
     return children;

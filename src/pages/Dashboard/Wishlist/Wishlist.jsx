@@ -10,16 +10,16 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
 import Button from "../../../components/Button/Button";
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import useAuthStore from "@/stores/useAuthStore";
 
 const Wishlist = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

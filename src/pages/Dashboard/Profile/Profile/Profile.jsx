@@ -7,13 +7,13 @@ import {
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
 import { format, getYear } from "date-fns";
-import useAuth from "../../../../hooks/useAuth";
 import Avatar from "../../../../components/Avatar/Avatar";
 import useRole from "../../../../hooks/useRole";
 import Loading from "../../../../components/Loading/Loading";
+import useAuthStore from "@/stores/useAuthStore";
 
 const Profile = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=> s.state.user);
   const { role, roleLoading } = useRole();
   const joinedYear = getYear(new Date(user.metadata.creationTime));
 

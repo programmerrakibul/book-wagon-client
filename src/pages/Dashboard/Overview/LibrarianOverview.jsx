@@ -26,15 +26,15 @@ import {
 } from "recharts";
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../../components/Loading/Loading";
 import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router";
+import useAuthStore from "@/stores/useAuthStore";
 
 const LibrarianOverview = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
   const { theme } = useTheme();
 

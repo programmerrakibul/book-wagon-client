@@ -7,7 +7,6 @@ import MyLabel from "../../../components/MyLabel/MyLabel";
 import Button from "../../../components/Button/Button";
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
 import Container from "../../shared/Container/Container";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { getAlert } from "../../../utilities/getAlert";
 import { toast } from "sonner";
@@ -15,11 +14,12 @@ import { useState } from "react";
 import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import { uploadImage } from "../../../utilities/uploadImage";
 import Heading from "../../../components/Heading/Heading";
+import useAuthStore from "@/stores/useAuthStore";
 
 const AddBook = () => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const {
     register,
     handleSubmit,

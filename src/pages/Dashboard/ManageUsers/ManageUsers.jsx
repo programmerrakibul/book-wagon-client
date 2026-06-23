@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import Container from "../../shared/Container/Container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import useAuth from "../../../hooks/useAuth";
 import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
 import Avatar from "../../../components/Avatar/Avatar";
@@ -22,10 +21,11 @@ import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
 import { useSearchParams } from "react-router";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import useAuthStore from "@/stores/useAuthStore";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
-  const { user: currentUser } = useAuth();
+  const currentUser  = useAuthStore(s=> s.state.user);
   const [searchParams] = useSearchParams();
 
   const page = searchParams.get("page") || 1;

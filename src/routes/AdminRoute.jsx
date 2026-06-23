@@ -1,10 +1,10 @@
+import useAuthStore from "@/stores/useAuthStore";
 import Forbidden from "../components/Forbidden/Forbidden";
 import Loading from "../components/Loading/Loading";
-import useAuth from "../hooks/useAuth";
 import useRole from "../hooks/useRole";
 
 const AdminRoute = ({ children }) => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.state.user);
   const { role, roleLoading } = useRole();
 
   if (roleLoading) {

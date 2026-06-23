@@ -1,10 +1,10 @@
+import useAuthStore from "@/stores/useAuthStore";
+import { handleLogout } from "@/utilities/handleLogout";
 import { FaHome } from "react-icons/fa";
-import useAuth from "../../hooks/useAuth";
-import { handleLogout } from "../../utilities/handleLogout";
-import { IoLibrary, IoLogOut } from "react-icons/io5";
-import { NavLink } from "react-router";
 import { HiOutlineUser } from "react-icons/hi";
+import { IoLibrary, IoLogOut } from "react-icons/io5";
 import { MdLibraryAdd } from "react-icons/md";
+import { NavLink } from "react-router";
 import Avatar from "../Avatar/Avatar";
 
 const menuItems = [
@@ -31,7 +31,7 @@ const menuItems = [
 ];
 
 const AvatarDropdown = () => {
-  const { user, logOutUser } = useAuth();
+  const user = useAuthStore((s) => s.state.user);
 
   return (
     <>
@@ -45,7 +45,9 @@ const AvatarDropdown = () => {
             className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg bg-base-100 rounded-box w-52 border border-primary/20"
           >
             <li className="menu-title">
-              <span className="text-xs text-neutral dark:text-white">Signed in as</span>
+              <span className="text-xs text-neutral dark:text-white">
+                Signed in as
+              </span>
             </li>
             <li className="disabled">
               <span className="text-sm font-semibold">{user.displayName}</span>
@@ -73,10 +75,7 @@ const AvatarDropdown = () => {
             })}
             <div className="divider my-1"></div>
             <li>
-              <button
-                onClick={() => handleLogout(logOutUser)}
-                className="text-error text-sm"
-              >
+              <button onClick={handleLogout} className="text-error text-sm">
                 <IoLogOut /> Logout
               </button>
             </li>

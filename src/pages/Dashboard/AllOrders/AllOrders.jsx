@@ -15,7 +15,6 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
 import Heading from "../../../components/Heading/Heading";
@@ -24,9 +23,10 @@ import { toast } from "sonner";
 import { getAlert } from "../../../utilities/getAlert";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 import { useSearchParams } from "react-router";
+import useAuthStore from "@/stores/useAuthStore";
 
 const AllOrders = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

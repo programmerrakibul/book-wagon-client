@@ -38,14 +38,14 @@ import {
 import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
-import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { Link } from "react-router";
 import useTheme from "../../../hooks/useTheme";
+import useAuthStore from "@/stores/useAuthStore";
 
 const AdminOverview = () => {
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=> s.state.user);
   const secureAxios = useSecureAxios();
   const { theme } = useTheme();
 

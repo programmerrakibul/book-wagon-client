@@ -1,26 +1,26 @@
+import useSecureAxios from "@/hooks/useSecureAxios";
+import useAuthStore from "@/stores/useAuthStore";
+import { getAlert } from "@/utilities/getAlert";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaPhone,
   FaShoppingCart,
   FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
 } from "react-icons/fa";
-import useAuth from "../../hooks/useAuth";
+import { toast } from "sonner";
+import ActionSpinner from "../ActionSpinner/ActionSpinner";
+import Button from "../Button/Button";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MyInput from "../MyInput/MyInput";
 import MyLabel from "../MyLabel/MyLabel";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import Button from "../Button/Button";
-import useSecureAxios from "../../hooks/useSecureAxios";
-import { toast } from "sonner";
-import { getAlert } from "../../utilities/getAlert";
-import { useState } from "react";
-import ActionSpinner from "../ActionSpinner/ActionSpinner";
 
 const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.state.user);
   const {
     register,
     handleSubmit,

@@ -1,32 +1,31 @@
+import Avatar from "@/components/Avatar/Avatar";
+import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
+import Button from "@/components/Button/Button";
+import Logo from "@/components/Logo/Logo";
+import useTheme from "@/hooks/useTheme";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/useAuthStore";
+import { handleLogout } from "@/utilities/handleLogout";
 import { useState } from "react";
-import { HiMenu, HiX } from "react-icons/hi";
-import { LuLogIn, LuLogOut } from "react-icons/lu";
-import Container from "../Container/Container";
-import { NavLink, useNavigate } from "react-router";
-import Button from "../../../components/Button/Button";
-import useAuth from "../../../hooks/useAuth";
-import Logo from "../../../components/Logo/Logo";
-import { handleLogout } from "../../../utilities/handleLogout";
-import Avatar from "../../../components/Avatar/Avatar";
 import { FiSun } from "react-icons/fi";
+import { HiMenu, HiX } from "react-icons/hi";
 import { IoMoonOutline } from "react-icons/io5";
-import useTheme from "../../../hooks/useTheme";
-import AvatarDropdown from "../../../components/AvatarDropdown/AvatarDropdown";
-
-
+import { LuLoader, LuLogIn, LuLogOut } from "react-icons/lu";
+import { NavLink, useNavigate } from "react-router";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const { user, logOutUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isLoading = useAuthStore((s) => s.state.loading.authLoading);
+  const user = useAuthStore((s) => s.state.user);
 
   const navItems = [
-  { label: "Home", slug: "/" },
-  { label: "Books", slug: "/books" },
-  { label: "About Us", slug: "/about-us" },
-  { label: "Contact Us", slug: "/contact-us" },
-];
+    { label: "Home", slug: "/" },
+    { label: "Books", slug: "/books" },
+    { label: "About Us", slug: "/about-us" },
+    { label: "Contact Us", slug: "/contact-us" },
+  ];
 
   if (user) {
     const dashboard = { label: "Dashboard", slug: "/dashboard" };
@@ -88,11 +87,15 @@ const Navbar = () => {
               </button>
 
               {/* Desktop Auth Section */}
-              {user ? (
+              {isLoading ? (
+                <span>
+                  <LuLoader className="animate-spin" size={32} />
+                </span>
+              ) : user ? (
                 <div className="hidden lg:flex items-center gap-3">
                   <AvatarDropdown />
 
-                  <Button onClick={() => handleLogout(logOutUser)}>
+                  <Button onClick={handleLogout}>
                     <LuLogOut />
                     <span>Logout</span>
                   </Button>
@@ -153,7 +156,7 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  <Button onClick={() => handleLogout(logOutUser)}>
+                  <Button onClick={handleLogout}>
                     <LuLogOut />
                     <span>Logout</span>
                   </Button>

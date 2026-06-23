@@ -10,17 +10,17 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import Loading from "../../../components/Loading/Loading";
 import Heading from "../../../components/Heading/Heading";
 import Container from "../../shared/Container/Container";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 import { useSearchParams } from "react-router";
+import useAuthStore from "@/stores/useAuthStore";
 
 const Invoices = () => {
   const secureAxios = useSecureAxios();
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const [searchParams] = useSearchParams();
 
   const limit = searchParams.get("limit") || 10;

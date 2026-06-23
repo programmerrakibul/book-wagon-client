@@ -1,10 +1,10 @@
+import authImg from "@/assets/auth.avif";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/useAuthStore";
 import { Navigate, Outlet } from "react-router";
-import Container from "../../pages/shared/Container/Container";
-import authImg from "../../assets/auth.avif";
-import useAuth from "../../hooks/useAuth";
 
 const AuthLayout = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.state.user);
 
   if (user) {
     return <Navigate to="/" />;

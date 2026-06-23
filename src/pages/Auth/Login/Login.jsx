@@ -1,27 +1,27 @@
+import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
+import BackButton from "@/components/BackButton/BackButton";
+import Button from "@/components/Button/Button";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+import EyeButton from "@/components/EyeButton/EyeButton";
+import MyInput from "@/components/MyInput/MyInput";
+import MyLabel from "@/components/MyLabel/MyLabel";
+import SocialLogin from "@/pages/shared/SocialLogin/SocialLogin";
+import useAuthStore, { loginWithPassword } from "@/stores/useAuthStore";
+import { getAuthErrorMessage } from "@/utilities/getAuthErrorMessage";
+import { loginSuccessMessage } from "@/utilities/loginSuccessMessage";
+import { postUser } from "@/utilities/postUser";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import MyInput from "../../../components/MyInput/MyInput";
-import MyLabel from "../../../components/MyLabel/MyLabel";
-import Button from "../../../components/Button/Button";
-import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
-import useAuth from "../../../hooks/useAuth";
-import SocialLogin from "../../shared/SocialLogin/SocialLogin";
-import useGoogleLogin from "../../../hooks/useGoogleLogin";
 import { Link, useNavigate } from "react-router";
-import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
 import { toast } from "sonner";
-import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
-import { postUser } from "../../../utilities/postUser";
-import BackButton from "../../../components/BackButton/BackButton";
-import EyeButton from "../../../components/EyeButton/EyeButton";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { logInWithPassword } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const { handleGoogleLogin, googleLoading } = useGoogleLogin();
   const [showPassword, setShowPassword] = useState(false);
+  const emailLoading = useAuthStore((s) => s.state.loading.email);
+  const googleLoading = useAuthStore((s) => s.state.loading.google);
+  const loading = emailLoading || googleLoading;
+
   const {
     register,
     handleSubmit,
@@ -38,10 +38,8 @@ const Login = () => {
     const email = data.email;
     const password = data.password;
 
-    setLoading(true);
-
     try {
-      const { user } = await logInWithPassword(email, password);
+      const user = await loginWithPassword({ email, password });
       await postUser(user);
 
       loginSuccessMessage(user.displayName);
@@ -50,8 +48,6 @@ const Login = () => {
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       toast.error(errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -75,7 +71,7 @@ const Login = () => {
                 <MyInput
                   id="email"
                   type="email"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   placeholder="Enter your email"
                   {...register("email", {
                     required: "Email is required",
@@ -94,7 +90,7 @@ const Login = () => {
                 <div className="relative">
                   <MyInput
                     id="password"
-                    disabled={loading || googleLoading}
+                    disabled={loading}
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="pr-10"
@@ -113,13 +109,12 @@ const Login = () => {
 
               {/* Submit Button */}
               <div className="mt-6 space-y-1">
-                <Button
-                  disabled={loading || googleLoading}
-                  className="btn-block cursor-pointer"
-                >
-                  {loading ? <ActionSpinner /> : "Login"}
+                <Button disabled={loading} className="btn-block cursor-pointer">
+                  {emailLoading ? <ActionSpinner /> : "Login"}
                 </Button>
-                <p  className="text-xs text-primary font-semibold text-center">Filled with demo credentials</p>
+                <p className="text-xs text-primary font-semibold text-center">
+                  Filled with demo credentials
+                </p>
               </div>
 
               {/* Login Link */}
@@ -135,11 +130,7 @@ const Login = () => {
                 </p>
               </div>
 
-              <SocialLogin
-                disabled={loading || googleLoading}
-                isLoading={googleLoading}
-                onClick={() => handleGoogleLogin()}
-              />
+              <SocialLogin disabled={loading} />
             </form>
           </div>
         </div>

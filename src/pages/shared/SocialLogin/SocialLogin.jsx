@@ -1,7 +1,29 @@
+import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
+import useAuthStore, { loginWithGoogle } from "@/stores/useAuthStore";
+import { getAuthErrorMessage } from "@/utilities/getAuthErrorMessage";
+import { loginSuccessMessage } from "@/utilities/loginSuccessMessage";
+import { postUser } from "@/utilities/postUser";
 import { FcGoogle } from "react-icons/fc";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
-const SocialLogin = ({ onClick, disabled = false, isLoading = false }) => {
+const SocialLogin = ({ disabled = false }) => {
+  const navigate = useNavigate();
+  const isLoading = useAuthStore((s) => s.state.loading.google);
+
+  const handleGoogleLogin = async () => {
+    try {
+      const user = await loginWithGoogle();
+      await postUser(user);
+
+      loginSuccessMessage(user.displayName);
+      navigate("/");
+    } catch (err) {
+      const errorMessage = getAuthErrorMessage(err.code);
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <>
       <div>
@@ -9,8 +31,8 @@ const SocialLogin = ({ onClick, disabled = false, isLoading = false }) => {
 
         <button
           type="button"
-          onClick={onClick}
-          disabled={disabled}
+          onClick={handleGoogleLogin}
+          disabled={isLoading || disabled}
           className="btn btn-block bg-white dark:bg-neutral dark:text-white dark:hover:text-neutral border-2 border-gray-300 hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-200 font-medium"
         >
           {isLoading ? (

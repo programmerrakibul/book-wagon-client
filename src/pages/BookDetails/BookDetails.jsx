@@ -20,7 +20,6 @@ import usePublicAxios from "../../hooks/usePublicAxios";
 import Button from "../../components/Button/Button";
 import { useState } from "react";
 import OrderModal from "../../components/OrderModal/OrderModal";
-import useAuth from "../../hooks/useAuth";
 import Loading from "../../components/Loading/Loading";
 import useSecureAxios from "../../hooks/useSecureAxios";
 import { toast } from "sonner";
@@ -29,13 +28,14 @@ import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Avatar from "../../components/Avatar/Avatar";
 import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
 import BackButton from "../../components/BackButton/BackButton";
+import useAuthStore from "@/stores/useAuthStore";
 
 const BookDetails = () => {
   const { id } = useParams();
   const publicAxios = usePublicAxios();
   const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
+  const  user  = useAuthStore(s=>s.state.user);
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
 
