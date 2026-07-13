@@ -1,25 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link, useSearchParams } from "react-router";
-import { FaHeart, FaBook } from "react-icons/fa";
+import useAuthStore from "@/stores/use-auth-store";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import Loading from "../../../components/Loading/Loading";
+import { useQuery } from "@tanstack/react-query";
+import { FaBook, FaHeart } from "react-icons/fa";
+import { Link, useSearchParams } from "react-router";
 import Button from "../../../components/Button/Button";
-import Container from "../../shared/Container/Container";
 import Heading from "../../../components/Heading/Heading";
+import Loading from "../../../components/Loading/Loading";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
-import useAuthStore from "@/stores/useAuthStore";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import Container from "../../shared/Container/Container";
 
 const Wishlist = () => {
-  const  user  = useAuthStore(s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

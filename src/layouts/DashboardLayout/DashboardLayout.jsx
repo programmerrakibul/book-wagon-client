@@ -3,7 +3,7 @@ import Avatar from "@/components/Avatar/Avatar";
 import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
 import useRole from "@/hooks/useRole";
 import Container from "@/pages/shared/Container/Container";
-import useAuthStore from "@/stores/useAuthStore";
+import useAuthStore from "@/stores/use-auth-store";
 import { useMemo } from "react";
 import { FaFileInvoiceDollar, FaHeart, FaUser, FaUsers } from "react-icons/fa";
 import { IoLibrary } from "react-icons/io5";

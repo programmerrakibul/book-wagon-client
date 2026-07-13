@@ -1,42 +1,42 @@
+import Heading from "@/components/Heading/Heading";
+import Loading from "@/components/Loading/Loading";
+import useSecureAxios from "@/hooks/useSecureAxios";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/use-auth-store";
+import useThemeStore, { THEMES } from "@/stores/use-theme-store";
+import { useQuery } from "@tanstack/react-query";
 import {
+  FaArrowUp,
   FaBook,
-  FaShoppingCart,
-  FaDollarSign,
+  FaChartLine,
   FaCheckCircle,
   FaClock,
-  FaTruck,
-  FaTimesCircle,
-  FaArrowUp,
-  FaChartLine,
-  FaStar,
-  FaMoneyBillWave,
   FaCreditCard,
+  FaDollarSign,
+  FaMoneyBillWave,
+  FaShoppingCart,
+  FaStar,
+  FaTimesCircle,
+  FaTruck,
 } from "react-icons/fa";
+import { Link } from "react-router";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
-import Container from "@/pages/shared/Container/Container";
-import Heading from "@/components/Heading/Heading";
-import useSecureAxios from "@/hooks/useSecureAxios";
-import { useQuery } from "@tanstack/react-query";
-import Loading from "@/components/Loading/Loading";
-import { Link } from "react-router";
-import useAuthStore from "@/stores/useAuthStore";
-import useThemeStore, { THEMES } from "@/stores/useThemeStore";
 
 const LibrarianOverview = () => {
-  const  user  = useAuthStore(s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
-  const  theme  = useThemeStore(s=> s.theme);
+  const theme = useThemeStore((s) => s.theme);
 
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "librarian-overview"],
@@ -284,7 +284,7 @@ const LibrarianOverview = () => {
                           />
                           <XAxis
                             type="number"
-                            stroke={theme === THEMES.LIGHT? "black" : "white"}
+                            stroke={theme === THEMES.LIGHT ? "black" : "white"}
                           />
                           <YAxis
                             type="category"

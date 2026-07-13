@@ -1,19 +1,19 @@
+import useAuthStore from "@/stores/use-auth-store";
+import { format, getYear } from "date-fns";
 import {
-  FaEnvelope,
-  FaUser,
   FaCalendarAlt,
   FaCheckCircle,
+  FaEnvelope,
+  FaUser,
 } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
-import { format, getYear } from "date-fns";
 import Avatar from "../../../../components/Avatar/Avatar";
-import useRole from "../../../../hooks/useRole";
 import Loading from "../../../../components/Loading/Loading";
-import useAuthStore from "@/stores/useAuthStore";
+import useRole from "../../../../hooks/useRole";
 
 const Profile = () => {
-  const  user  = useAuthStore(s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const { role, roleLoading } = useRole();
   const joinedYear = getYear(new Date(user.metadata.creationTime));
 
@@ -157,7 +157,7 @@ const Profile = () => {
                 {user.metadata.lastSignInTime
                   ? format(
                       new Date(user.metadata.lastSignInTime),
-                      "MMMM dd, yyyy"
+                      "MMMM dd, yyyy",
                     )
                   : "Not available"}
               </span>

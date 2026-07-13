@@ -1,10 +1,10 @@
-import { logoutUser } from "@/stores/useAuthStore";
+import { logoutUser } from "@/stores/use-auth-store";
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: `${import.meta.env.VITE_SERVER_URL}/api`,
+  baseURL: `${import.meta.env.VITE_SERVER_URL}`,
 });
 
 const useSecureAxios = () => {

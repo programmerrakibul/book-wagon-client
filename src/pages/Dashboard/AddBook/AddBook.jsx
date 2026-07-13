@@ -1,25 +1,25 @@
+import useAuthStore from "@/stores/use-auth-store";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaBook, FaUser, FaCalendar, FaList } from "react-icons/fa";
+import { BsBoxSeam, BsFileText } from "react-icons/bs";
+import { FaBook, FaCalendar, FaList, FaUser } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
-import { BsFileText, BsBoxSeam } from "react-icons/bs";
-import MyInput from "../../../components/MyInput/MyInput";
-import MyLabel from "../../../components/MyLabel/MyLabel";
+import { toast } from "sonner";
+import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
 import Button from "../../../components/Button/Button";
 import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
-import Container from "../../shared/Container/Container";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import { getAlert } from "../../../utilities/getAlert";
-import { toast } from "sonner";
-import { useState } from "react";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
-import { uploadImage } from "../../../utilities/uploadImage";
 import Heading from "../../../components/Heading/Heading";
-import useAuthStore from "@/stores/useAuthStore";
+import MyInput from "../../../components/MyInput/MyInput";
+import MyLabel from "../../../components/MyLabel/MyLabel";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import { getAlert } from "../../../utils/getAlert";
+import { uploadImage } from "../../../utils/uploadImage";
+import Container from "../../shared/Container/Container";
 
 const AddBook = () => {
   const [loading, setLoading] = useState(false);
   const secureAxios = useSecureAxios();
-  const  user  = useAuthStore(s=>s.user);
+  const user = useAuthStore((s) => s.user);
   const {
     register,
     handleSubmit,

@@ -1,8 +1,8 @@
 import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
-import useAuthStore, { loginWithGoogle } from "@/stores/useAuthStore";
-import { getAuthErrorMessage } from "@/utilities/getAuthErrorMessage";
-import { loginSuccessMessage } from "@/utilities/loginSuccessMessage";
-import { postUser } from "@/utilities/postUser";
+import useAuthStore, { loginWithGoogle } from "@/stores/use-auth-store";
+import { getAuthErrorMessage } from "@/utils/getAuthErrorMessage";
+import { loginSuccessMessage } from "@/utils/loginSuccessMessage";
+import { postUser } from "@/utils/postUser";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";

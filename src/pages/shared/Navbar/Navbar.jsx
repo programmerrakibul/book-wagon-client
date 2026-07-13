@@ -3,9 +3,9 @@ import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
 import Button from "@/components/Button/Button";
 import Logo from "@/components/Logo/Logo";
 import Container from "@/pages/shared/Container/Container";
-import useAuthStore from "@/stores/useAuthStore";
-import useThemeStore, { THEMES, toggleTheme } from "@/stores/useThemeStore";
-import { handleLogout } from "@/utilities/handleLogout";
+import useAuthStore from "@/stores/use-auth-store";
+import useThemeStore, { THEMES, toggleTheme } from "@/stores/use-theme-store";
+import { handleLogout } from "@/utils/handleLogout";
 import { useState } from "react";
 import { FiSun } from "react-icons/fi";
 import { HiMenu, HiX } from "react-icons/hi";
@@ -14,7 +14,7 @@ import { LuLoader, LuLogIn, LuLogOut } from "react-icons/lu";
 import { NavLink, useNavigate } from "react-router";
 
 const Navbar = () => {
-  const theme = useThemeStore(s=> s.theme);
+  const theme = useThemeStore((s) => s.theme);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isLoading = useAuthStore((s) => s.authLoading);

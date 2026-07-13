@@ -2,8 +2,8 @@ import Heading from "@/components/Heading/Heading";
 import Loading from "@/components/Loading/Loading";
 import useSecureAxios from "@/hooks/useSecureAxios";
 import Container from "@/pages/shared/Container/Container";
-import useAuthStore from "@/stores/useAuthStore";
-import useThemeStore, { THEMES } from "@/stores/useThemeStore";
+import useAuthStore from "@/stores/use-auth-store";
+import useThemeStore, { THEMES } from "@/stores/use-theme-store";
 import { useQuery } from "@tanstack/react-query";
 import {
   FaBook,

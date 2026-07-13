@@ -1,4 +1,4 @@
-import useAuthStore from "@/stores/useAuthStore";
+import useAuthStore from "@/stores/use-auth-store";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
@@ -27,7 +27,7 @@ import OrderModal from "../../components/OrderModal/OrderModal";
 import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
 import usePublicAxios from "../../hooks/usePublicAxios";
 import useSecureAxios from "../../hooks/useSecureAxios";
-import { getAlert } from "../../utilities/getAlert";
+import { getAlert } from "../../utils/getAlert";
 import Container from "../shared/Container/Container";
 
 const BookDetails = () => {
@@ -352,7 +352,7 @@ const BookDetails = () => {
                         <div>
                           <p className="text-xs sm:text-sm mb-1">Published</p>
                           <p className="text-sm sm:text-base font-semibold">
-                           in {publicationYear}
+                            in {publicationYear}
                           </p>
                         </div>
                       </div>

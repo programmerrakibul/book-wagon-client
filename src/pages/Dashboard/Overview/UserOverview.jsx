@@ -1,46 +1,46 @@
+import Heading from "@/components/Heading/Heading";
+import Loading from "@/components/Loading/Loading";
+import useSecureAxios from "@/hooks/useSecureAxios";
+import Container from "@/pages/shared/Container/Container";
+import useAuthStore from "@/stores/use-auth-store";
+import useThemeStore, { THEMES } from "@/stores/use-theme-store";
+import { useQuery } from "@tanstack/react-query";
 import {
-  FaShoppingCart,
-  FaHeart,
   FaBook,
   FaCheckCircle,
   FaClock,
-  FaTruck,
-  FaTimesCircle,
-  FaMoneyBillWave,
   FaCreditCard,
+  FaHeart,
+  FaMoneyBillWave,
+  FaShoppingCart,
+  FaTimesCircle,
+  FaTruck,
 } from "react-icons/fa";
+import { Link } from "react-router";
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
   Cell,
   Legend,
   Line,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
-import Container from "@/pages/shared/Container/Container";
-import Heading from "@/components/Heading/Heading";
-import useSecureAxios from "@/hooks/useSecureAxios";
-import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
-import Loading from "@/components/Loading/Loading";
-import useAuthStore from "@/stores/useAuthStore";
-import useThemeStore, { THEMES } from "@/stores/useThemeStore";
 
 const UserOverview = () => {
-  const  user  = useAuthStore(s=> s.user);
-  const  theme = useThemeStore(s=> s.theme);
+  const user = useAuthStore((s) => s.user);
+  const theme = useThemeStore((s) => s.theme);
   const secureAxios = useSecureAxios();
 
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "user-dashboard"],
     queryFn: async () => {
-      const { data } = await secureAxios.get('/dashboard/user');
+      const { data } = await secureAxios.get("/dashboard/user");
 
       return data?.data;
     },
@@ -201,7 +201,7 @@ const UserOverview = () => {
                       />
                       <YAxis
                         yAxisId="left"
-                        stroke={theme === THEMES.LIGHT? "black" : "white"}
+                        stroke={theme === THEMES.LIGHT ? "black" : "white"}
                       />
                       <YAxis
                         yAxisId="right"
@@ -252,7 +252,7 @@ const UserOverview = () => {
                     <PieChart>
                       <Pie
                         data={Object.entries(
-                          dashboardData.statusDistribution
+                          dashboardData.statusDistribution,
                         ).map(([name, value]) => ({
                           name: name.charAt(0).toUpperCase() + name.slice(1),
                           value,
@@ -277,7 +277,7 @@ const UserOverview = () => {
                                 COLORS[index % COLORS.length]
                               }
                             />
-                          )
+                          ),
                         )}
                       </Pie>
                       <Tooltip formatter={(value) => [value, "Orders"]} />
@@ -321,7 +321,7 @@ const UserOverview = () => {
                         {dashboardData.recentOrders.map((order) => {
                           const badges = getStatusBadge(
                             order.status,
-                            order.paymentStatus
+                            order.paymentStatus,
                           );
                           return (
                             <tr key={order.id} className="hover">

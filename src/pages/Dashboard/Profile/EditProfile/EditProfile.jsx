@@ -1,20 +1,20 @@
-import { useForm } from "react-hook-form";
-import { FaUser, FaImage, FaSave } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
+import useAuthStore, { updateUserProfile } from "@/stores/use-auth-store";
 import { useState } from "react";
-import MyInput from "../../../../components/MyInput/MyInput";
-import MyLabel from "../../../../components/MyLabel/MyLabel";
-import Button from "../../../../components/Button/Button";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
-import { uploadImage } from "../../../../utilities/uploadImage";
+import { useForm } from "react-hook-form";
+import { FaImage, FaSave, FaUser } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 import { toast } from "sonner";
-import { getAlert } from "../../../../utilities/getAlert";
 import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
 import Avatar from "../../../../components/Avatar/Avatar";
-import useAuthStore, { updateUserProfile } from "@/stores/useAuthStore";
+import Button from "../../../../components/Button/Button";
+import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
+import MyInput from "../../../../components/MyInput/MyInput";
+import MyLabel from "../../../../components/MyLabel/MyLabel";
+import { getAlert } from "../../../../utils/getAlert";
+import { uploadImage } from "../../../../utils/uploadImage";
 
 const EditProfile = () => {
-  const  user = useAuthStore(s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(user.photoURL);
 

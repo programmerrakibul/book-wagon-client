@@ -1,4 +1,4 @@
-import { logoutUser } from "@/stores/useAuthStore";
+import { logoutUser } from "@/stores/use-auth-store";
 import { toast } from "sonner";
 import { getAlert } from "./getAlert";
 import { getAuthErrorMessage } from "./getAuthErrorMessage";

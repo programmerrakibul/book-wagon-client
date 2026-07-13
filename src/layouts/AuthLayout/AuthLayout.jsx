@@ -1,6 +1,6 @@
 import authImg from "@/assets/auth.avif";
 import Container from "@/pages/shared/Container/Container";
-import useAuthStore from "@/stores/useAuthStore";
+import useAuthStore from "@/stores/use-auth-store";
 import { Navigate, Outlet } from "react-router";
 
 const AuthLayout = () => {

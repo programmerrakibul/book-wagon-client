@@ -69,9 +69,9 @@ onAuthStateChanged(auth, async (currentUser) => {
    * Custom request clients (like Axios) pull directly from here to build authorization headers.
    */
   if (token) {
-    localStorage.setItem("tokenId", token);
+    localStorage.setItem("__bw__token__", token);
   } else {
-    localStorage.removeItem("tokenId");
+    localStorage.removeItem("__bw__token__");
   }
 
   // Atomic state batch update—updates user profile and closes loading flags simultaneously

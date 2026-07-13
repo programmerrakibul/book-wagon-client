@@ -1,26 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
-import { FaFileInvoice, FaCheckCircle, FaBook } from "react-icons/fa";
+import useAuthStore from "@/stores/use-auth-store";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import Loading from "../../../components/Loading/Loading";
-import Heading from "../../../components/Heading/Heading";
-import Container from "../../shared/Container/Container";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { FaCheckCircle, FaFileInvoice } from "react-icons/fa";
 import { useSearchParams } from "react-router";
-import useAuthStore from "@/stores/useAuthStore";
+import Heading from "../../../components/Heading/Heading";
+import Loading from "../../../components/Loading/Loading";
+import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import Container from "../../shared/Container/Container";
 
 const Invoices = () => {
   const secureAxios = useSecureAxios();
-  const  user  = useAuthStore(s=>s.user);
+  const user = useAuthStore((s) => s.user);
   const [searchParams] = useSearchParams();
 
   const limit = searchParams.get("limit") || 10;
