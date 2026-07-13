@@ -1,25 +1,23 @@
-import { Link } from "react-router";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useRef } from "react";
+import { Link } from "react-router";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FaTag, FaUser } from "react-icons/fa";
 import { BsBoxSeam } from "react-icons/bs";
-import {
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  Box,
-  Chip,
-} from "@mui/material";
+import { FaTag, FaUser } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const BookCard = ({ book }) => {
-  const { _id, bookName, bookImage, author, price, quantity, description } =
-    book;
+const BookCard = ({ book = {} }) => {
   const cardRef = useRef(null);
   const imageRef = useRef(null);
 
@@ -45,7 +43,7 @@ const BookCard = ({ book }) => {
           end: "top 60%",
           toggleActions: "play none none reverse",
         },
-      }
+      },
     );
 
     return () => {
@@ -105,7 +103,7 @@ const BookCard = ({ book }) => {
   };
 
   return (
-    <Link to={`/book-details/${_id}`}>
+    <Link to={`/book-details/${book._id}`}>
       <motion.div
         ref={cardRef}
         variants={cardVariants}
@@ -133,8 +131,8 @@ const BookCard = ({ book }) => {
             <motion.div ref={imageRef} variants={imageVariants}>
               <CardMedia
                 component="img"
-                image={bookImage}
-                alt={bookName}
+                image={book.photoUrl}
+                alt={book.name}
                 sx={{
                   height: 150,
                   objectFit: "cover",
@@ -148,10 +146,10 @@ const BookCard = ({ book }) => {
               transition={{ delay: 0.2, duration: 0.3 }}
             >
               <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-                {quantity > 0 ? (
+                {book.stock > 0 ? (
                   <Chip
                     icon={<BsBoxSeam />}
-                    label={quantity}
+                    label={book.stock}
                     color="success"
                     size="small"
                     sx={{ fontWeight: 600, fontSize: "0.75rem" }}
@@ -186,7 +184,7 @@ const BookCard = ({ book }) => {
                     overflow: "hidden",
                   }}
                 >
-                  {bookName}
+                  {book.name}
                 </Typography>
               </motion.div>
 
@@ -195,7 +193,7 @@ const BookCard = ({ book }) => {
                   component="p"
                   className="text-neutral/60 dark:text-white/80 overflow-hidden line-clamp-2 text-sm! md:text-base! mb-2!"
                 >
-                  {description}
+                  {book.description}
                 </Typography>
               </motion.div>
 
@@ -219,7 +217,7 @@ const BookCard = ({ book }) => {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {author}
+                    {book.author}
                   </Typography>
                 </Box>
               </motion.div>
@@ -242,7 +240,7 @@ const BookCard = ({ book }) => {
                     }}
                     className="text-primary!"
                   >
-                    ৳ {price}
+                    ৳ {book.discount ? book.discountedPrice : book.price}
                   </Typography>
                 </Box>
               </motion.div>

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout/RootLayout";
-import Home from "../pages/Home/Home";
+import Home from "../pages/home/home";
 import Books from "../pages/Books/Books";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/Auth/Login/Login";
@@ -20,7 +20,7 @@ import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import AllOrders from "../pages/Dashboard/AllOrders/AllOrders";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
-import BookDetails from "../pages/BookDetails/BookDetails";
+import BookDetails from "../pages/book-details/book-details";
 import Error from "../pages/Error/Error";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";

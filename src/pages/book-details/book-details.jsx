@@ -1,41 +1,41 @@
-import { useParams } from "react-router";
+import useAuthStore from "@/stores/useAuthStore";
 import { useQuery } from "@tanstack/react-query";
+import { formatDistanceToNow } from "date-fns";
+import { useState } from "react";
+import { BsBoxSeam } from "react-icons/bs";
 import {
   FaBook,
-  FaUser,
-  FaTag,
-  FaFileAlt,
-  FaLayerGroup,
   FaCheckCircle,
-  FaTimesCircle,
-  FaShoppingCart,
-  FaRegHeart,
+  FaFileAlt,
   FaHeart,
+  FaLayerGroup,
+  FaRegHeart,
+  FaShoppingCart,
+  FaTag,
+  FaTimesCircle,
+  FaUser,
 } from "react-icons/fa";
-import { BsBoxSeam } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
-import { formatDistanceToNow } from "date-fns";
-import Container from "../shared/Container/Container";
-import usePublicAxios from "../../hooks/usePublicAxios";
-import Button from "../../components/Button/Button";
-import { useState } from "react";
-import OrderModal from "../../components/OrderModal/OrderModal";
-import Loading from "../../components/Loading/Loading";
-import useSecureAxios from "../../hooks/useSecureAxios";
+import { useParams } from "react-router";
 import { toast } from "sonner";
-import { getAlert } from "../../utilities/getAlert";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import Avatar from "../../components/Avatar/Avatar";
-import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
 import BackButton from "../../components/BackButton/BackButton";
-import useAuthStore from "@/stores/useAuthStore";
+import Button from "../../components/Button/Button";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import Loading from "../../components/Loading/Loading";
+import OrderModal from "../../components/OrderModal/OrderModal";
+import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
+import usePublicAxios from "../../hooks/usePublicAxios";
+import useSecureAxios from "../../hooks/useSecureAxios";
+import { getAlert } from "../../utilities/getAlert";
+import Container from "../shared/Container/Container";
 
 const BookDetails = () => {
   const { id } = useParams();
   const publicAxios = usePublicAxios();
   const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
-  const  user  = useAuthStore( s=> s.user);
+  const user = useAuthStore((s) => s.user);
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
 
@@ -101,19 +101,22 @@ const BookDetails = () => {
   };
 
   const {
-    bookName,
-    bookImage,
+    name,
+    photoUrl,
     author,
     price,
-    quantity,
-    category,
+    stock,
+    categoryId,
     description,
     pageCount,
-    subcategory,
-    librarianEmail,
+    subcategoryId,
+    librarianId,
+    formatId,
+    weight,
+    publicationYear,
   } = book;
 
-  const isLibrarian = librarianEmail === user?.email;
+  const isLibrarian = librarianId.email === user?.email;
 
   const addToFavorites = async () => {
     try {
@@ -171,7 +174,7 @@ const BookDetails = () => {
         refetchComments();
 
         getAlert({
-          title: `Successfully reviewed for ${bookName} book!`,
+          title: `Successfully reviewed for ${name} book!`,
         });
       } else {
         getAlert({
@@ -188,7 +191,7 @@ const BookDetails = () => {
 
   return (
     <>
-      <title>{`${bookName || "Book Details"} - BookWagon`}</title>
+      <title>{`${name || "Book Details"} - BookWagon`}</title>
 
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>
@@ -201,16 +204,16 @@ const BookDetails = () => {
               <div className="card bg-base-100 shadow-xl overflow-hidden sticky top-24">
                 <figure className="relative">
                   <img
-                    src={bookImage}
-                    alt={bookName}
+                    src={photoUrl}
+                    alt={name}
                     className="w-full h-80 sm:h-96 lg:h-112 object-cover"
                   />
                   <div className="absolute top-4 right-4">
-                    {quantity > 0 ? (
+                    {stock > 0 ? (
                       <div className="badge badge-success gap-2 p-3 sm:p-4 shadow-lg">
                         <BsBoxSeam className="text-sm sm:text-base" />
                         <span className="font-semibold text-sm sm:text-base">
-                          {quantity} in stock
+                          {stock} in stock
                         </span>
                       </div>
                     ) : (
@@ -233,7 +236,7 @@ const BookDetails = () => {
                 <div>
                   <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
                     <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold">
-                      {bookName}
+                      {name}
                     </h1>
                     {user &&
                       !isLibrarian &&
@@ -285,7 +288,7 @@ const BookDetails = () => {
                     </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                      {/* Category */}
+                      {/* categoryId */}
                       <div className="flex items-start gap-3">
                         <div className="p-2 sm:p-3 bg-primary/10 rounded-lg">
                           <MdCategory className="text-lg sm:text-xl text-primary" />
@@ -293,27 +296,66 @@ const BookDetails = () => {
                         <div>
                           <p className="text-xs sm:text-sm mb-1">Category</p>
                           <p className="text-sm sm:text-base font-semibold">
-                            {category}
+                            {categoryId.name}
                           </p>
                         </div>
                       </div>
 
-                      {/* Subcategory */}
-                      {subcategory && (
+                      {/* subcategoryId */}
+                      {subcategoryId && (
                         <div className="flex items-start gap-3">
                           <div className="p-2 sm:p-3 bg-secondary/10 rounded-lg">
                             <FaLayerGroup className="text-lg sm:text-xl text-secondary" />
                           </div>
                           <div>
                             <p className="text-xs sm:text-sm mb-1">
-                              Subcategory
+                              Sub-Category
                             </p>
                             <p className="text-sm sm:text-base font-semibold">
-                              {subcategory}
+                              {subcategoryId.name}
                             </p>
                           </div>
                         </div>
                       )}
+
+                      {/* Format */}
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 sm:p-3 bg-primary/10 rounded-lg">
+                          <FaFileAlt className="text-lg sm:text-xl text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-xs sm:text-sm mb-1">Format</p>
+                          <p className="text-sm sm:text-base font-semibold">
+                            {formatId.name}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Weight */}
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 sm:p-3 bg-primary/10 rounded-lg">
+                          <FaFileAlt className="text-lg sm:text-xl text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-xs sm:text-sm mb-1">Weight</p>
+                          <p className="text-sm sm:text-base font-semibold">
+                            {weight} kg
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Published */}
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 sm:p-3 bg-primary/10 rounded-lg">
+                          <FaFileAlt className="text-lg sm:text-xl text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-xs sm:text-sm mb-1">Published</p>
+                          <p className="text-sm sm:text-base font-semibold">
+                           in {publicationYear}
+                          </p>
+                        </div>
+                      </div>
 
                       {/* Page Count */}
                       <div className="flex items-start gap-3">
@@ -331,7 +373,7 @@ const BookDetails = () => {
                       {/* Availability */}
                       <div className="flex items-start gap-3">
                         <div className="p-2 sm:p-3 bg-secondary/10 rounded-lg">
-                          {quantity > 0 ? (
+                          {stock > 0 ? (
                             <FaCheckCircle className="text-lg sm:text-xl text-success" />
                           ) : (
                             <FaTimesCircle className="text-lg sm:text-xl text-error" />
@@ -343,10 +385,10 @@ const BookDetails = () => {
                           </p>
                           <p
                             className={`text-sm sm:text-base font-semibold ${
-                              quantity > 0 ? "text-success" : "text-error"
+                              stock > 0 ? "text-success" : "text-error"
                             }`}
                           >
-                            {quantity > 0 ? "In Stock" : "Out of Stock"}
+                            {stock > 0 ? "In Stock" : "Out of Stock"}
                           </p>
                         </div>
                       </div>
@@ -374,10 +416,10 @@ const BookDetails = () => {
                   <Button
                     handleClick={() => setOpen(true)}
                     className="btn-block"
-                    disabled={quantity === 0}
+                    disabled={stock === 0}
                   >
                     <FaShoppingCart className="text-lg sm:text-xl" />
-                    {quantity > 0 ? "Order Now" : "Out of Stock"}
+                    {stock > 0 ? "Order Now" : "Out of Stock"}
                   </Button>
                 )}
               </div>

@@ -15,7 +15,7 @@ const FAQ = () => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = (panel) => (_event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 

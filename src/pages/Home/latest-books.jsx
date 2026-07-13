@@ -1,21 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Autoplay } from "swiper/modules";
-import { FaBook, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaBook } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/free-mode";
-import Container from "../shared/Container/Container";
-import usePublicAxios from "../../hooks/usePublicAxios";
-import Loading from "../../components/Loading/Loading";
-import Heading from "../../components/Heading/Heading";
-import BookCard from "../../components/BookCard/BookCard";
+import { Autoplay, FreeMode } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Button from "../../components/Button/Button";
+import Heading from "../../components/Heading/Heading";
+import Loading from "../../components/Loading/Loading";
+import BookCard from "../../components/ui/book-card";
+import usePublicAxios from "../../hooks/usePublicAxios";
+import Container from "../shared/Container/Container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,10 +34,9 @@ const LatestBooks = () => {
       const { data } = await publicAxios.get("/books", {
         params: {
           limit: 6,
-          fields: "bookName,bookImage,author,price,quantity,description",
         },
       });
-      
+
       return data?.data || [];
     },
   });
@@ -57,19 +56,19 @@ const LatestBooks = () => {
       tl.fromTo(
         headingRef.current,
         { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
       )
         .fromTo(
           swiperRef.current,
           { opacity: 0, y: 40 },
           { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-          "-=0.4"
+          "-=0.4",
         )
         .fromTo(
           buttonRef.current,
           { opacity: 0, scale: 0.8 },
           { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" },
-          "-=0.4"
+          "-=0.4",
         );
     }
 

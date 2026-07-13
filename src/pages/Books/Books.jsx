@@ -1,12 +1,12 @@
+import { Box, Pagination } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { FaBook, FaSearch, FaSort } from "react-icons/fa";
-import { Pagination, Box } from "@mui/material";
-import usePublicAxios from "../../hooks/usePublicAxios";
-import Container from "../shared/Container/Container";
-import BookCard from "../../components/BookCard/BookCard";
+import { useSearchParams } from "react-router";
 import Heading from "../../components/Heading/Heading";
 import BookCardSkeleton from "../../components/skeletons/BookCardSkeleton";
-import { useSearchParams } from "react-router";
+import BookCard from "../../components/ui/book-card";
+import usePublicAxios from "../../hooks/usePublicAxios";
+import Container from "../shared/Container/Container";
 
 const Books = () => {
   const publicAxios = usePublicAxios();
@@ -27,7 +27,6 @@ const Books = () => {
     queryFn: async () => {
       const { data = {} } = await publicAxios.get("/books", {
         params: {
-          fields: "bookName,bookImage,author,price,quantity,description",
           page,
           search,
           sortBy,
