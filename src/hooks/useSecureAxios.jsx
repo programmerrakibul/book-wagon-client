@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const instance = axios.create({
-  baseURL: `${import.meta.env.VITE_SERVER_URL}`,
+  baseURL: import.meta.env.VITE_SERVER_URL,
+  withCredentials: true,
 });
 
 const useSecureAxios = () => {
@@ -13,7 +14,7 @@ const useSecureAxios = () => {
   useEffect(() => {
     const requestInterceptor = instance.interceptors.request.use((config) => {
       config.headers.Authorization = `Bearer ${localStorage.getItem(
-        "tokenId",
+        "__bw__token__",
       )}`;
 
       return config;

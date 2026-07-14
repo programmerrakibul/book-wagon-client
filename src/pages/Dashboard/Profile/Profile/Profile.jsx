@@ -10,7 +10,7 @@ import { FaRegCircleXmark } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
 import Avatar from "../../../../components/Avatar/Avatar";
 import Loading from "../../../../components/Loading/Loading";
-import useRole from "../../../../hooks/useRole";
+import useRole from "../../../../hooks/use-role";
 
 const Profile = () => {
   const user = useAuthStore((s) => s.user);

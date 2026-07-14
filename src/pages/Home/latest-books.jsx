@@ -14,8 +14,8 @@ import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
 import Loading from "../../components/Loading/Loading";
 import BookCard from "../../components/ui/book-card";
+import Container from "../../components/ui/container";
 import usePublicAxios from "../../hooks/usePublicAxios";
-import Container from "../shared/Container/Container";
 
 gsap.registerPlugin(ScrollTrigger);
 

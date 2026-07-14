@@ -1,4 +1,14 @@
+import Avatar from "@/components/Avatar/Avatar";
+import BackButton from "@/components/BackButton/BackButton";
+import Button from "@/components/Button/Button";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+import Loading from "@/components/Loading/Loading";
+import OrderModal from "@/components/OrderModal/OrderModal";
+import BookDetailsSkeleton from "@/components/skeletons/BookDetailsSkeleton";
+import Container from "@/components/ui/container";
+import axiosInstance from "@/lib/axios";
 import useAuthStore from "@/stores/use-auth-store";
+import { getAlert } from "@/utils/getAlert";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
@@ -18,22 +28,9 @@ import {
 import { MdCategory } from "react-icons/md";
 import { useParams } from "react-router";
 import { toast } from "sonner";
-import Avatar from "../../components/Avatar/Avatar";
-import BackButton from "../../components/BackButton/BackButton";
-import Button from "../../components/Button/Button";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import Loading from "../../components/Loading/Loading";
-import OrderModal from "../../components/OrderModal/OrderModal";
-import BookDetailsSkeleton from "../../components/skeletons/BookDetailsSkeleton";
-import usePublicAxios from "../../hooks/usePublicAxios";
-import useSecureAxios from "../../hooks/useSecureAxios";
-import { getAlert } from "../../utils/getAlert";
-import Container from "../shared/Container/Container";
 
 const BookDetails = () => {
   const { id } = useParams();
-  const publicAxios = usePublicAxios();
-  const secureAxios = useSecureAxios();
   const [open, setOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
   const [comment, setComment] = useState("");
@@ -42,7 +39,7 @@ const BookDetails = () => {
   const { data: book, isLoading: bookLoading } = useQuery({
     queryKey: ["book-details", id],
     queryFn: async () => {
-      const { data } = await publicAxios.get(`/books/${id}`);
+      const { data } = await axiosInstance.get(`/books/${id}`);
       return data?.data || {};
     },
   });
@@ -54,7 +51,7 @@ const BookDetails = () => {
   } = useQuery({
     queryKey: ["comments", id],
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/comments/${id}`);
+      const { data } = await axiosInstance.get(`/comments/${id}`);
 
       return data || {};
     },
@@ -68,7 +65,7 @@ const BookDetails = () => {
     queryKey: ["is-ordered", user?.email, id],
     enabled: !!user?.email,
     queryFn: async () => {
-      const { data } = await secureAxios.get(`/orders/check-ordered/${id}`);
+      const { data } = await axiosInstance.get(`/orders/check-ordered/${id}`);
 
       return data?.data || false;
     },
@@ -82,7 +79,7 @@ const BookDetails = () => {
     queryKey: ["isFavorite", id, user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const { data } = await secureAxios.get(
+      const { data } = await axiosInstance.get(
         `/favorites/is-in-favorites/${id}`,
       );
 
@@ -120,7 +117,7 @@ const BookDetails = () => {
 
   const addToFavorites = async () => {
     try {
-      const { data } = await secureAxios.post(`/favorites/${id}`);
+      const { data } = await axiosInstance.post(`/favorites/${id}`);
 
       if (data.success) {
         refetch();
@@ -138,7 +135,7 @@ const BookDetails = () => {
 
   const removeFromFavorites = async () => {
     try {
-      const { data } = await secureAxios.delete(`/favorites/${id}`);
+      const { data } = await axiosInstance.delete(`/favorites/${id}`);
 
       if (data.success) {
         refetch();
@@ -166,7 +163,7 @@ const BookDetails = () => {
         comment: comment.trim(),
       };
 
-      const { data } = await secureAxios.post(`/comments/${id}`, newComment);
+      const { data } = await axiosInstance.post(`/comments/${id}`, newComment);
 
       if (data.success) {
         setError(null);

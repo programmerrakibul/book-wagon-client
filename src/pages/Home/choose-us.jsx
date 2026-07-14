@@ -1,14 +1,14 @@
 import {
-  FaShippingFast,
-  FaShieldAlt,
-  FaHeadset,
   FaBook,
-  FaTags,
+  FaHeadset,
   FaHeart,
+  FaShieldAlt,
+  FaShippingFast,
+  FaTags,
 } from "react-icons/fa";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
 import chooseUsImg from "../../assets/choose_us.png";
+import Heading from "../../components/Heading/Heading";
+import Container from "../../components/ui/container";
 
 const ChooseUs = () => {
   const features = [

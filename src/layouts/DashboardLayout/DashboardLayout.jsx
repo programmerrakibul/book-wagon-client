@@ -1,8 +1,8 @@
 import logo from "@/assets/logo.png";
 import Avatar from "@/components/Avatar/Avatar";
 import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
-import useRole from "@/hooks/useRole";
-import Container from "@/pages/shared/Container/Container";
+import Container from "@/components/ui/container";
+import useRole from "@/hooks/use-role";
 import useAuthStore from "@/stores/use-auth-store";
 import { useMemo } from "react";
 import { FaFileInvoiceDollar, FaHeart, FaUser, FaUsers } from "react-icons/fa";

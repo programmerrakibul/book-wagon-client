@@ -1,17 +1,15 @@
 import {
-  FaLightbulb,
+  FaBookmark,
   FaBookOpen,
+  FaBrain,
   FaClock,
   FaEye,
-  FaBrain,
-  FaBookmark,
   FaHeadphones,
   FaPenAlt,
-  FaCoffee,
   FaStar,
 } from "react-icons/fa";
-import Container from "../shared/Container/Container";
 import Heading from "../../components/Heading/Heading";
+import Container from "../../components/ui/container";
 
 const ReadingTips = () => {
   const tips = [

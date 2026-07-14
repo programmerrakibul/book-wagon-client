@@ -1,12 +1,12 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCoverflow, Autoplay } from "swiper/modules";
 import { FaQuoteLeft } from "react-icons/fa";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
+import { Autoplay, EffectCoverflow } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Avatar from "../../components/Avatar/Avatar";
+import Heading from "../../components/Heading/Heading";
+import Container from "../../components/ui/container";
 
 const Authors = () => {
   const authors = [

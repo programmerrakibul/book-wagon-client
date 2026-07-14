@@ -1,15 +1,10 @@
-import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaPaperPlane,
-} from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
+import { FaMapMarkerAlt, FaPaperPlane, FaPhone } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 import { toast } from "sonner";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
 import Button from "../../components/Button/Button";
+import Heading from "../../components/Heading/Heading";
+import Container from "../../components/ui/container";
 
 const ContactUs = () => {
   const handleSubmit = (e) => {

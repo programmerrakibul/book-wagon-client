@@ -5,7 +5,7 @@ import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import EyeButton from "@/components/EyeButton/EyeButton";
 import MyInput from "@/components/MyInput/MyInput";
 import MyLabel from "@/components/MyLabel/MyLabel";
-import SocialLogin from "@/pages/shared/SocialLogin/SocialLogin";
+import SocialLogin from "@/components/ui/social-login";
 import useAuthStore, { createUser } from "@/stores/use-auth-store";
 import { getAuthErrorMessage } from "@/utils/getAuthErrorMessage";
 import { loginSuccessMessage } from "@/utils/loginSuccessMessage";

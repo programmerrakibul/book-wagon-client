@@ -28,9 +28,9 @@ import Button from "../../../components/Button/Button";
 import Heading from "../../../components/Heading/Heading";
 import Loading from "../../../components/Loading/Loading";
 import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import Container from "../../../components/ui/container";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { getAlert } from "../../../utils/getAlert";
-import Container from "../../shared/Container/Container";
 
 const MySwal = withReactContent(Swal);
 

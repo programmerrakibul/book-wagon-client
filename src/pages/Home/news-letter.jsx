@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FaEnvelope, FaPaperPlane } from "react-icons/fa";
 import { toast } from "sonner";
-import Container from "../shared/Container/Container";
 import bgImage from "../../assets/newsletter.jpg";
-import Button from "../../components/Button/Button";
 import ActionSpinner from "../../components/ActionSpinner/ActionSpinner";
+import Button from "../../components/Button/Button";
+import Container from "../../components/ui/container";
 
 const NewsLetter = () => {
   const [email, setEmail] = useState("");

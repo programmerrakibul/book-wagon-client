@@ -2,7 +2,7 @@ import Avatar from "@/components/Avatar/Avatar";
 import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
 import Button from "@/components/Button/Button";
 import Logo from "@/components/Logo/Logo";
-import Container from "@/pages/shared/Container/Container";
+import Container from "@/components/ui/container";
 import useAuthStore from "@/stores/use-auth-store";
 import useThemeStore, { THEMES, toggleTheme } from "@/stores/use-theme-store";
 import { handleLogout } from "@/utils/handleLogout";

@@ -1,16 +1,16 @@
-import { useNavigate } from "react-router";
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { FaArrowRight } from "react-icons/fa";
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/navigation";
-import Container from "../shared/Container/Container";
+import "swiper/css/pagination";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Button from "../../components/Button/Button";
+import Container from "../../components/ui/container";
 import { sliderData } from "../../data/sliderData";
 
 const Banner = () => {
@@ -27,25 +27,25 @@ const Banner = () => {
     tl.fromTo(
       titleRef.current,
       { opacity: 0, y: -30 },
-      { opacity: 1, y: 0, duration: 0.8 }
+      { opacity: 1, y: 0, duration: 0.8 },
     )
       .fromTo(
         descRef.current,
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.8 },
-        "-=0.4"
+        "-=0.4",
       )
       .fromTo(
         buttonRef.current,
         { opacity: 0, scale: 0.8 },
         { opacity: 1, scale: 1, duration: 0.6 },
-        "-=0.4"
+        "-=0.4",
       )
       .fromTo(
         imageRef.current,
         { opacity: 0, x: 50 },
         { opacity: 1, x: 0, duration: 1 },
-        "-=0.8"
+        "-=0.8",
       );
 
     return () => tl.kill();

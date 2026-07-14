@@ -1,5 +1,5 @@
 import authImg from "@/assets/auth.avif";
-import Container from "@/pages/shared/Container/Container";
+import Container from "@/components/ui/container";
 import useAuthStore from "@/stores/use-auth-store";
 import { Navigate, Outlet } from "react-router";
 

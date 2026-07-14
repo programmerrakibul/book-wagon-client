@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Skeleton } from "@mui/material";
-import Container from "../../pages/shared/Container/Container";
+import Container from "../ui/container";
 
 const BookDetailsSkeleton = () => {
   return (

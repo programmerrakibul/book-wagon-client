@@ -1,15 +1,15 @@
-import { Link } from "react-router";
+import { BsTwitterX } from "react-icons/bs";
 import {
+  FaEnvelope,
   FaFacebookF,
   FaInstagram,
   FaLinkedinIn,
-  FaEnvelope,
-  FaPhone,
   FaMapMarkerAlt,
+  FaPhone,
 } from "react-icons/fa";
-import Container from "../Container/Container";
-import Logo from "../../../components/Logo/Logo";
-import { BsTwitterX } from "react-icons/bs";
+import { Link } from "react-router";
+import Logo from "../Logo/Logo";
+import Container from "./container";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
