@@ -6,6 +6,7 @@ import Container from "@/components/ui/container";
 import ErrorMessage from "@/components/ui/error-message";
 import Loading from "@/components/ui/loading";
 import OrderModal from "@/components/ui/order-modal";
+import { useBookById } from "@/hooks/use-books";
 import axiosInstance from "@/lib/axios";
 import useAuthStore from "@/stores/use-auth-store";
 import { getAlert } from "@/utils/get-alert";
@@ -36,13 +37,7 @@ const BookDetails = () => {
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
 
-  const { data: book, isLoading: bookLoading } = useQuery({
-    queryKey: ["book-details", id],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get(`/books/${id}`);
-      return data?.data || {};
-    },
-  });
+  const { data: book, isLoading: bookLoading } = useBookById(id);
 
   const {
     data = {},
@@ -188,7 +183,7 @@ const BookDetails = () => {
 
   return (
     <>
-      <title>{`${name || "Book Details"} - BookWagon`}</title>
+      <title>{`${name || "Book Details"} | BookWagon`}</title>
 
       <section className="py-8 sm:py-12 lg:py-16 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5">
         <Container>

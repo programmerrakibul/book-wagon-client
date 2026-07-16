@@ -2,7 +2,7 @@ import BookCardSkeleton from "@/components/skeletons/book-card-skeleton";
 import BookCard from "@/components/ui/book-card";
 import Container from "@/components/ui/container";
 import Heading from "@/components/ui/heading";
-import useBooks from "@/hooks/use-books";
+import { useBooks } from "@/hooks/use-books";
 import SortComponent from "@/pages/books/sort-component";
 import { setPage, setSearch } from "@/stores/use-book-filters";
 import { Box, Pagination } from "@mui/material";

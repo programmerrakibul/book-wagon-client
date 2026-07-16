@@ -6,8 +6,6 @@ const CategoriesComponent = () => {
   const { data, isLoading } = useCategories();
   const category = useBookFilters((state) => state.category);
 
-  console.log(category);
-
   const handleChange = (e) => {
     const value = e.target.value.trim();
     setCategory(value);

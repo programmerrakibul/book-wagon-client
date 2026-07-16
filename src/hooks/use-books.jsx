@@ -1,9 +1,12 @@
-import { getBooks } from "@/api/book";
+import { getBookById, getBooks } from "@/api/book";
 import useAuthStore from "@/stores/use-auth-store";
 import useBookFilters from "@/stores/use-book-filters";
 import { useQuery } from "@tanstack/react-query";
 
-const useBooks = (isLibrarian = false) => {
+const placeholderData = (previousData) => previousData;
+const STALE_TIME = 1000 * 60 * 60;
+
+export const useBooks = (isLibrarian = false) => {
   const search = useBookFilters((state) => state.search);
   const page = useBookFilters((state) => state.page);
   const limit = useBookFilters((state) => state.limit);
@@ -20,9 +23,16 @@ const useBooks = (isLibrarian = false) => {
   return useQuery({
     queryKey,
     queryFn: () => getBooks(queryPayload),
-    staleTime: 1000 * 60 * 60,
-    placeholderData: (previousData) => previousData,
+    staleTime: STALE_TIME,
+    placeholderData,
   });
 };
 
-export default useBooks;
+export const useBookById = (id) => {
+  return useQuery({
+    queryKey: ["book", id],
+    queryFn: () => getBookById(id),
+    staleTime: STALE_TIME,
+    placeholderData,
+  });
+};

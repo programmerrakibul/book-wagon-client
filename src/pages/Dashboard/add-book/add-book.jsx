@@ -1,3 +1,5 @@
+import { createBook } from "@/api/book";
+import { queryClient } from "@/App";
 import ActionSpinner from "@/components/ui/action-spinner";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
@@ -10,9 +12,9 @@ import {
   useCategories,
   useSubCategories,
 } from "@/hooks/use-categories";
-import axiosInstance from "@/lib/axios";
 import { uploadImage } from "@/lib/upload-image";
 import { getAlert } from "@/utils/get-alert";
+import { useCallback } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsBoxSeam, BsFileText, BsPercent } from "react-icons/bs";
 import {
@@ -27,6 +29,22 @@ import { toast } from "sonner";
 import FormField from "./form-field";
 import SelectField from "./select-field";
 
+const defaultValues = {
+  name: "",
+  description: "",
+  author: "",
+  publisher: "",
+  publicationYear: "",
+  categoryId: "",
+  subCategoryId: "",
+  bookFormatId: "",
+  weight: "",
+  price: "",
+  stock: "",
+  bookImage: "",
+  discount: "",
+};
+
 const AddBook = () => {
   const { data: categories = [], isLoading: categoryLoading } = useCategories();
   const { data: bookFormats = [], isLoading: bookFormatLoading } =
@@ -39,21 +57,7 @@ const AddBook = () => {
     formState: { isSubmitting },
     watch,
   } = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-      author: "",
-      categoryId: "",
-      subcategoryId: "",
-      formatId: "",
-      status: "PUBLISHED",
-      publicationYear: new Date().getFullYear(),
-      pageCount: 0,
-      price: 0,
-      discount: 0,
-      stock: 0,
-      weight: 0,
-    },
+    defaultValues,
   });
 
   const watchedCategory = watch("categoryId");
@@ -241,34 +245,40 @@ const AddBook = () => {
     },
   };
 
-  const onSubmit = async (formData) => {
-    try {
-      const imageFile = formData.bookImage?.[0];
-      if (!imageFile) throw new Error("Book cover image is required");
+  const onSubmit = useCallback(
+    async (formData) => {
+      try {
+        const imageFile = formData.bookImage?.[0];
+        if (!imageFile) throw new Error("Book cover image is required");
 
-      const photoUrl = await uploadImage(imageFile);
+        const photoUrl = await uploadImage(imageFile);
 
-      delete formData.bookImage;
+        delete formData.bookImage;
 
-      const payload = {
-        ...formData,
-        photoUrl,
-      };
+        const payload = {
+          ...formData,
+          photoUrl,
+        };
 
-      const { data } = await axiosInstance.post("/books", payload);
+        const data = await createBook(payload);
 
-      if (data.success) {
-        reset();
-        getAlert({ title: "The book has been added successfully!" });
-      } else {
-        throw new Error(data.message);
+        if (data.success) {
+          reset(defaultValues);
+          getAlert({ title: "The book has been added successfully!" });
+          queryClient.invalidateQueries({ queryKey: ["books"] });
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.error("Error adding book: ", error);
+        const errorMessage = error.response?.data?.message || error.message;
+        toast.error(
+          errorMessage || "Failed to add the book. Please try again.",
+        );
       }
-    } catch (error) {
-      console.error("Error adding book: ", error);
-      const errorMessage = error.response?.data?.message || error.message;
-      toast.error(errorMessage || "Failed to add the book. Please try again.");
-    }
-  };
+    },
+    [reset],
+  );
 
   return (
     <>

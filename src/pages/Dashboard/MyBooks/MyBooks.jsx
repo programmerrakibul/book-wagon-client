@@ -5,7 +5,7 @@ import Container from "@/components/ui/container";
 import Heading from "@/components/ui/heading";
 import Loading from "@/components/ui/loading";
 import TablePaginationComponent from "@/components/ui/table-pagination";
-import useBooks from "@/hooks/use-books";
+import { useBooks } from "@/hooks/use-books";
 import { getAlert } from "@/utils/get-alert";
 import {
   MenuItem,
@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useCallback } from "react";
 import { FaBook, FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -26,7 +27,7 @@ const MyBooks = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useBooks(true);
 
-  const handleStatusChange = async (bookId, status) => {
+  const handleStatusChange = useCallback(async (bookId, status) => {
     try {
       const data = await changeBookStatus(bookId, status);
 
@@ -41,7 +42,7 @@ const MyBooks = () => {
       const errorMessage = err?.response?.data?.message || err.message;
       toast.error(errorMessage);
     }
-  };
+  }, []);
 
   if (isLoading) {
     return <Loading message="Loading your books..." />;
@@ -80,6 +81,9 @@ const MyBooks = () => {
                       <TableCell className="font-bold! text-base!">
                         Book Name
                       </TableCell>
+                      <TableCell className="font-bold! text-base!" width={420}>
+                        Description
+                      </TableCell>
                       <TableCell className="font-bold! text-base!">
                         Author
                       </TableCell>
@@ -107,12 +111,17 @@ const MyBooks = () => {
                             className="w-12 h-16 object-cover rounded shadow"
                           />
                         </TableCell>
-                        <TableCell>
-                          <span className="font-medium  text-sm lg:text-base">
+                        <TableCell width={200}>
+                          <span className="font-medium  text-sm lg:text-base line-clamp-1">
                             {book.name}
                           </span>
                         </TableCell>
-                        <TableCell className=" text-sm lg:text-base">
+                        <TableCell>
+                          <p className="font-medium  text-sm lg:text-base line-clamp-1">
+                            {book.description}
+                          </p>
+                        </TableCell>
+                        <TableCell className=" text-sm lg:text-base line-clamp-1">
                           {book.author}
                         </TableCell>
                         <TableCell>
