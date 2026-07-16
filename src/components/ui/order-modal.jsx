@@ -1,222 +1,111 @@
-import useSecureAxios from "@/hooks/useSecureAxios";
-import useAuthStore from "@/stores/use-auth-store";
-import { getAlert } from "@/utils/get-alert";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { MinusIcon, PlusIcon, Loader2Icon } from "lucide-react";
+import useAuthStore from "@/store/use-auth-store";
+import axiosInstance from "@/lib/axios";
+import { Button } from "@/components/ui/button";
 import {
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaPhone,
-  FaShoppingCart,
-  FaUser,
-} from "react-icons/fa";
-import { toast } from "sonner";
-import ActionSpinner from "./action-spinner";
-import Button from "./button";
-import ErrorMessage from "./error-message";
-import MyInput from "./input";
-import MyLabel from "./label";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
-const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
-  const [loading, setLoading] = useState(false);
-  const secureAxios = useSecureAxios();
+function OrderModal({ isOpen, closeModal, book, refetch }) {
   const user = useAuthStore((s) => s.user);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data) => {
+  if (!book) return null;
+
+  const name = book.name || book.bookName;
+  const image = book.photoUrl || book.image || book.bookImage;
+  const totalPrice = (book.price || 0) * quantity;
+
+  const handleOrder = async () => {
+    if (!user) return;
     setLoading(true);
-
-    const orderData = {
-      bookId: book._id,
-      ...data,
-      price: book.price,
-    };
-
     try {
-      const { data } = await secureAxios.post("/orders", orderData);
-
-      if (data.success) {
-        refetch();
-
-        getAlert({
-          title: `${book.bookName} successfully ordered. Please pay to continue.`,
-        });
-
-        reset();
-        closeModal();
-      } else {
-        getAlert({
-          title: data.message || "Order failed. Please try again.",
-          icon: "error",
-        });
-      }
-    } catch {
-      toast.error("Order failed. Please try again.");
+      await axiosInstance.post("/orders", {
+        bookId: book._id,
+        bookName: name,
+        bookImage: image,
+        price: book.price,
+        quantity,
+        totalPrice,
+        buyerEmail: user.email,
+        buyerName: user.displayName,
+      });
+      refetch?.();
+      closeModal();
+    } catch (err) {
+      console.error("Order failed:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleClose = () => {
-    reset();
-    closeModal();
-  };
-
-  if (!isOpen) return null;
-
   return (
-    <div className="modal modal-open">
-      <div className="modal-box max-w-2xl">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-4 sm:mb-6">
-          <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
-            <FaShoppingCart className="text-xl sm:text-2xl text-primary" />
-          </div>
-          <div>
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold">
-              Place Your Order
-            </h3>
-            <p className="text-xs sm:text-sm">
-              Fill in your details to complete the order
-            </p>
+    <Dialog open={isOpen} onOpenChange={closeModal}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Confirm Order</DialogTitle>
+          <DialogDescription>Review your order details before confirming.</DialogDescription>
+        </DialogHeader>
+
+        <div className="flex gap-4">
+          {image && (
+            <img src={image} alt={name} className="h-24 w-20 rounded-md object-cover" />
+          )}
+          <div className="flex flex-col gap-1">
+            <h4 className="text-sm font-semibold">{name}</h4>
+            {book.author && (
+              <p className="text-xs text-muted-foreground">{book.author}</p>
+            )}
+            <p className="text-sm font-bold">${book.price?.toFixed(2)}</p>
           </div>
         </div>
 
-        {/* Book Info */}
-        {book && (
-          <div className="card bg-base-200 mb-4 sm:mb-6">
-            <div className="card-body p-3 sm:p-4">
-              <div className="flex gap-3 sm:gap-4">
-                <img
-                  src={book.bookImage}
-                  alt={book.bookName}
-                  className="w-14 h-18 sm:w-16 sm:h-20 object-cover rounded"
-                />
-                <div className="flex-1">
-                  <h4 className="font-bold text-sm sm:text-base line-clamp-1">
-                    {book.bookName}
-                  </h4>
-                  <p className="text-xs sm:text-sm">{book.author}</p>
-                  <p className="text-base sm:text-lg font-bold text-primary mt-1">
-                    ৳ {book.price}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* User Info */}
-        <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-          {/* Name */}
-          <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-base-200 rounded-lg">
-            <FaUser className="text-primary text-base sm:text-lg" />
-            <div>
-              <p className="text-xs">Name</p>
-              <p className="font-semibold text-sm sm:text-base">
-                {user.displayName}
-              </p>
-            </div>
-          </div>
-
-          {/* Email */}
-          <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-base-200 rounded-lg">
-            <FaEnvelope className="text-primary text-base sm:text-lg" />
-            <div>
-              <p className="text-xs">Email</p>
-              <p className="font-semibold text-sm sm:text-base">{user.email}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Phone */}
-          <div>
-            <MyLabel htmlFor="phone">
-              <span className="text-sm sm:text-base">
-                Phone Number <span className="text-error">*</span>
-              </span>
-            </MyLabel>
-            <div className="relative">
-              <FaPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-sm" />
-              <MyInput
-                id="phone"
-                type="tel"
-                disabled={loading}
-                placeholder="Enter your phone number"
-                className="pl-10 text-sm sm:text-base"
-                {...register("phone", {
-                  required: "Phone number is required",
-                })}
-              />
-            </div>
-            <ErrorMessage message={errors.phone?.message} />
-          </div>
-
-          {/* Address */}
-          <div>
-            <MyLabel htmlFor="address">
-              <span className="text-sm sm:text-base">
-                Address <span className="text-error">*</span>
-              </span>
-            </MyLabel>
-            <div className="relative">
-              <FaMapMarkerAlt className="absolute left-3 top-3 text-sm" />
-              <textarea
-                id="address"
-                disabled={loading}
-                placeholder="Enter your delivery address"
-                className="textarea textarea-bordered w-full pl-10 min-h-20 sm:min-h-24 text-sm sm:text-base"
-                {...register("address", {
-                  required: "Address is required",
-                  minLength: {
-                    value: 10,
-                    message: "Address must be at least 10 characters",
-                  },
-                })}
-              />
-            </div>
-            <ErrorMessage message={errors.address?.message} />
-          </div>
-
-          {/* Actions */}
-          <div className="modal-action flex-col sm:flex-row gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
+          <span className="text-sm">Quantity:</span>
+          <div className="flex items-center gap-1">
             <Button
-              disable={loading}
-              type="button"
               variant="outline"
-              onClick={handleClose}
-              className="w-full sm:w-auto text-sm sm:text-base"
+              size="icon-xs"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={quantity <= 1}
             >
-              Cancel
+              <MinusIcon />
             </Button>
+            <span className="w-8 text-center text-sm font-medium">{quantity}</span>
             <Button
-              disable={loading}
-              type="submit"
-              variant="primary"
-              className="w-full sm:w-auto text-sm sm:text-base"
+              variant="outline"
+              size="icon-xs"
+              onClick={() => setQuantity((q) => Math.min(book.stock || 10, q + 1))}
             >
-              {loading ? (
-                <ActionSpinner />
-              ) : (
-                <>
-                  <FaShoppingCart />
-                  Place Order
-                </>
-              )}
+              <PlusIcon />
             </Button>
           </div>
-        </form>
-      </div>
-      <div className="modal-backdrop" onClick={handleClose}></div>
-    </div>
-  );
-};
+        </div>
 
-export default OrderModal;
+        <div className="flex items-center justify-between border-t pt-3">
+          <span className="text-sm font-medium">Total</span>
+          <span className="text-base font-bold">${totalPrice.toFixed(2)}</span>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={closeModal} disabled={loading}>
+            Cancel
+          </Button>
+          <Button onClick={handleOrder} disabled={loading}>
+            {loading && <Loader2Icon className="animate-spin" />}
+            Confirm Order
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export { OrderModal };

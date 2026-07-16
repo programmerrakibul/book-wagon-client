@@ -1,4 +1,4 @@
-import { logoutUser } from "@/stores/use-auth-store";
+import { logoutUser } from "@/store/use-auth-store";
 import axios from "axios";
 
 const axiosInstance = axios.create({

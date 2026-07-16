@@ -1,0 +1,20 @@
+import { useQuery } from "@tanstack/react-query";
+import { getUserRole } from "../services/auth.service";
+import useAuthStore from "@/store/use-auth-store";
+
+const useRole = () => {
+  const user = useAuthStore((s) => s.user);
+  const isLoading = useAuthStore((s) => s.authLoading);
+
+  const { data = {}, isLoading: roleLoading } = useQuery({
+    queryKey: ["role", user?.email],
+    queryFn: getUserRole,
+    enabled: !!user?.email,
+  });
+
+  const role = data?.data?.role;
+
+  return { role, roleLoading: isLoading || roleLoading };
+};
+
+export default useRole;

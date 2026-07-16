@@ -1,60 +1,47 @@
-import { TablePagination } from "@mui/material";
 import { useSearchParams } from "react-router";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const TablePaginationComponent = ({ total, setPage, setLimit }) => {
+function TablePagination({ total }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const limit = searchParams.get("limit") || 10;
-  const page = searchParams.get("page") || 1;
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+  const limit = Math.max(1, parseInt(searchParams.get("limit") || "10", 10));
+  const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  const handlePageChange = (_event, page) => {
-    if (typeof setPage === "function") {
-      setPage(page);
-    }
-
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-
-      newParams.set("page", page + 1);
-      newParams.set("limit", limit);
-
-      return newParams;
-    });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleRowsPerPageChange = (event) => {
-    const limit = event.target.value;
-
-    if (typeof setLimit === "function") {
-      setLimit(limit);
-    }
-
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-
-      newParams.set("page", 1);
-      newParams.set("limit", limit);
-
-      return newParams;
-    });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  const goTo = (p) => {
+    const next = new URLSearchParams(searchParams);
+    next.set("page", String(p));
+    setSearchParams(next);
   };
 
   return (
-    <>
-      <TablePagination
-        component="div"
-        count={total}
-        page={page - 1}
-        onPageChange={handlePageChange}
-        rowsPerPage={limit}
-        onRowsPerPageChange={handleRowsPerPageChange}
-      />
-    </>
+    <div className="flex items-center justify-between px-2 py-4">
+      <p className="text-xs text-muted-foreground">
+        Page {page} of {totalPages} ({total} total)
+      </p>
+      <div className="flex items-center gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={page <= 1}
+          onClick={() => goTo(page - 1)}
+        >
+          <ChevronLeftIcon className="size-4" />
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={page >= totalPages}
+          onClick={() => goTo(page + 1)}
+        >
+          Next
+          <ChevronRightIcon className="size-4" />
+        </Button>
+      </div>
+    </div>
   );
-};
+}
 
-export default TablePaginationComponent;
+export { TablePagination };

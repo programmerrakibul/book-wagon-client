@@ -1,14 +1,11 @@
-import { cn } from "@/utils/cn";
+﻿import { cn } from "@/utils/utils";
 
-const Container = ({ children, className, ...props }) => {
+function Container({ className, children }) {
   return (
-    <div
-      className={cn(`container mx-auto px-5 sm:px-6 lg:px-8`, className)}
-      {...props}
-    >
+    <div className={cn("mx-auto w-full container px-4 sm:px-6 lg:px-8", className)}>
       {children}
     </div>
   );
-};
+}
 
-export default Container;
+export { Container };

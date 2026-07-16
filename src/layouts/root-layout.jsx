@@ -1,20 +1,18 @@
-import Footer from "@/components/ui/footer";
-import Navbar from "@/components/ui/navbar";
+﻿import { Footer } from "@/components/ui/footer";
+import { Navbar } from "@/components/ui/navbar";
 import { Outlet } from "react-router";
 
 const RootLayout = () => {
   return (
-    <>
-      <header className="sticky top-0 z-50">
+    <div className="flex min-h-screen flex-col">
         <Navbar />
-      </header>
 
-      <main className="space-y-16 md:space-y-20">
+      <main className="flex-1">
         <Outlet />
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 };
 

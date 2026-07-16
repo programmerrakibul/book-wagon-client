@@ -1,186 +1,141 @@
-import { handleLogout } from "@/api/handle-logout";
-import Avatar from "@/components/ui/avatar";
-import AvatarDropdown from "@/components/ui/avatar-dropdown";
-import Button from "@/components/ui/button";
-import Container from "@/components/ui/container";
-import Logo from "@/components/ui/logo";
-import useAuthStore from "@/stores/use-auth-store";
-import useThemeStore, { THEMES, toggleTheme } from "@/stores/use-theme-store";
+﻿import logo from "@/assets/logo.png";
+import { AvatarDropdown } from "@/components/ui/avatar-dropdown";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import useAuthStore, { logoutUser } from "@/store/use-auth-store";
+import { toggleTheme } from "@/store/use-theme-store";
+import { cn } from "@/utils/utils";
+import { MenuIcon } from "lucide-react";
 import { useState } from "react";
-import { FiSun } from "react-icons/fi";
-import { HiMenu, HiX } from "react-icons/hi";
-import { IoMoonOutline } from "react-icons/io5";
-import { LuLoader, LuLogIn, LuLogOut } from "react-icons/lu";
-import { NavLink, useNavigate } from "react-router";
+import { Link, NavLink } from "react-router";
+import { AnimatedThemeToggler } from "./animated-theme-toggler";
+import { Container } from "./container";
 
-const Navbar = () => {
-  const theme = useThemeStore((s) => s.theme);
-  const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isLoading = useAuthStore((s) => s.authLoading);
+const navLinks = [
+  { to: "/", label: "Home", end: true },
+  { to: "/books", label: "Books" },
+  { to: "/about-us", label: "About Us" },
+  { to: "/contact-us", label: "Contact Us" },
+];
+
+function Navbar() {
   const user = useAuthStore((s) => s.user);
-
-  const navItems = [
-    { label: "Home", slug: "/" },
-    { label: "Books", slug: "/books" },
-    { label: "About Us", slug: "/about-us" },
-    { label: "Contact Us", slug: "/contact-us" },
-  ];
-
-  if (user) {
-    const dashboard = { label: "Dashboard", slug: "/dashboard" };
-    navItems.splice(2, 0, dashboard);
-  }
-
-  const handleNavClick = () => {
-    setMobileMenuOpen(false);
-  };
-
-  const navLinks = navItems.map((item, index) => (
-    <li key={index}>
-      <NavLink to={item.slug} className="nav_links">
-        {item.label}
-      </NavLink>
-    </li>
-  ));
+  const [open, setOpen] = useState(false);
 
   return (
-    <>
-      <nav className="bg-base-100/40 backdrop-blur-sm border-b border-base-200/30 shadow-sm">
-        <Container>
-          {/* Desktop & Mobile layout */}
-          <div className="navbar px-0 py-2">
-            {/* Logo - Left Side */}
-            <div className="navbar-start">
-              <Logo />
+    <header className="fixed w-full top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+      <Container className="flex h-14 items-center justify-between px-4">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="BookWagon" className="h-8" />
+          <span className="hidden text-lg font-bold sm:inline-block">
+            BookWagon
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-1 md:flex">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.end}
+              className={({ isActive }) =>
+                cn(
+                  "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+                  isActive && "bg-accent text-accent-foreground",
+                )
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <AnimatedThemeToggler onThemeChange={toggleTheme} />
+
+          {user ? (
+            <AvatarDropdown />
+          ) : (
+            <div className="hidden items-center gap-2 md:flex">
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/auth/login">Login</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link to="/auth/register">Register</Link>
+              </Button>
             </div>
+          )}
 
-            {/* Desktop Menu - Center */}
-            <div className="navbar-center hidden lg:inline-flex">
-              <ul className="menu py-0 menu-horizontal gap-2">{navLinks}</ul>
-            </div>
-
-            {/* Mobile Menu Button & Desktop CTA - Right Side */}
-            <div className="navbar-end gap-3">
-              <label className="swap swap-rotate">
-                {/* this hidden checkbox controls the state */}
-                <input
-                  onChange={toggleTheme}
-                  type="checkbox"
-                  checked={theme === THEMES.DARK}
-                />
-
-                {/* sun icon */}
-                <FiSun className="size-7 lg:size-8 swap-off" />
-
-                {/* moon icon */}
-                <IoMoonOutline className="swap-on size-7 lg:size-8" />
-              </label>
-
-              {/* Hamburger Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="btn btn-ghost text-3xl! btn-circle lg:hidden hover:bg-base-200/50 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                aria-label="Toggle navigate menu"
-              >
-                {mobileMenuOpen ? <HiX /> : <HiMenu />}
-              </button>
-
-              {/* Desktop Auth Section */}
-              {isLoading ? (
-                <span>
-                  <LuLoader className="animate-spin" size={32} />
-                </span>
-              ) : user ? (
-                <div className="hidden lg:flex items-center gap-3">
-                  <AvatarDropdown />
-
-                  <Button onClick={handleLogout}>
-                    <LuLogOut />
-                    <span>Logout</span>
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  onClick={() => navigate("/auth/login")}
-                  className="hidden md:inline-flex"
-                >
-                  <LuLogIn />
-                  <span>Login</span>
-                </Button>
-              )}
-            </div>
-          </div>
-
-          {/* Custom Mobile Menu - Smooth Slide Animation */}
-          <div
-            className={`lg:hidden border-t border-base-100/40 backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out ${
-              mobileMenuOpen ? "max-h-[490px] opacity-100" : "max-h-0 opacity-0"
-            }`}
-          >
-            <div className="bg-base-100/40 backdrop-blur-sm shadow-sm px-4 md:px-6 py-4 space-y-2 border-t border-base-100/40">
-              {/* Mobile Nav Links */}
-              <div className="space-y-1">
-                {navItems.map((item, index) => (
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <MenuIcon className="size-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle>Navigation</SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-1 px-4">
+                {navLinks.map((link) => (
                   <NavLink
-                    key={index}
-                    to={item.slug}
-                    onClick={handleNavClick}
-                    className="block py-3 px-4 text-base font-medium text-base-content/80 hover:bg-base-200/40 hover:text-primary transition-all duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    key={link.to}
+                    to={link.to}
+                    end={link.end}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      cn(
+                        "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
+                        isActive && "bg-accent text-accent-foreground",
+                      )
+                    }
                   >
-                    {item.label}
+                    {link.label}
                   </NavLink>
                 ))}
-              </div>
-
-              {/* Divider */}
-              <div className="divider my-2" />
-
-              {/* Mobile Auth Section */}
-              {user ? (
-                <div className="flex items-center justify-between flex-wrap gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-base-200/40 rounded-lg">
-                    <Avatar
-                      src={user.photoURL}
-                      alt={user.displayName}
-                      size="size-12"
-                    />
-
-                    <div>
-                      <p className="font-semibold text-sm">
-                        {user.displayName || "User"}
-                      </p>
-                      <p className="text-xs text-base-content/60">
-                        {user.email}
-                      </p>
-                    </div>
+                {!user && (
+                  <div className="mt-4 flex flex-col gap-2">
+                    <Button asChild variant="outline" size="sm">
+                      <Link to="/auth/login" onClick={() => setOpen(false)}>
+                        Login
+                      </Link>
+                    </Button>
+                    <Button asChild size="sm">
+                      <Link to="/auth/register" onClick={() => setOpen(false)}>
+                        Register
+                      </Link>
+                    </Button>
                   </div>
-
-                  <Button onClick={handleLogout}>
-                    <LuLogOut />
-                    <span>Logout</span>
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <Button
-                    onClick={() => navigate("/auth/login")}
-                    className="btn-block"
-                  >
-                    <LuLogIn />
-                    <span>Login</span>
-                  </Button>
-                  <p className="text-center text-xs text-base-content/40 pt-2">
-                    Let&apos;s read together
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-        </Container>
-      </nav>
-    </>
+                )}
+                {user && (
+                  <div className="mt-4">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => {
+                        logoutUser();
+                        setOpen(false);
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </Container>
+    </header>
   );
-};
+}
 
-export default Navbar;
+export { Navbar };

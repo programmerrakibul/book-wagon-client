@@ -1,163 +1,92 @@
-import { BsTwitterX } from "react-icons/bs";
-import {
-  FaEnvelope,
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaMapMarkerAlt,
-  FaPhone,
-} from "react-icons/fa";
+﻿import logo from "@/assets/logo.png";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { MailIcon, MapPinIcon, PhoneIcon, SendIcon } from "lucide-react";
 import { Link } from "react-router";
-import Container from "./container";
-import Logo from "./logo";
+import { Container } from "./container";
 
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
+const quickLinks = [
+  { to: "/", label: "Home" },
+  { to: "/books", label: "All Books" },
+  { to: "/about-us", label: "About Us" },
+  { to: "/contact-us", label: "Contact Us" },
+];
 
-  const quickLinks = [
-    { name: "Home", path: "/" },
-    { name: "Books", path: "/books" },
-    { name: "About Us", path: "/about-us" },
-    { name: "Contact", path: "/contact-us" },
-  ];
-
-  const categories = [
-    { name: "Fiction", path: "/books?category=Fiction" },
-    { name: "Technology", path: "/books?category=Technology" },
-    { name: "Science", path: "/books?category=Science" },
-    { name: "History", path: "/books?category=History" },
-  ];
-
-  const socialLinks = [
-    { icon: <FaFacebookF />, url: "https://facebook.com", label: "Facebook" },
-    { icon: <BsTwitterX />, url: "https://twitter.com", label: "Twitter" },
-    { icon: <FaInstagram />, url: "https://instagram.com", label: "Instagram" },
-    { icon: <FaLinkedinIn />, url: "https://linkedin.com", label: "LinkedIn" },
-  ];
-
+function Footer() {
   return (
-    <footer className="bg-base-200 mt-auto">
-      <Container>
-        <div className="py-8 sm:py-12 lg:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
-            {/* About Section */}
-            <div className="space-y-3">
-              <Logo />
+    <footer className="border-t bg-muted/30">
+      <Container className="grid gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-col gap-3">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logo} alt="BookWagon" className="h-8" />
+            <span className="text-lg font-bold">BookWagon</span>
+          </Link>
+          <p className="text-sm text-muted-foreground">
+            Your trusted online bookstore for discovering and purchasing the
+            best books across all genres.
+          </p>
+        </div>
 
-              <p className="text-sm sm:text-base  leading-relaxed mb-4">
-                Your trusted partner in the world of books. Discover, read, and
-                grow with our extensive collection.
-              </p>
-              <div className="flex gap-3">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.label}
-                    className="btn btn-circle btn-sm sm:btn-md btn-ghost hover:btn-primary transition-colors"
-                  >
-                    <span className="text-base sm:text-lg">{social.icon}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-sm font-semibold">Quick Links</h3>
+          <ul className="flex flex-col gap-2">
+            {quickLinks.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-base sm:text-lg font-bold  mb-4">
-                Quick Links
-              </h4>
-              <ul className="space-y-2 sm:space-y-3">
-                {quickLinks.map((link, index) => (
-                  <li key={index}>
-                    <Link
-                      to={link.path}
-                      className="text-sm sm:text-base  hover:text-primary transition-colors inline-block"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-sm font-semibold">Contact Info</h3>
+          <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            <li className="flex items-center gap-2">
+              <MapPinIcon className="size-4 shrink-0" />
+              Rangpur, Dhaka, Bangladesh
+            </li>
+            <li className="flex items-center gap-2">
+              <PhoneIcon className="size-4 shrink-0" />
+              +880 188841-9206
+            </li>
+            <li className="flex items-center gap-2">
+              <MailIcon className="size-4 shrink-0" />
+              rakibul00206@gmail.com
+            </li>
+          </ul>
+        </div>
 
-            {/* Categories */}
-            <div>
-              <h4 className="text-base sm:text-lg font-bold  mb-4">
-                Categories
-              </h4>
-              <ul className="space-y-2 sm:space-y-3">
-                {categories.map((category, index) => (
-                  <li key={index}>
-                    <Link
-                      to={category.path}
-                      className="text-sm sm:text-base  hover:text-primary transition-colors inline-block"
-                    >
-                      {category.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Contact Info */}
-            <div>
-              <h4 className="text-base sm:text-lg font-bold  mb-4">
-                Contact Us
-              </h4>
-              <ul className="space-y-3 sm:space-y-4">
-                <li className="flex items-start gap-3">
-                  <FaMapMarkerAlt className="text-primary mt-1 shrink-0 text-sm sm:text-base" />
-                  <span className="text-sm sm:text-base ">
-                    123 Library Street, Dhaka 1000, Bangladesh
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <FaPhone className="text-primary shrink-0 text-sm sm:text-base" />
-                  <a
-                    href="tel:+8801234567890"
-                    className="text-sm sm:text-base  hover:text-primary transition-colors"
-                  >
-                    +880 1234-567890
-                  </a>
-                </li>
-                <li className="flex items-center gap-3">
-                  <FaEnvelope className="text-primary shrink-0 text-sm sm:text-base" />
-                  <a
-                    href="mailto:info@bookwagon.com"
-                    className="text-sm sm:text-base  hover:text-primary transition-colors"
-                  >
-                    info@bookwagon.com
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div className="flex flex-col gap-3">
+          <h3 className="text-sm font-semibold">Newsletter</h3>
+          <p className="text-sm text-muted-foreground">
+            Subscribe for the latest book updates and deals.
+          </p>
+          <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
+            <Input
+              type="email"
+              placeholder="Your email"
+              className="h-9 text-xs"
+            />
+            <Button type="submit" size="icon" className="shrink-0">
+              <SendIcon className="size-4" />
+              <span className="sr-only">Subscribe</span>
+            </Button>
+          </form>
         </div>
       </Container>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-base-300">
-        <Container>
-          <div className="py-4 sm:py-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-            <p className="text-xs sm:text-sm  text-center sm:text-left">
-              © {currentYear} BookWagon. All rights reserved.
-            </p>
-            <div className="flex gap-4 sm:gap-6">
-              <Link className="text-xs sm:text-sm  hover:text-primary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link className="text-xs sm:text-sm  hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
-            </div>
-          </div>
-        </Container>
+      <div className="border-t">
+        <p className="mx-auto max-w-7xl px-4 py-4 text-center text-xs text-muted-foreground">
+          &copy; {new Date().getFullYear()} BookWagon. All rights reserved.
+        </p>
       </div>
     </footer>
   );
-};
+}
 
-export default Footer;
+export { Footer };
