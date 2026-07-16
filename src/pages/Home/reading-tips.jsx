@@ -8,8 +8,8 @@ import {
   FaPenAlt,
   FaStar,
 } from "react-icons/fa";
-import Heading from "../../components/Heading/Heading";
 import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const ReadingTips = () => {
   const tips = [

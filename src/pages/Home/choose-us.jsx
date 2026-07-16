@@ -7,8 +7,8 @@ import {
   FaTags,
 } from "react-icons/fa";
 import chooseUsImg from "../../assets/choose_us.png";
-import Heading from "../../components/Heading/Heading";
 import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const ChooseUs = () => {
   const features = [

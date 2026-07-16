@@ -1,10 +1,10 @@
-import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
-import BackButton from "@/components/BackButton/BackButton";
-import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
-import EyeButton from "@/components/EyeButton/EyeButton";
-import MyInput from "@/components/MyInput/MyInput";
-import MyLabel from "@/components/MyLabel/MyLabel";
+import ActionSpinner from "@/components/ui/action-spinner";
+import BackButton from "@/components/ui/back-button";
 import Button from "@/components/ui/button";
+import ErrorMessage from "@/components/ui/error-message";
+import EyeButton from "@/components/ui/eye-button";
+import MyInput from "@/components/ui/input";
+import MyLabel from "@/components/ui/label";
 import SocialLogin from "@/components/ui/social-login";
 import useAuthStore, { createUser } from "@/stores/use-auth-store";
 import { getAuthErrorMessage } from "@/utils/getAuthErrorMessage";

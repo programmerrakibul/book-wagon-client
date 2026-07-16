@@ -8,8 +8,8 @@ import {
   FaPhone,
 } from "react-icons/fa";
 import { Link } from "react-router";
-import Logo from "../Logo/Logo";
 import Container from "./container";
+import Logo from "./logo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

@@ -1,10 +1,10 @@
-import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
-import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
-import Heading from "@/components/Heading/Heading";
-import MyInput from "@/components/MyInput/MyInput";
-import MyLabel from "@/components/MyLabel/MyLabel";
+import ActionSpinner from "@/components/ui/action-spinner";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
+import ErrorMessage from "@/components/ui/error-message";
+import Heading from "@/components/ui/heading";
+import MyInput from "@/components/ui/input";
+import MyLabel from "@/components/ui/label";
 import {
   useBookFormats,
   useCategories,
@@ -129,7 +129,10 @@ const AddBook = () => {
       type: "select",
       placeholder: "Select a subcategory",
       icon: MdCategory,
-      options: [{value: "", label: "None"}, ...subCategories.map((s) => ({ value: s._id, label: s.name }))],
+      options: [
+        { value: "", label: "None" },
+        ...subCategories.map((s) => ({ value: s._id, label: s.name })),
+      ],
       disabled: !watchedCategory,
       loading: subCategoryLoading,
       rules: {},

@@ -11,11 +11,11 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { FaBook, FaHeart } from "react-icons/fa";
 import { Link, useSearchParams } from "react-router";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 import Button from "../../../components/ui/button";
 import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 
 const Wishlist = () => {

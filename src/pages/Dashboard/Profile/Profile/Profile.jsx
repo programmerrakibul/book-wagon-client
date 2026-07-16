@@ -8,8 +8,8 @@ import {
 } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
-import Avatar from "../../../../components/Avatar/Avatar";
-import Loading from "../../../../components/Loading/Loading";
+import Avatar from "../../../../components/ui/avatar";
+import Loading from "../../../../components/ui/loading";
 import useRole from "../../../../hooks/use-role";
 
 const Profile = () => {

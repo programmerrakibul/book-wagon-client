@@ -1,6 +1,6 @@
-import Heading from "@/components/Heading/Heading";
-import Loading from "@/components/Loading/Loading";
 import Container from "@/components/ui/container";
+import Heading from "@/components/ui/heading";
+import Loading from "@/components/ui/loading";
 import useSecureAxios from "@/hooks/useSecureAxios";
 import useAuthStore from "@/stores/use-auth-store";
 import useThemeStore, { THEMES } from "@/stores/use-theme-store";

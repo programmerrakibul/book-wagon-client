@@ -1,10 +1,10 @@
 import { changeBookStatus } from "@/api/book";
 import { queryClient } from "@/App";
-import Heading from "@/components/Heading/Heading";
-import Loading from "@/components/Loading/Loading";
-import TablePaginationComponent from "@/components/TablePaginationComponent/TablePaginationComponent";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
+import Heading from "@/components/ui/heading";
+import Loading from "@/components/ui/loading";
+import TablePaginationComponent from "@/components/ui/table-pagination";
 import useBooks from "@/hooks/use-books";
 import { getAlert } from "@/utils/getAlert";
 import {

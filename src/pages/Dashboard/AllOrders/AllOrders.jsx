@@ -18,10 +18,10 @@ import {
 } from "react-icons/fa";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
 import useSecureAxios from "../../../hooks/useSecureAxios";
 import { getAlert } from "../../../utils/getAlert";
 

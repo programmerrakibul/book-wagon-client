@@ -4,9 +4,9 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Avatar from "../../components/Avatar/Avatar";
-import Heading from "../../components/Heading/Heading";
+import Avatar from "../../components/ui/avatar";
 import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const Authors = () => {
   const authors = [

@@ -5,7 +5,7 @@ import { HiOutlineUser } from "react-icons/hi";
 import { IoLibrary, IoLogOut } from "react-icons/io5";
 import { MdLibraryAdd } from "react-icons/md";
 import { NavLink } from "react-router";
-import Avatar from "../Avatar/Avatar";
+import Avatar from "./avatar";
 
 const menuItems = [
   {

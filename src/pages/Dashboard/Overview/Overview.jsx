@@ -1,4 +1,4 @@
-import Loading from "@/components/Loading/Loading";
+import Loading from "@/components/ui/loading";
 import useRole from "@/hooks/use-role";
 import AdminOverview from "./AdminOverview";
 import LibrarianOverview from "./LibrarianOverview";

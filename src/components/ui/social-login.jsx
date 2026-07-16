@@ -1,4 +1,4 @@
-import ActionSpinner from "@/components/ActionSpinner/ActionSpinner";
+import ActionSpinner from "@/components/ui/action-spinner";
 import useAuthStore, { loginWithGoogle } from "@/stores/use-auth-store";
 import { getAuthErrorMessage } from "@/utils/getAuthErrorMessage";
 import { loginSuccessMessage } from "@/utils/loginSuccessMessage";

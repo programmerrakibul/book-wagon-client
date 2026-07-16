@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { FaImage, FaSave, FaUser } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { toast } from "sonner";
-import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
-import Avatar from "../../../../components/Avatar/Avatar";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
-import MyInput from "../../../../components/MyInput/MyInput";
-import MyLabel from "../../../../components/MyLabel/MyLabel";
+import ActionSpinner from "../../../../components/ui/action-spinner";
+import Avatar from "../../../../components/ui/avatar";
 import Button from "../../../../components/ui/button";
+import ErrorMessage from "../../../../components/ui/error-message";
+import MyInput from "../../../../components/ui/input";
+import MyLabel from "../../../../components/ui/label";
 import { getAlert } from "../../../../utils/getAlert";
 import { uploadImage } from "../../../../utils/uploadImage";
 

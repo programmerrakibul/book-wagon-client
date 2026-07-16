@@ -1,11 +1,11 @@
-import Avatar from "@/components/Avatar/Avatar";
-import BackButton from "@/components/BackButton/BackButton";
-import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
-import Loading from "@/components/Loading/Loading";
-import OrderModal from "@/components/OrderModal/OrderModal";
-import BookDetailsSkeleton from "@/components/skeletons/BookDetailsSkeleton";
+import BookDetailsSkeleton from "@/components/skeletons/book-details-skeleton";
+import Avatar from "@/components/ui/avatar";
+import BackButton from "@/components/ui/back-button";
 import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
+import ErrorMessage from "@/components/ui/error-message";
+import Loading from "@/components/ui/loading";
+import OrderModal from "@/components/ui/order-modal";
 import axiosInstance from "@/lib/axios";
 import useAuthStore from "@/stores/use-auth-store";
 import { getAlert } from "@/utils/getAlert";

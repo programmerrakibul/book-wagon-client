@@ -1,13 +1,13 @@
-import Heading from "@/components/Heading/Heading";
-import BookCardSkeleton from "@/components/skeletons/BookCardSkeleton";
+import BookCardSkeleton from "@/components/skeletons/book-card-skeleton";
 import BookCard from "@/components/ui/book-card";
-import CategoriesComponent from "./categories-component";
 import Container from "@/components/ui/container";
+import Heading from "@/components/ui/heading";
 import useBooks from "@/hooks/use-books";
 import SortComponent from "@/pages/books/sort-component";
 import { setPage, setSearch } from "@/stores/use-book-filters";
 import { Box, Pagination } from "@mui/material";
 import { FaBook, FaSearch } from "react-icons/fa";
+import CategoriesComponent from "./categories-component";
 
 const Books = () => {
   const { data = {}, isLoading } = useBooks();

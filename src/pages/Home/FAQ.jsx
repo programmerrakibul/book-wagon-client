@@ -7,9 +7,9 @@ import {
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import Heading from "../../components/Heading/Heading";
 import Button from "../../components/ui/button";
 import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const FAQ = () => {
   const [expanded, setExpanded] = useState(false);

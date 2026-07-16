@@ -3,8 +3,8 @@ import { MdLibraryBooks } from "react-icons/md";
 import missionImg from "../../assets/mission.png";
 import ourStoryImg from "../../assets/our_story.png";
 import visionImg from "../../assets/vision.png";
-import Heading from "../../components/Heading/Heading";
 import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const AboutUs = () => {
   const stats = [

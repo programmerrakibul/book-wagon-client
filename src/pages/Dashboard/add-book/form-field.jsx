@@ -1,6 +1,6 @@
-import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
-import MyInput from "@/components/MyInput/MyInput";
-import MyLabel from "@/components/MyLabel/MyLabel";
+import ErrorMessage from "@/components/ui/error-message";
+import MyInput from "@/components/ui/input";
+import MyLabel from "@/components/ui/label";
 import { Controller } from "react-hook-form";
 
 const FormField = ({
