@@ -1,9 +1,7 @@
-const ActionSpinner = () => {
-  return (
-    <>
-      <span className="loading loading-dots loading-md text-primary"></span>
-    </>
-  );
-};
+import { Spinner } from "@/components/ui/spinner";
 
-export default ActionSpinner;
+function ActionSpinner() {
+  return <Spinner />;
+}
+
+export { ActionSpinner };

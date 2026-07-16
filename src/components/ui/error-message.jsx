@@ -1,13 +1,11 @@
-const ErrorMessage = ({ message }) => {
+import { cn } from "@/utils/utils";
+
+function ErrorMessage({ message, className }) {
   if (!message) return null;
 
   return (
-    <>
-      <span className="text-error text-xs sm:text-sm mt-1 block">
-        {message}
-      </span>
-    </>
+    <p className={cn("text-destructive text-sm", className)}>{message}</p>
   );
-};
+}
 
-export default ErrorMessage;
+export { ErrorMessage };

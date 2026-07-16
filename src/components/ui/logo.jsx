@@ -1,17 +1,14 @@
 import { Link } from "react-router";
-import logo from "../../assets/logo.png";
 
-const Logo = () => {
+import logo from "@/assets/logo.png";
+import { cn } from "@/utils/utils";
+
+function Logo({ className }) {
   return (
-    <>
-      <Link to="/" className="logo">
-        <img src={logo} alt="BookWagon" />
-        <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-          BookWagon
-        </span>
-      </Link>
-    </>
+    <Link to="/" className={cn("inline-flex items-center gap-2", className)}>
+      <img src={logo} alt="BookWagon" className="h-8 w-auto" />
+    </Link>
   );
-};
+}
 
-export default Logo;
+export { Logo };

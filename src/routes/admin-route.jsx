@@ -1,7 +1,7 @@
-import Forbidden from "@/components/ui/forbidden";
-import Loading from "@/components/ui/loading";
-import useRole from "@/hooks/use-role";
-import useAuthStore from "@/stores/use-auth-store";
+﻿import { Forbidden } from "@/components/ui/forbidden";
+import { Loading } from "@/components/ui/loading";
+import useRole from "@/features/auth/hooks/use-role";
+import useAuthStore from "@/store/use-auth-store";
 
 const AdminRoute = ({ children }) => {
   const user = useAuthStore((s) => s.user);
@@ -19,3 +19,5 @@ const AdminRoute = ({ children }) => {
 };
 
 export default AdminRoute;
+
+

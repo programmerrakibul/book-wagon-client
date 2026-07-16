@@ -1,259 +1,211 @@
-import logo from "@/assets/logo.png";
-import Avatar from "@/components/ui/avatar";
-import AvatarDropdown from "@/components/ui/avatar-dropdown";
-import Container from "@/components/ui/container";
-import useRole from "@/hooks/use-role";
-import useAuthStore from "@/stores/use-auth-store";
-import { useMemo } from "react";
-import { FaFileInvoiceDollar, FaHeart, FaUser, FaUsers } from "react-icons/fa";
-import { IoLibrary } from "react-icons/io5";
+﻿import logo from "@/assets/logo.png";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarDropdown } from "@/components/ui/avatar-dropdown";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
+import useRole from "@/features/auth/hooks/use-role";
+import useAuthStore from "@/store/use-auth-store";
+import { useUiStore } from "@/store/use-ui-store";
+import { cn } from "@/utils/utils";
 import {
-  MdDashboard,
-  MdLibraryAdd,
-  MdMenu,
-  MdShoppingCart,
-} from "react-icons/md";
+  BookMarked,
+  BookOpen,
+  Heart,
+  LayoutDashboard,
+  Menu,
+  Plus,
+  Receipt,
+  ShoppingCart,
+  User,
+  Users,
+} from "lucide-react";
+import { useMemo } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 
-const DashboardNavSkeleton = () => {
-  const skeletonItems = Array.from({ length: 6 });
-
-  return (
-    <>
-      {skeletonItems.map((_, index) => (
-        <li key={index}>
-          <div
-            className="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300
-                       bg-base-300 dark:bg-neutral-800 animate-pulse"
-          >
-            {/* Icon Skeleton */}
-            <div className="w-8 h-8 rounded-md bg-gray-300 dark:bg-neutral-700 shrink-0" />
-
-            {/* Label Skeleton */}
-            <div className="flex-1 space-y-1">
-              <div
-                className={`h-4 bg-gray-300 dark:bg-neutral-700 rounded w-${[80, 65, 90, 55, 75, 85][index % 6]}%`}
-              />
-            </div>
-          </div>
-        </li>
-      ))}
-    </>
+const navLinkClass = ({ isActive }) =>
+  cn(
+    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+    isActive
+      ? "bg-primary text-primary-foreground"
+      : "text-muted-foreground hover:bg-muted hover:text-foreground",
   );
-};
 
-const UserProfileSkeleton = () => {
-  return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20 animate-pulse">
-      {/* Avatar Skeleton */}
-      <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-neutral-700 shrink-0" />
-
-      {/* Text Content Skeleton */}
-      <div className="flex-1 min-w-0 space-y-2">
-        {/* Name Line */}
-        <div className="h-4 bg-gray-300 dark:bg-neutral-700 rounded w-3/4" />
-
-        {/* Email Line */}
-        <div className="h-3 bg-gray-300 dark:bg-neutral-700 rounded w-5/6" />
-      </div>
-    </div>
-  );
-};
-
-const DashboardLayout = () => {
+function SidebarNav({ onNavClick }) {
   const user = useAuthStore((s) => s.user);
-  const userLoading = useAuthStore((s) => s.authLoading);
   const { role, roleLoading } = useRole();
 
   const menuItems = useMemo(() => {
     const items = [
-      {
-        to: "/dashboard",
-        label: "Overview",
-        icon: <MdDashboard />,
-      },
-      {
-        to: "/dashboard/profile",
-        label: "Profile",
-        icon: <FaUser />,
-      },
+      { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
+      { to: "/dashboard/profile", label: "Profile", icon: User },
     ];
 
     if (["user", "librarian"].includes(role)) {
-      const menu = [
-        {
-          to: "/dashboard/my-orders",
-          label: "My Orders",
-          icon: <MdShoppingCart />,
-        },
-        {
-          to: "/dashboard/my-wishlist",
-          label: "My Wishlist",
-          icon: <FaHeart />,
-        },
-        {
-          to: "/dashboard/invoices",
-          label: "Invoices",
-          icon: <FaFileInvoiceDollar />,
-        },
-      ];
-
-      items.splice(1, 0, ...menu);
+      items.splice(
+        1,
+        0,
+        { to: "/dashboard/my-orders", label: "My Orders", icon: ShoppingCart },
+        { to: "/dashboard/my-wishlist", label: "My Wishlist", icon: Heart },
+        { to: "/dashboard/invoices", label: "Invoices", icon: Receipt },
+      );
     }
 
     if (role === "admin") {
-      const adminMenu = [
+      items.splice(
+        1,
+        0,
         {
           to: "/dashboard/manage-books",
           label: "Manage Books",
-          icon: <IoLibrary />,
+          icon: BookOpen,
         },
-        {
-          to: "/dashboard/manage-users",
-          label: "Manage Users",
-          icon: <FaUsers />,
-        },
-      ];
-
-      items.splice(1, 0, ...adminMenu);
+        { to: "/dashboard/manage-users", label: "Manage Users", icon: Users },
+      );
     }
 
     if (role === "librarian") {
-      const librarianMenu = [
-        {
-          to: "/dashboard/add-book",
-          label: "Add Book",
-          icon: <MdLibraryAdd />,
-        },
-        {
-          to: "/dashboard/my-books",
-          label: "My Books",
-          icon: <IoLibrary />,
-        },
+      items.splice(
+        4,
+        0,
+        { to: "/dashboard/add-book", label: "Add Book", icon: Plus },
+        { to: "/dashboard/my-books", label: "My Books", icon: BookMarked },
         {
           to: "/dashboard/all-orders",
           label: "All Orders",
-          icon: <MdShoppingCart />,
+          icon: ShoppingCart,
         },
-      ];
-
-      items.splice(4, 0, ...librarianMenu);
+      );
     }
 
     return items;
   }, [role]);
 
   return (
-    <>
-      <title>Dashboard - BookWagon</title>
+    <aside className="flex h-full flex-col border-r bg-background">
+      <div className="flex h-14 items-center border-b px-4">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="BookWagon" className="h-8" />
+          <span className="text-base sm:text-lg font-bold">BookWagon</span>
+        </Link>
+      </div>
 
-      <div className="drawer lg:drawer-open">
-        <input
-          id="dashboard-drawer"
-          type="checkbox"
-          className="drawer-toggle"
-        />
+      <Separator />
 
-        {/* Main Content */}
-        <div className="drawer-content flex flex-col">
-          {/* Top Navbar */}
-          <nav className="sticky top-0 z-30 bg-base-100 shadow-md">
-            <Container>
-              <div className="navbar px-0">
-                {/* Mobile Menu Button */}
-                <div className="flex-none lg:hidden">
-                  <label
-                    htmlFor="dashboard-drawer"
-                    aria-label="open sidebar"
-                    className="btn btn-square btn-ghost"
+      <ScrollArea className="flex-1 px-3 py-2">
+        <nav className="flex flex-col gap-1">
+          {roleLoading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 w-full" />
+              ))
+            : menuItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.to === "/dashboard"}
+                    className={navLinkClass}
+                    onClick={onNavClick}
                   >
-                    <MdMenu className="text-2xl" />
-                  </label>
-                </div>
+                    <Icon className="size-4 shrink-0" />
+                    {item.label}
+                  </NavLink>
+                );
+              })}
+        </nav>
+      </ScrollArea>
 
-                {/* Title */}
-                <div className="flex-1">
-                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold ml-2 lg:ml-0">
-                    Dashboard
-                  </h1>
-                </div>
+      <Separator />
 
-                {/* Avatar Dropdown */}
-                <AvatarDropdown />
-              </div>
-            </Container>
-          </nav>
-
-          {/* Page Content */}
-          <main className="flex-1 bg-base-300 min-h-[70dvh]">
-            <Outlet />
-          </main>
-        </div>
-
-        {/* Sidebar */}
-        <div className="drawer-side min-h-dvh z-40 backdrop-blur-[2px]">
-          <label
-            htmlFor="dashboard-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-
-          <aside className="flex min-h-full w-64 bg-base-100 flex-col  border-r border-primary/20">
-            {/* Logo Section */}
-            <div className="sticky top-0 z-50 bg-base-100/80 border-b border-primary/20 px-4 py-3 backdrop-blur-sm">
-              <Link to="/" className="flex items-center gap-1 text-neutral">
-                <img
-                  src={logo}
-                  alt="BookWagon"
-                  className="size-10 object-cover"
-                />
-                <span className="text-[23px] font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent font-['Montserrat_Alternates']">
-                  BookWagon
-                </span>
-              </Link>
-            </div>
-
-            {/* Menu Items */}
-            <ul className="menu w-full menu-vertical p-4 space-y-2 flex-1">
-              {roleLoading ? (
-                <DashboardNavSkeleton />
-              ) : (
-                menuItems.map((item, index) => (
-                  <li key={index}>
-                    <NavLink
-                      to={item.to}
-                      end={item.to === "/dashboard"}
-                      className="dashboard_nav_links"
-                    >
-                      <span className="text-xl">{item.icon}</span>
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </NavLink>
-                  </li>
-                ))
-              )}
-            </ul>
-
-            {/* User Card at Bottom */}
-            <div className="sticky bottom-0 bg-base-100/40 backdrop-blur-sm border-t border-primary/20 p-4">
-              {userLoading ? (
-                <UserProfileSkeleton />
-              ) : (
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-linear-to-r from-primary/20 to-secondary/20">
-                  <Avatar src={user?.photoURL} alt={user?.displayName} />
-
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold truncate">
-                      {user?.displayName || "User"}
-                    </p>
-                    <p className="text-xs truncate">{user?.email}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </aside>
+      <div className="p-3">
+        <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
+          <Avatar className="size-9">
+            <AvatarImage
+              src={user?.photoURL}
+              alt={user?.displayName || "User"}
+            />
+            <AvatarFallback>
+              {(user?.displayName || user?.email || "U")
+                .split(" ")
+                .map((w) => w[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium">
+              {user?.displayName || "User"}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">
+              {user?.email}
+            </p>
+          </div>
         </div>
       </div>
-    </>
+    </aside>
+  );
+}
+
+const DashboardLayout = () => {
+  const sidebarOpen = useUiStore((s) => s.sidebarOpen);
+  const setSidebarOpen = useUiStore((s) => s.setSidebarOpen);
+
+  return (
+    <div className="flex min-h-dvh">
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-64 lg:flex-col">
+        <SidebarNav />
+      </aside>
+
+      {/* Mobile sheet sidebar */}
+      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="fixed left-3 top-3 z-40 lg:hidden"
+          >
+            <Menu className="size-5" />
+            <span className="sr-only">Open sidebar</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          <SidebarNav onNavClick={() => setSidebarOpen(false)} />
+        </SheetContent>
+      </Sheet>
+
+      {/* Main content area */}
+      <div className="flex flex-1 flex-col lg:pl-64">
+        {/* Top navbar */}
+        <header className="sticky top-0 z-20 flex h-14 items-center border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-4">
+          <div className="hidden lg:flex lg:flex-1" />
+
+          <div className="flex flex-1 items-center lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Menu className="size-5" />
+              <span className="sr-only">Open sidebar</span>
+            </Button>
+          </div>
+
+          <div className="flex flex-1 items-center justify-end gap-2">
+            <AvatarDropdown />
+          </div>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 bg-muted/30">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 };
 

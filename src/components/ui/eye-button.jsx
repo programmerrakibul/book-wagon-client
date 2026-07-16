@@ -1,21 +1,19 @@
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Eye, EyeOff } from "lucide-react";
 
-const EyeButton = ({ showPassword, setShowPassword }) => {
+import { Button } from "@/components/ui/button";
+
+function EyeButton({ showPassword, setShowPassword }) {
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setShowPassword(!showPassword)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-white/40 dark:hover:text-white/60 z-10"
-      >
-        {showPassword ? (
-          <FaEyeSlash className="size-5" />
-        ) : (
-          <FaEye className="size-5" />
-        )}
-      </button>
-    </>
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      onClick={() => setShowPassword((prev) => !prev)}
+      tabIndex={-1}
+    >
+      {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+    </Button>
   );
-};
+}
 
-export default EyeButton;
+export { EyeButton };
