@@ -1,7 +1,7 @@
 import Avatar from "@/components/Avatar/Avatar";
 import AvatarDropdown from "@/components/AvatarDropdown/AvatarDropdown";
-import Button from "@/components/Button/Button";
 import Logo from "@/components/Logo/Logo";
+import Button from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import useAuthStore from "@/stores/use-auth-store";
 import useThemeStore, { THEMES, toggleTheme } from "@/stores/use-theme-store";

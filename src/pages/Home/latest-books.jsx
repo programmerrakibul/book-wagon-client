@@ -10,10 +10,10 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import { Autoplay, FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
 import Loading from "../../components/Loading/Loading";
 import BookCard from "../../components/ui/book-card";
+import Button from "../../components/ui/button";
 import Container from "../../components/ui/container";
 import usePublicAxios from "../../hooks/usePublicAxios";
 

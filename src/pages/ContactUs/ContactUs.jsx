@@ -2,8 +2,8 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { FaMapMarkerAlt, FaPaperPlane, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { toast } from "sonner";
-import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
+import Button from "../../components/ui/button";
 import Container from "../../components/ui/container";
 
 const ContactUs = () => {

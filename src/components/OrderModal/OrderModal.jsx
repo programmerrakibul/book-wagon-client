@@ -12,10 +12,10 @@ import {
 } from "react-icons/fa";
 import { toast } from "sonner";
 import ActionSpinner from "../ActionSpinner/ActionSpinner";
-import Button from "../Button/Button";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MyInput from "../MyInput/MyInput";
 import MyLabel from "../MyLabel/MyLabel";
+import Button from "../ui/button";
 
 const OrderModal = ({ isOpen, closeModal, book, refetch }) => {
   const [loading, setLoading] = useState(false);

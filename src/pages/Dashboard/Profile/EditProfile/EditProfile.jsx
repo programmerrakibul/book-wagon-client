@@ -6,10 +6,10 @@ import { MdCancel } from "react-icons/md";
 import { toast } from "sonner";
 import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
 import Avatar from "../../../../components/Avatar/Avatar";
-import Button from "../../../../components/Button/Button";
 import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
 import MyInput from "../../../../components/MyInput/MyInput";
 import MyLabel from "../../../../components/MyLabel/MyLabel";
+import Button from "../../../../components/ui/button";
 import { getAlert } from "../../../../utils/getAlert";
 import { uploadImage } from "../../../../utils/uploadImage";
 

@@ -1,6 +1,6 @@
 import { FaArrowLeft, FaExclamationTriangle, FaHome } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
-import Button from "../../components/Button/Button";
+import Button from "../../components/ui/button";
 import Container from "../../components/ui/container";
 
 const Error = () => {

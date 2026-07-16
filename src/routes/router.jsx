@@ -6,7 +6,7 @@ import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../pages/Auth/Login/Login";
 import Register from "../pages/Auth/Register/Register";
 import Overview from "../pages/Dashboard/Overview/Overview";
-import AddBook from "../pages/Dashboard/AddBook/AddBook";
+import AddBook from "../pages/Dashboard/add-book/add-book";
 import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 import Profile from "../pages/Dashboard/Profile/Profile/Profile";
 import EditProfile from "../pages/Dashboard/Profile/EditProfile/EditProfile";

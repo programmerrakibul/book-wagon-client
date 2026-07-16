@@ -1,10 +1,10 @@
 import Heading from "@/components/Heading/Heading";
 import BookCardSkeleton from "@/components/skeletons/BookCardSkeleton";
 import BookCard from "@/components/ui/book-card";
-import CategoriesComponent from "@/components/ui/categories-component";
+import CategoriesComponent from "./categories-component";
 import Container from "@/components/ui/container";
-import SortComponent from "@/components/ui/sort-component";
 import useBooks from "@/hooks/use-books";
+import SortComponent from "@/pages/books/sort-component";
 import { setPage, setSearch } from "@/stores/use-book-filters";
 import { Box, Pagination } from "@mui/material";
 import { FaBook, FaSearch } from "react-icons/fa";

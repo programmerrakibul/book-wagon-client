@@ -7,8 +7,8 @@ import {
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import Button from "../../components/Button/Button";
 import Heading from "../../components/Heading/Heading";
+import Button from "../../components/ui/button";
 import Container from "../../components/ui/container";
 
 const FAQ = () => {
