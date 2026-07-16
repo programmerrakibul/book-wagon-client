@@ -1,4 +1,12 @@
-import useAuthStore from "@/stores/use-auth-store";
+import { changeBookStatus } from "@/api/book";
+import { queryClient } from "@/App";
+import Heading from "@/components/Heading/Heading";
+import Loading from "@/components/Loading/Loading";
+import TablePaginationComponent from "@/components/TablePaginationComponent/TablePaginationComponent";
+import Button from "@/components/ui/button";
+import Container from "@/components/ui/container";
+import useBooks from "@/hooks/use-books";
+import { getAlert } from "@/utils/getAlert";
 import {
   MenuItem,
   Paper,
@@ -10,69 +18,25 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import { FaBook, FaEdit } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
-import Button from "../../../components/ui/button";
-import Container from "../../../components/ui/container";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import { getAlert } from "../../../utils/getAlert";
 
 const MyBooks = () => {
   const navigate = useNavigate();
-  const user = useAuthStore((s) => s.user);
-  const secureAxios = useSecureAxios();
-  const [searchParams] = useSearchParams();
-
-  const page = searchParams.get("page") || 1;
-  const limit = searchParams.get("limit") || 10;
-  const search = searchParams.get("search") || "";
-  const sortBy = searchParams.get("sortBy") || "";
-  const sortOrder = searchParams.get("sortOrder") || "";
-
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: [
-      "my-books",
-      "librarian",
-      user.email,
-      page,
-      limit,
-      search,
-      sortBy,
-      sortOrder,
-    ],
-    queryFn: async () => {
-      const { data } = await secureAxios.get("/books", {
-        params: {
-          email: user.email,
-          page,
-          limit,
-          search,
-          sortBy,
-          sortOrder,
-        },
-      });
-
-      return data || {};
-    },
-  });
+  const { data, isLoading } = useBooks(true);
 
   const handleStatusChange = async (bookId, status) => {
     try {
-      const { data } = await secureAxios.patch(`/books/${bookId}`, { status });
+      const data = await changeBookStatus(bookId, status);
 
       if (data.success) {
-        refetch();
+        queryClient.invalidateQueries({ queryKey: ["books"] });
         getAlert({ title: `Book status updated with ${status}` });
-      } else {
-        toast.error(
-          data.message || "Failed to update book status. Please try again.",
-        );
+        return;
       }
+
+      throw new Error(data.message || "Failed to update book status.");
     } catch (err) {
       const errorMessage = err?.response?.data?.message || err.message;
       toast.error(errorMessage);
@@ -110,7 +74,6 @@ const MyBooks = () => {
                 <Table>
                   <TableHead>
                     <TableRow className="bg-primary/10">
-                      <TableCell className="font-bold! text-base!">#</TableCell>
                       <TableCell className="font-bold! text-base!">
                         Image
                       </TableCell>
@@ -132,24 +95,21 @@ const MyBooks = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {books.map((book, index) => (
+                    {books.map((book) => (
                       <TableRow
                         key={book._id}
                         className="hover:bg-base-200 transition-colors"
                       >
                         <TableCell>
-                          <span className="font-semibold ">{index + 1}</span>
-                        </TableCell>
-                        <TableCell>
                           <img
-                            src={book.bookImage}
-                            alt={book.bookName}
+                            src={book.photoUrl}
+                            alt={book.name}
                             className="w-12 h-16 object-cover rounded shadow"
                           />
                         </TableCell>
                         <TableCell>
                           <span className="font-medium  text-sm lg:text-base">
-                            {book.bookName}
+                            {book.name}
                           </span>
                         </TableCell>
                         <TableCell className=" text-sm lg:text-base">
@@ -162,19 +122,14 @@ const MyBooks = () => {
                             id="change-book-status"
                             value={book.status}
                             color="primary"
-                            label="Age"
+                            label="Status"
                             size="small"
-                            className="capitalize"
                             onChange={(e) =>
                               handleStatusChange(book._id, e.target.value)
                             }
                           >
-                            {["published", "unpublished"].map((status) => (
-                              <MenuItem
-                                key={status}
-                                value={status}
-                                className="capitalize"
-                              >
+                            {["PUBLISHED", "UNPUBLISHED"].map((status) => (
+                              <MenuItem key={status} value={status}>
                                 {status}
                               </MenuItem>
                             ))}

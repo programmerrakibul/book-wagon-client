@@ -1,13 +1,17 @@
 import { TablePagination } from "@mui/material";
 import { useSearchParams } from "react-router";
 
-const TablePaginationComponent = ({ total }) => {
+const TablePaginationComponent = ({ total, setPage, setLimit }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const limit = searchParams.get("limit") || 10;
   const page = searchParams.get("page") || 1;
 
   const handlePageChange = (_event, page) => {
+    if (typeof setPage === "function") {
+      setPage(page);
+    }
+
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
@@ -21,11 +25,17 @@ const TablePaginationComponent = ({ total }) => {
   };
 
   const handleRowsPerPageChange = (event) => {
+    const limit = event.target.value;
+
+    if (typeof setLimit === "function") {
+      setLimit(limit);
+    }
+
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
 
       newParams.set("page", 1);
-      newParams.set("limit", event.target.value);
+      newParams.set("limit", limit);
 
       return newParams;
     });

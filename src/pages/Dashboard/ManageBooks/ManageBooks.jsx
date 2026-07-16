@@ -1,4 +1,10 @@
+import Heading from "@/components/Heading/Heading";
+import Loading from "@/components/Loading/Loading";
+import TablePaginationComponent from "@/components/TablePaginationComponent/TablePaginationComponent";
+import Container from "@/components/ui/container";
+import useSecureAxios from "@/hooks/useSecureAxios";
 import useAuthStore from "@/stores/use-auth-store";
+import { getAlert } from "@/utils/getAlert";
 import {
   Button,
   MenuItem,
@@ -16,12 +22,6 @@ import { FaBook, FaTrash } from "react-icons/fa";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
-import Container from "../../../components/ui/container";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import { getAlert } from "../../../utils/getAlert";
 
 const ManageBooks = () => {
   const user = useAuthStore((s) => s.user);
