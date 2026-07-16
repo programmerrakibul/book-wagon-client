@@ -136,7 +136,8 @@ const Banner = () => {
                     <img
                       src={slide.image}
                       alt={slide.title}
-                      className="w-full  object-cover max-w-[350px] sm:max-w-[390px] md:max-w-[450px] lg:w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl"
+                      loading="eager"
+                      className="w-full  object-cover max-w-[350px] sm:max-w-[390px] md:max-w-[450px] lg:w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl ml-auto"
                     />
                   </motion.div>
                 </div>
