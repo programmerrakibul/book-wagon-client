@@ -129,7 +129,7 @@ const AddBook = () => {
       type: "select",
       placeholder: "Select a subcategory",
       icon: MdCategory,
-      options: subCategories.map((s) => ({ value: s._id, label: s.name })),
+      options: [{value: "", label: "None"}, ...subCategories.map((s) => ({ value: s._id, label: s.name }))],
       disabled: !watchedCategory,
       loading: subCategoryLoading,
       rules: {},
@@ -269,7 +269,7 @@ const AddBook = () => {
 
   return (
     <>
-      <title>Add New Book - BookWagon</title>
+      <title>Add New Book | BookWagon</title>
 
       <section className="bg-linear-to-br from-secondary/10 via-primary/5 to-secondary/10 py-6 sm:py-10 lg:py-16 px-3 sm:px-0">
         <Container>
@@ -451,7 +451,7 @@ const AddBook = () => {
 
                 {/* Submit */}
                 <div className="pt-6 sm:pt-8 text-end">
-                  <Button type="submit" disabled={isSubmitting} className="">
+                  <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? (
                       <ActionSpinner />
                     ) : (
