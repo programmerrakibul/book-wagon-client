@@ -12,7 +12,10 @@ export const getBooks = async ({
     const query = [`page=${page}`, `limit=${limit}`];
 
     if (search) query.push(`search=${search}`);
-    if (sort) query.push(`sortBy=${sort}`);
+    if (sort) {
+      const [field, order] = sort.split("-");
+      query.push(`sortBy=${field}&sortOrder=${order.toLowerCase()}`);
+    }
     if (category) query.push(`category=${category}`);
     if (email) query.push(`email=${email}`);
 
