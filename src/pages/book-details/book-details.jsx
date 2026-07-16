@@ -8,7 +8,7 @@ import Loading from "@/components/ui/loading";
 import OrderModal from "@/components/ui/order-modal";
 import axiosInstance from "@/lib/axios";
 import useAuthStore from "@/stores/use-auth-store";
-import { getAlert } from "@/utils/getAlert";
+import { getAlert } from "@/utils/get-alert";
 import { useQuery } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";

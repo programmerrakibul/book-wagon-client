@@ -1,6 +1,6 @@
 import useSecureAxios from "@/hooks/useSecureAxios";
 import useAuthStore from "@/stores/use-auth-store";
-import { getAlert } from "@/utils/getAlert";
+import { getAlert } from "@/utils/get-alert";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {

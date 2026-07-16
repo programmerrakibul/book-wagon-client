@@ -7,7 +7,7 @@ import MyInput from "@/components/ui/input";
 import MyLabel from "@/components/ui/label";
 import Loading from "@/components/ui/loading";
 import useSecureAxios from "@/hooks/useSecureAxios";
-import { getAlert } from "@/utils/getAlert";
+import { getAlert } from "@/utils/get-alert";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

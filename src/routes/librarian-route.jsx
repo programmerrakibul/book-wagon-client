@@ -1,7 +1,7 @@
+import Forbidden from "@/components/ui/forbidden";
+import Loading from "@/components/ui/loading";
+import useRole from "@/hooks/use-role";
 import useAuthStore from "@/stores/use-auth-store";
-import Forbidden from "../components/ui/forbidden";
-import Loading from "../components/ui/loading";
-import useRole from "../hooks/use-role";
 
 const LibrarianRoute = ({ children }) => {
   const user = useAuthStore((s) => s.user);

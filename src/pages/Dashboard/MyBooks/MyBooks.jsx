@@ -6,7 +6,7 @@ import Heading from "@/components/ui/heading";
 import Loading from "@/components/ui/loading";
 import TablePaginationComponent from "@/components/ui/table-pagination";
 import useBooks from "@/hooks/use-books";
-import { getAlert } from "@/utils/getAlert";
+import { getAlert } from "@/utils/get-alert";
 import {
   MenuItem,
   Paper,

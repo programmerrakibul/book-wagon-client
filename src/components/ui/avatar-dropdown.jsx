@@ -1,5 +1,5 @@
+import { handleLogout } from "@/api/handle-logout";
 import useAuthStore from "@/stores/use-auth-store";
-import { handleLogout } from "@/utils/handleLogout";
 import { FaHome } from "react-icons/fa";
 import { HiOutlineUser } from "react-icons/hi";
 import { IoLibrary, IoLogOut } from "react-icons/io5";

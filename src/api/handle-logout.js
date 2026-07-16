@@ -1,7 +1,7 @@
 import { logoutUser } from "@/stores/use-auth-store";
+import { getAlert } from "@/utils/get-alert";
+import { getAuthErrorMessage } from "@/utils/get-auth-error-message";
 import { toast } from "sonner";
-import { getAlert } from "./getAlert";
-import { getAuthErrorMessage } from "./getAuthErrorMessage";
 
 export const handleLogout = async () => {
   try {

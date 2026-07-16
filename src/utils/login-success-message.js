@@ -1,4 +1,4 @@
-import { getAlert } from "./getAlert";
+import { getAlert } from "./get-alert";
 
 export const loginSuccessMessage = (name) => {
   getAlert({

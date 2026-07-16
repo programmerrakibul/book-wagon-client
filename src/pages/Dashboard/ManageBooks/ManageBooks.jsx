@@ -4,7 +4,7 @@ import Loading from "@/components/ui/loading";
 import TablePaginationComponent from "@/components/ui/table-pagination";
 import useSecureAxios from "@/hooks/useSecureAxios";
 import useAuthStore from "@/stores/use-auth-store";
-import { getAlert } from "@/utils/getAlert";
+import { getAlert } from "@/utils/get-alert";
 import {
   Button,
   MenuItem,

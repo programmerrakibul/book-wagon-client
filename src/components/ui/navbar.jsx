@@ -1,3 +1,4 @@
+import { handleLogout } from "@/api/handle-logout";
 import Avatar from "@/components/ui/avatar";
 import AvatarDropdown from "@/components/ui/avatar-dropdown";
 import Button from "@/components/ui/button";
@@ -5,7 +6,6 @@ import Container from "@/components/ui/container";
 import Logo from "@/components/ui/logo";
 import useAuthStore from "@/stores/use-auth-store";
 import useThemeStore, { THEMES, toggleTheme } from "@/stores/use-theme-store";
-import { handleLogout } from "@/utils/handleLogout";
 import { useState } from "react";
 import { FiSun } from "react-icons/fi";
 import { HiMenu, HiX } from "react-icons/hi";

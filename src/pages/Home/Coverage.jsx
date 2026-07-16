@@ -3,7 +3,7 @@ import { FaCheckCircle, FaMapMarkerAlt } from "react-icons/fa";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import Container from "../../components/ui/container";
 import Heading from "../../components/ui/heading";
-import { availableCities } from "../../data/availableCities";
+import { availableCities } from "../../data/available-cities";
 
 const Coverage = () => {
   return (

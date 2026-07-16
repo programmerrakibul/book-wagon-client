@@ -10,8 +10,8 @@ import Button from "../../../../components/ui/button";
 import ErrorMessage from "../../../../components/ui/error-message";
 import MyInput from "../../../../components/ui/input";
 import MyLabel from "../../../../components/ui/label";
-import { getAlert } from "../../../../utils/getAlert";
-import { uploadImage } from "../../../../utils/uploadImage";
+import { uploadImage } from "../../../../lib/upload-image";
+import { getAlert } from "../../../../utils/get-alert";
 
 const EditProfile = () => {
   const user = useAuthStore((s) => s.user);

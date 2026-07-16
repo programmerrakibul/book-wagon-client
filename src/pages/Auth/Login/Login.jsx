@@ -1,3 +1,4 @@
+import { postUser } from "@/api/post-user";
 import ActionSpinner from "@/components/ui/action-spinner";
 import BackButton from "@/components/ui/back-button";
 import Button from "@/components/ui/button";
@@ -7,9 +8,8 @@ import MyInput from "@/components/ui/input";
 import MyLabel from "@/components/ui/label";
 import SocialLogin from "@/components/ui/social-login";
 import useAuthStore, { loginWithPassword } from "@/stores/use-auth-store";
-import { getAuthErrorMessage } from "@/utils/getAuthErrorMessage";
-import { loginSuccessMessage } from "@/utils/loginSuccessMessage";
-import { postUser } from "@/utils/postUser";
+import { getAuthErrorMessage } from "@/utils/get-auth-error-message";
+import { loginSuccessMessage } from "@/utils/login-success-message";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";

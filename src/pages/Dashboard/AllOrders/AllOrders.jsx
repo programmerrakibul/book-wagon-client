@@ -23,7 +23,7 @@ import Heading from "../../../components/ui/heading";
 import Loading from "../../../components/ui/loading";
 import TablePaginationComponent from "../../../components/ui/table-pagination";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import { getAlert } from "../../../utils/getAlert";
+import { getAlert } from "../../../utils/get-alert";
 
 const AllOrders = () => {
   const user = useAuthStore((s) => s.user);

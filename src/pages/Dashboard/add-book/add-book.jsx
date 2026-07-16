@@ -11,8 +11,8 @@ import {
   useSubCategories,
 } from "@/hooks/use-categories";
 import axiosInstance from "@/lib/axios";
-import { getAlert } from "@/utils/getAlert";
-import { uploadImage } from "@/utils/uploadImage";
+import { uploadImage } from "@/lib/upload-image";
+import { getAlert } from "@/utils/get-alert";
 import { Controller, useForm } from "react-hook-form";
 import { BsBoxSeam, BsFileText, BsPercent } from "react-icons/bs";
 import {
