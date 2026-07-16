@@ -1,10 +1,10 @@
-import { FaBook, FaUsers, FaAward } from "react-icons/fa";
+import { FaAward, FaBook, FaUsers } from "react-icons/fa";
 import { MdLibraryBooks } from "react-icons/md";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
-import ourStoryImg from "../../assets/our_story.png";
 import missionImg from "../../assets/mission.png";
+import ourStoryImg from "../../assets/our_story.png";
 import visionImg from "../../assets/vision.png";
+import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const AboutUs = () => {
   const stats = [

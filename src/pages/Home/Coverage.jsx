@@ -1,9 +1,9 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { FaMapMarkerAlt, FaCheckCircle } from "react-icons/fa";
 import "leaflet/dist/leaflet.css";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
-import { availableCities } from "../../data/availableCities";
+import { FaCheckCircle, FaMapMarkerAlt } from "react-icons/fa";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
+import { availableCities } from "../../data/available-cities";
 
 const Coverage = () => {
   return (

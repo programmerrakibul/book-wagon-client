@@ -1,31 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { FaUsers, FaUserShield, FaUserTie } from "react-icons/fa";
+import useAuthStore from "@/stores/use-auth-store";
 import {
+  MenuItem,
+  Paper,
+  Select,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  TablePagination,
-  Select,
-  MenuItem,
 } from "@mui/material";
-import Container from "../../shared/Container/Container";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import useAuth from "../../../hooks/useAuth";
-import { toast } from "sonner";
-import { getAlert } from "../../../utilities/getAlert";
-import Avatar from "../../../components/Avatar/Avatar";
-import Heading from "../../../components/Heading/Heading";
-import Loading from "../../../components/Loading/Loading";
+import { useQuery } from "@tanstack/react-query";
+import { FaUsers, FaUserShield, FaUserTie } from "react-icons/fa";
 import { useSearchParams } from "react-router";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import { toast } from "sonner";
+import Avatar from "../../../components/ui/avatar";
+import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import { getAlert } from "../../../utils/get-alert";
 
 const ManageUsers = () => {
   const secureAxios = useSecureAxios();
-  const { user: currentUser } = useAuth();
+  const currentUser = useAuthStore((s) => s.user);
   const [searchParams] = useSearchParams();
 
   const page = searchParams.get("page") || 1;

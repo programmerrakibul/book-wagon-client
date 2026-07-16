@@ -1,25 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link, useSearchParams } from "react-router";
-import { FaHeart, FaBook } from "react-icons/fa";
+import useAuthStore from "@/stores/use-auth-store";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { FaBook, FaHeart } from "react-icons/fa";
+import { Link, useSearchParams } from "react-router";
+import Button from "../../../components/ui/button";
+import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
 import useSecureAxios from "../../../hooks/useSecureAxios";
-import Loading from "../../../components/Loading/Loading";
-import Button from "../../../components/Button/Button";
-import Container from "../../shared/Container/Container";
-import Heading from "../../../components/Heading/Heading";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
 
 const Wishlist = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

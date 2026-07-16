@@ -1,41 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
-import { Link, useSearchParams } from "react-router";
-import { format } from "date-fns";
+import useAuthStore from "@/stores/use-auth-store";
 import {
-  FaShoppingBag,
-  FaTimes,
-  FaCreditCard,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaBook,
-  FaShippingFast,
-} from "react-icons/fa";
-import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import Loading from "../../../components/Loading/Loading";
-import Button from "../../../components/Button/Button";
-import Heading from "../../../components/Heading/Heading";
-import Container from "../../shared/Container/Container";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 import { useEffect } from "react";
-import { getAlert } from "../../../utilities/getAlert";
+import {
+  FaBook,
+  FaCheckCircle,
+  FaCreditCard,
+  FaShippingFast,
+  FaShoppingBag,
+  FaTimes,
+  FaTimesCircle,
+} from "react-icons/fa";
+import { Link, useSearchParams } from "react-router";
+import { toast } from "sonner";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import Button from "../../../components/ui/button";
+import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import { getAlert } from "../../../utils/get-alert";
 
 const MySwal = withReactContent(Swal);
 
 const MyOrders = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const session_id = searchParams.get("session_id");

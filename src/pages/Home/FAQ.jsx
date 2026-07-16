@@ -1,21 +1,21 @@
-import { useState } from "react";
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
+  AccordionSummary,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import Container from "../shared/Container/Container";
-import Heading from "../../components/Heading/Heading";
 import { useNavigate } from "react-router";
-import Button from "../../components/Button/Button";
+import Button from "../../components/ui/button";
+import Container from "../../components/ui/container";
+import Heading from "../../components/ui/heading";
 
 const FAQ = () => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (panel) => (event, isExpanded) => {
+  const handleChange = (panel) => (_event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 

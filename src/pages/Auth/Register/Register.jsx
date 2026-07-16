@@ -1,29 +1,25 @@
+import { postUser } from "@/api/post-user";
+import ActionSpinner from "@/components/ui/action-spinner";
+import BackButton from "@/components/ui/back-button";
+import Button from "@/components/ui/button";
+import ErrorMessage from "@/components/ui/error-message";
+import EyeButton from "@/components/ui/eye-button";
+import MyInput from "@/components/ui/input";
+import MyLabel from "@/components/ui/label";
+import SocialLogin from "@/components/ui/social-login";
+import { uploadImage } from "@/lib/upload-image";
+import useAuthStore, { createUser } from "@/stores/use-auth-store";
+import { getAuthErrorMessage } from "@/utils/get-auth-error-message";
+import { loginSuccessMessage } from "@/utils/login-success-message";
+import { validatePassword } from "@/utils/validate-password";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import MyInput from "../../../components/MyInput/MyInput";
-import MyLabel from "../../../components/MyLabel/MyLabel";
-import Button from "../../../components/Button/Button";
-import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
-import { validatePassword } from "../../../utilities/validatePassword";
-import { uploadImage } from "../../../utilities/uploadImage";
-import useAuth from "../../../hooks/useAuth";
-import SocialLogin from "../../shared/SocialLogin/SocialLogin";
-import useGoogleLogin from "../../../hooks/useGoogleLogin";
 import { Link, useNavigate } from "react-router";
-import { loginSuccessMessage } from "../../../utilities/loginSuccessMessage";
-import { getAuthErrorMessage } from "../../../utilities/getAuthErrorMessage";
 import { toast } from "sonner";
-import { postUser } from "../../../utilities/postUser";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
-import BackButton from "../../../components/BackButton/BackButton";
-import EyeButton from "../../../components/EyeButton/EyeButton";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const { handleGoogleLogin, googleLoading } = useGoogleLogin();
-  const { updateUserProfile, createUser } = useAuth();
+  const loading = useAuthStore((s) => s.authLoading);
   const [showPassword, setShowPassword] = useState(false);
   const {
     register,
@@ -37,16 +33,9 @@ const Register = () => {
     const email = data.email;
     const password = data.password;
 
-    setLoading(true);
-
     try {
       const photoURL = await uploadImage(data.image[0]);
-      const { user } = await createUser(email, password);
-
-      await updateUserProfile({
-        displayName,
-        photoURL,
-      });
+      const user = await createUser({ email, password, displayName, photoURL });
 
       await postUser(user);
 
@@ -56,8 +45,6 @@ const Register = () => {
     } catch (error) {
       const errorMessage = getAuthErrorMessage(error.code);
       toast.error(errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -80,7 +67,7 @@ const Register = () => {
                 <MyLabel htmlFor="name" label="Name" />
                 <MyInput
                   id="name"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   placeholder="Enter your name"
                   {...register("name", {
                     required: "Name is required",
@@ -97,7 +84,7 @@ const Register = () => {
                 <MyLabel htmlFor="image" label="Profile Image" />
                 <MyInput
                   id="image"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   type="file"
                   accept="image/*"
                   className="file-input file-input-bordered w-full px-0"
@@ -111,7 +98,7 @@ const Register = () => {
                 <MyLabel htmlFor="email" label="Email" />
                 <MyInput
                   id="email"
-                  disabled={loading || googleLoading}
+                  disabled={loading}
                   type="email"
                   placeholder="Enter your email"
                   {...register("email", {
@@ -131,7 +118,7 @@ const Register = () => {
                 <div className="relative">
                   <MyInput
                     id="password"
-                    disabled={loading || googleLoading}
+                    disabled={loading}
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="pr-10"
@@ -150,10 +137,7 @@ const Register = () => {
 
               {/* Submit Button */}
               <div className="mt-6">
-                <Button
-                  disabled={loading || googleLoading}
-                  className="btn-block"
-                >
+                <Button disabled={loading} className="btn-block">
                   {loading ? <ActionSpinner /> : "Register"}
                 </Button>
               </div>
@@ -171,11 +155,7 @@ const Register = () => {
                 </p>
               </div>
 
-              <SocialLogin
-                disabled={loading || googleLoading}
-                isLoading={googleLoading}
-                onClick={() => handleGoogleLogin()}
-              />
+              <SocialLogin disabled={loading} />
             </form>
           </div>
         </div>

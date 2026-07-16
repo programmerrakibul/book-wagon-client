@@ -1,42 +1,42 @@
+import Container from "@/components/ui/container";
+import Heading from "@/components/ui/heading";
+import Loading from "@/components/ui/loading";
+import useSecureAxios from "@/hooks/useSecureAxios";
+import useAuthStore from "@/stores/use-auth-store";
+import useThemeStore, { THEMES } from "@/stores/use-theme-store";
+import { useQuery } from "@tanstack/react-query";
 import {
+  FaArrowUp,
   FaBook,
-  FaShoppingCart,
-  FaDollarSign,
+  FaChartLine,
   FaCheckCircle,
   FaClock,
-  FaTruck,
-  FaTimesCircle,
-  FaArrowUp,
-  FaChartLine,
-  FaStar,
-  FaMoneyBillWave,
   FaCreditCard,
+  FaDollarSign,
+  FaMoneyBillWave,
+  FaShoppingCart,
+  FaStar,
+  FaTimesCircle,
+  FaTruck,
 } from "react-icons/fa";
+import { Link } from "react-router";
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
-import Container from "../../shared/Container/Container";
-import Heading from "../../../components/Heading/Heading";
-import useAuth from "../../../hooks/useAuth";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import { useQuery } from "@tanstack/react-query";
-import Loading from "../../../components/Loading/Loading";
-import useTheme from "../../../hooks/useTheme";
-import { Link } from "react-router";
 
 const LibrarianOverview = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
-  const { theme } = useTheme();
+  const theme = useThemeStore((s) => s.theme);
 
   const { data: dashboardData, isLoading } = useQuery({
     queryKey: [user.email, "librarian-overview"],
@@ -284,14 +284,14 @@ const LibrarianOverview = () => {
                           />
                           <XAxis
                             type="number"
-                            stroke={theme === "light" ? "black" : "white"}
+                            stroke={theme === THEMES.LIGHT ? "black" : "white"}
                           />
                           <YAxis
                             type="category"
                             dataKey="name"
                             width={60}
                             tick={{ fontSize: 12 }}
-                            stroke={theme === "light" ? "black" : "white"}
+                            stroke={theme === THEMES.LIGHT ? "black" : "white"}
                           />
                           <Tooltip formatter={(value) => [value, "Orders"]} />
                           <Bar dataKey="value" radius={[0, 4, 4, 0]}>

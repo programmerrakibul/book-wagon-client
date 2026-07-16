@@ -1,32 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import useAuthStore from "@/stores/use-auth-store";
 import {
-  FaClipboardList,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaTruck,
-} from "react-icons/fa";
-import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import Loading from "../../../components/Loading/Loading";
-import Heading from "../../../components/Heading/Heading";
-import Container from "../../shared/Container/Container";
-import { toast } from "sonner";
-import { getAlert } from "../../../utilities/getAlert";
-import TablePaginationComponent from "../../../components/TablePaginationComponent/TablePaginationComponent";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import {
+  FaCheckCircle,
+  FaClipboardList,
+  FaTimesCircle,
+  FaTruck,
+} from "react-icons/fa";
 import { useSearchParams } from "react-router";
+import { toast } from "sonner";
+import Container from "../../../components/ui/container";
+import Heading from "../../../components/ui/heading";
+import Loading from "../../../components/ui/loading";
+import TablePaginationComponent from "../../../components/ui/table-pagination";
+import useSecureAxios from "../../../hooks/useSecureAxios";
+import { getAlert } from "../../../utils/get-alert";
 
 const AllOrders = () => {
-  const { user } = useAuth();
+  const user = useAuthStore((s) => s.user);
   const secureAxios = useSecureAxios();
   const [searchParams] = useSearchParams();
 

@@ -1,21 +1,21 @@
-import { useForm } from "react-hook-form";
-import { useParams, useNavigate } from "react-router";
+import ActionSpinner from "@/components/ui/action-spinner";
+import Button from "@/components/ui/button";
+import Container from "@/components/ui/container";
+import ErrorMessage from "@/components/ui/error-message";
+import Heading from "@/components/ui/heading";
+import MyInput from "@/components/ui/input";
+import MyLabel from "@/components/ui/label";
+import Loading from "@/components/ui/loading";
+import useSecureAxios from "@/hooks/useSecureAxios";
+import { getAlert } from "@/utils/get-alert";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { BsBoxSeam, BsFileText } from "react-icons/bs";
 import { FaBook, FaSave } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import { BsFileText, BsBoxSeam } from "react-icons/bs";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
-import MyInput from "../../../components/MyInput/MyInput";
-import MyLabel from "../../../components/MyLabel/MyLabel";
-import Button from "../../../components/Button/Button";
-import ErrorMessage from "../../../components/ErrorMessage/ErrorMessage";
-import Container from "../../shared/Container/Container";
-import useSecureAxios from "../../../hooks/useSecureAxios";
-import ActionSpinner from "../../../components/ActionSpinner/ActionSpinner";
-import { getAlert } from "../../../utilities/getAlert";
-import Loading from "../../../components/Loading/Loading";
-import Heading from "../../../components/Heading/Heading";
 
 const EditBook = () => {
   const { id } = useParams();

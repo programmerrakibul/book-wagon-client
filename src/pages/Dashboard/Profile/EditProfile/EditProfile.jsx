@@ -1,20 +1,20 @@
-import { useForm } from "react-hook-form";
-import { FaUser, FaImage, FaSave } from "react-icons/fa";
-import { MdCancel } from "react-icons/md";
+import useAuthStore, { updateUserProfile } from "@/stores/use-auth-store";
 import { useState } from "react";
-import useAuth from "../../../../hooks/useAuth";
-import MyInput from "../../../../components/MyInput/MyInput";
-import MyLabel from "../../../../components/MyLabel/MyLabel";
-import Button from "../../../../components/Button/Button";
-import ErrorMessage from "../../../../components/ErrorMessage/ErrorMessage";
-import { uploadImage } from "../../../../utilities/uploadImage";
+import { useForm } from "react-hook-form";
+import { FaImage, FaSave, FaUser } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 import { toast } from "sonner";
-import { getAlert } from "../../../../utilities/getAlert";
-import ActionSpinner from "../../../../components/ActionSpinner/ActionSpinner";
-import Avatar from "../../../../components/Avatar/Avatar";
+import ActionSpinner from "../../../../components/ui/action-spinner";
+import Avatar from "../../../../components/ui/avatar";
+import Button from "../../../../components/ui/button";
+import ErrorMessage from "../../../../components/ui/error-message";
+import MyInput from "../../../../components/ui/input";
+import MyLabel from "../../../../components/ui/label";
+import { uploadImage } from "../../../../lib/upload-image";
+import { getAlert } from "../../../../utils/get-alert";
 
 const EditProfile = () => {
-  const { user, setUser, updateUserProfile } = useAuth();
+  const user = useAuthStore((s) => s.user);
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(user.photoURL);
 
@@ -53,12 +53,10 @@ const EditProfile = () => {
         if (imageInfo) {
           const photoURL = await uploadImage(imageInfo);
           await updateUserProfile({ photoURL });
-          setUser({ ...user, photoURL });
         }
 
         if (displayName) {
           await updateUserProfile({ displayName });
-          setUser({ ...user, displayName });
         }
 
         getAlert({ title: "Profile information updated" });
