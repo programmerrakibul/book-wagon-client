@@ -10,5 +10,13 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+const configs = Object.values(firebaseConfig);
+
+for (const config of configs) {
+  if (!config) {
+    throw new Error("Missing Firebase configuration value");
+  }
+}
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
