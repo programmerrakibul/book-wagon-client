@@ -1,41 +1,49 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
-import { Card, CardContent } from "@/components/ui/card";
 
-function BookCard({ book }) {
-  const name = book.name || book.bookName;
-  const image = book.photoUrl || book.image || book.bookImage;
+function BookCard({ book = {} }) {
+  const name = book.name;
+  const image = book.photoUrl;
+  const discount = book.discount > 0;
+  const originalPrice = book.price;
+  const discountedPrice = discount
+    ? book.discountedPrice || originalPrice
+    : originalPrice;
 
   return (
     <Link to={`/book-details/${book._id}`} className="group block">
-      <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md">
-        <div className="aspect-3/4 overflow-hidden bg-muted">
-          {image ? (
-            <img
-              src={image}
-              alt={name}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
-              No Image
-            </div>
-          )}
+      <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 h-full">
+        <div
+          className={"aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted"}
+        >
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
         </div>
         <CardContent className="flex flex-col gap-2 p-4">
-          <h3 className="line-clamp-2 text-sm font-semibold leading-snug group-hover:text-primary">
+          <CardTitle className="line-clamp-1 md:line-clamp-2 text-sm font-semibold leading-snug group-hover:text-primary">
             {name}
-          </h3>
-          {book.author && (
-            <p className="text-xs text-muted-foreground">{book.author}</p>
-          )}
-          {book.category && (
-            <span className="w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-              {book.category}
-            </span>
-          )}
-          <p className="mt-auto pt-1 text-sm font-bold">
-            ${book.price}
+          </CardTitle>
+          <p className="text-xs text-muted-foreground line-clamp-1 truncate">
+            {book.author}
           </p>
+
+          <span className="w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary line-clamp-1">
+            {book.categoryId.name}
+          </span>
+          <div className="flex items-center justify-start gap-2">
+            <p className="mt-auto pt-1 text-sm font-bold">
+              ${discountedPrice || originalPrice}
+            </p>
+
+            {discount && (
+              <p className="text-xs text-destructive line-through">
+                ${originalPrice}
+              </p>
+            )}
+          </div>
         </CardContent>
       </Card>
     </Link>
