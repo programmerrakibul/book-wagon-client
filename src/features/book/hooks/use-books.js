@@ -11,10 +11,12 @@ import { queryClient } from "@/App";
 import {
   changeBookStatus,
   createBook,
+  deleteBook,
   fetchBook,
   fetchBooks,
   updateBook,
 } from "@/features/book/services/books.service";
+import { getAxiosError } from "@/utils/error";
 
 export const bookKeys = {
   all: ["books"],
@@ -56,7 +58,7 @@ export function useCreateBook() {
       }
     },
     onError: (error) => {
-      const msg = error.response?.data?.message || error.message;
+      const msg = getAxiosError(error);
       toast.error(msg || "Failed to add the book. Please try again.");
     },
   });
@@ -64,7 +66,6 @@ export function useCreateBook() {
 
 export function useUpdateBook(id) {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (payload) => updateBook(id, payload),
@@ -72,13 +73,12 @@ export function useUpdateBook(id) {
       if (data.success) {
         toast.success("Book updated successfully!");
         queryClient.invalidateQueries({ queryKey: bookKeys.all });
-        navigate("/dashboard/my-books");
       } else {
         throw new Error(data.message);
       }
     },
     onError: (error) => {
-      const msg = error.response?.data?.message || error.message;
+      const msg = getAxiosError(error);
       toast.error(msg || "Failed to update the book.");
     },
   });
@@ -89,18 +89,35 @@ export const useUpdateStatus = () => {
     mutationFn: ({ bookId, status }) => changeBookStatus(bookId, status),
     onSuccess: (result) => {
       if (result.success) {
-        queryClient.invalidateQueries({ queryKey: ["books"] });
+        queryClient.invalidateQueries({ queryKey: bookKeys.all });
         toast.success("Book status updated.");
       } else {
         throw new Error(result.message);
       }
     },
     onError: (err) => {
-      toast.error(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to update status.",
-      );
+      const msg = getAxiosError(err);
+      toast.error(msg || "Failed to update status.");
     },
   });
 };
+
+export function useDeleteBook() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteBook,
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("Book deleted successfully!");
+        queryClient.invalidateQueries({ queryKey: bookKeys.all });
+      } else {
+        throw new Error(data.message);
+      }
+    },
+    onError: (error) => {
+      const msg = getAxiosError(error);
+      toast.error(msg || "Failed to delete the book.");
+    },
+  });
+}

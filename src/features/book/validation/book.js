@@ -44,4 +44,8 @@ export const addBookSchema = z.object({
     ),
 });
 
-export const editBookSchema = addBookSchema.partial();
+export const editBookSchema = addBookSchema
+  .extend({
+    bookImage: z.any().optional(),
+  })
+  .partial();

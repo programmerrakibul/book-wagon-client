@@ -20,6 +20,7 @@ function BookForm({
   // eslint-disable-next-line no-unused-vars
   submitIcon: SubmitIcon = Save,
   isPending = false,
+  imagePreviewUrl,
 }) {
   const { data: categories = [] } = useCategories();
   const { data: bookFormats = [] } = useBookFormats();
@@ -82,6 +83,7 @@ function BookForm({
             label: "Book Cover Image",
             type: "file",
             accept: "image/*",
+            previewUrl: imagePreviewUrl,
           },
         ],
       },
@@ -191,7 +193,7 @@ function BookForm({
         ],
       },
     ],
-    [categoryOptions, subCategoryOptions, formatOptions],
+    [categoryOptions, subCategoryOptions, formatOptions, imagePreviewUrl],
   );
 
   const handleFormSubmit = useCallback(

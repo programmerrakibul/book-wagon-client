@@ -297,19 +297,21 @@ function BookDetailsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3">
-                      <div className="rounded-lg bg-primary/10 p-2 sm:p-3">
-                        <Weight className="size-5 text-primary" />
+                    {book.weight > 0 && (
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-primary/10 p-2 sm:p-3">
+                          <Weight className="size-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground sm:text-sm">
+                            Weight
+                          </p>
+                          <p className="text-sm font-semibold sm:text-base">
+                            {book.weight} kg
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground sm:text-sm">
-                          Weight
-                        </p>
-                        <p className="text-sm font-semibold sm:text-base">
-                          {book.weight} kg
-                        </p>
-                      </div>
-                    </div>
+                    )}
 
                     <div className="flex items-start gap-3">
                       <div className="rounded-lg bg-primary/10 p-2 sm:p-3">

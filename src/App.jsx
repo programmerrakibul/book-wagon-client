@@ -11,7 +11,7 @@ function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <Toaster closeButton richColors position="top-right" />
+        <Toaster closeButton richColors position="top-center" />
       </QueryClientProvider>
     </>
   );

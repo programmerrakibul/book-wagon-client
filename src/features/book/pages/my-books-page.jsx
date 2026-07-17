@@ -1,7 +1,8 @@
 ﻿import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Pencil } from "lucide-react";
+import { BookOpen, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
@@ -9,16 +10,10 @@ import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { EditBookModal } from "@/features/book/components/edit-book-modal";
-import { useBooks, useUpdateStatus } from "@/features/book/hooks/use-books";
+import { useBooks, useDeleteBook } from "@/features/book/hooks/use-books";
 import useAuthStore from "@/store/use-auth-store";
+import StatusDropdown from "../components/status-dropdown";
 
 function MyBooksPage() {
   const queryClient = useQueryClient();
@@ -29,7 +24,7 @@ function MyBooksPage() {
 
   const { data, isLoading } = useBooks({ page, limit, email: user.email });
 
-  const statusMutation = useUpdateStatus();
+  const deleteMutation = useDeleteBook();
 
   const books = data?.data || [];
   const { totalPages = 1, totalDocs = 0 } = data?.pagination || {};
@@ -76,37 +71,35 @@ function MyBooksPage() {
       key: "status",
       header: "Status",
       className: "min-w-36",
-      cell: (row) => (
-        <Select
-          value={row.status}
-          onValueChange={(val) =>
-            statusMutation.mutate({ bookId: row._id, status: val })
-          }
-        >
-          <SelectTrigger className="h-8 w-36 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="PUBLISHED">Published</SelectItem>
-            <SelectItem value="UNPUBLISHED">Unpublished</SelectItem>
-          </SelectContent>
-        </Select>
-      ),
+      cell: (row) => <StatusDropdown bookId={row._id} status={row.status} />,
     },
     {
       key: "actions",
       header: "Actions",
       className: "text-right",
       cell: (row) => (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setEditId(row._id)}
-          className="gap-1"
-        >
-          <Pencil className="size-3.5" />
-          <span className="hidden sm:inline">Edit</span>
-        </Button>
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setEditId(row._id)}
+            className="gap-1"
+          >
+            <Pencil className="size-3.5" />
+            <span className="hidden sm:inline">Edit</span>
+          </Button>
+          <ConfirmDialog
+            title="Delete Book?"
+            description={`This will permanently delete "${row.name}". This action cannot be undone.`}
+            confirmLabel="Delete"
+            onConfirm={() => deleteMutation.mutate(row._id)}
+          >
+            <Button variant="destructive" size="sm" className="gap-1">
+              <Trash2 className="size-3.5" />
+              <span className="hidden sm:inline">Delete</span>
+            </Button>
+          </ConfirmDialog>
+        </div>
       ),
     },
   ];
@@ -136,28 +129,27 @@ function MyBooksPage() {
           <p className="mt-1 text-xs text-muted-foreground">{row.author}</p>
         </div>
         <div className="flex items-center justify-between gap-2">
-          <Select
-            value={row.status}
-            onValueChange={(val) =>
-              statusMutation.mutate({ bookId: row._id, status: val })
-            }
-          >
-            <SelectTrigger className="h-8 w-36 text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="PUBLISHED">Published</SelectItem>
-              <SelectItem value="UNPUBLISHED">Unpublished</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setEditId(row._id)}
-            className="gap-1"
-          >
-            <Pencil className="size-3.5" />
-          </Button>
+          <StatusDropdown bookId={row._id} status={row.status} />
+          <div className="flex items-center gap-1.5">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setEditId(row._id)}
+              className="gap-1"
+            >
+              <Pencil className="size-3.5" />
+            </Button>
+            <ConfirmDialog
+              title="Delete Book?"
+              description={`This will permanently delete "${row.name}". This action cannot be undone.`}
+              confirmLabel="Delete"
+              onConfirm={() => deleteMutation.mutate(row._id)}
+            >
+              <Button variant="destructive" size="sm" className="gap-1">
+                <Trash2 className="size-3.5" />
+              </Button>
+            </ConfirmDialog>
+          </div>
         </div>
       </div>
     </div>

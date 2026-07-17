@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Controller } from "react-hook-form";
 
 import {
@@ -64,13 +65,12 @@ function FormField({ field, control, disabled }) {
               )}
 
               {type === "file" && (
-                <Input
-                  type="file"
-                  accept={accept || "image/*"}
+                <ImageFileField
+                  rhfField={rhfField}
                   disabled={disabled}
-                  aria-invalid={hasError || undefined}
-                  data-invalid={hasError || undefined}
-                  onChange={(e) => rhfField.onChange(e.target.files)}
+                  hasError={hasError}
+                  accept={accept}
+                  previewUrl={field.previewUrl}
                 />
               )}
 
@@ -102,6 +102,37 @@ function FormField({ field, control, disabled }) {
         );
       }}
     />
+  );
+}
+
+function ImageFileField({ rhfField, disabled, hasError, accept, previewUrl }) {
+  const files = rhfField.value;
+
+  const newFilePreview = useMemo(() => {
+    if (!files?.length) return null;
+    return URL.createObjectURL(files[0]);
+  }, [files]);
+
+  const preview = newFilePreview || previewUrl || null;
+
+  return (
+    <div className="space-y-3">
+      <Input
+        type="file"
+        accept={accept || "image/*"}
+        disabled={disabled}
+        aria-invalid={hasError || undefined}
+        data-invalid={hasError || undefined}
+        onChange={(e) => rhfField.onChange(e.target.files)}
+      />
+      {preview && (
+        <img
+          src={preview}
+          alt="Preview"
+          className="h-40 rounded-md object-cover ring-1 ring-border"
+        />
+      )}
+    </div>
   );
 }
 

@@ -32,7 +32,7 @@ export async function createBook(payload) {
 }
 
 export async function updateBook(id, payload) {
-  const { data } = await axiosInstance.patch(`/books/${id}`, payload);
+  const { data } = await axiosInstance.put(`/books/${id}`, payload);
   return data || {};
 }
 

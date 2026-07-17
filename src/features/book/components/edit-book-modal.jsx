@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
 import { useBook, useUpdateBook } from "@/features/book/hooks/use-books";
 import { editBookSchema } from "@/features/book/validation/book";
+import { uploadImage } from "@/lib/upload-image";
 import { BookForm } from "./book-form";
 
 function EditBookModal({ open, onOpenChange, id }) {
@@ -18,9 +19,17 @@ function EditBookModal({ open, onOpenChange, id }) {
   const updateBookMutation = useUpdateBook(id);
 
   const onSubmit = useCallback(
-    (formData) => {
-      updateBookMutation.mutate(formData, {
-        onSuccess: () => onOpenChange?.(false),
+    async (formData) => {
+      const { bookImage, ...payload } = formData;
+      const imageFile = bookImage?.[0];
+      if (imageFile) {
+        const photoUrl = await uploadImage(imageFile);
+        payload.photoUrl = photoUrl;
+      }
+      console.log(payload);
+
+      updateBookMutation.mutate(payload, {
+        onSuccess: () => onOpenChange(false),
       });
     },
     [updateBookMutation, onOpenChange],
@@ -66,6 +75,7 @@ function EditBookModal({ open, onOpenChange, id }) {
                 submitLabel="Update Book"
                 submitIcon={Save}
                 isPending={updateBookMutation.isPending}
+                imagePreviewUrl={book?.photoUrl}
               />
             )}
           </div>
