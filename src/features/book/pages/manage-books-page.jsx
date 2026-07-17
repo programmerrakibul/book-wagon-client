@@ -110,7 +110,7 @@ function ManageBooksPage() {
         <Container>
           <Heading
             title="Manage Books"
-            subtitle="Manage all librarians' book collection"
+            subtitle="Manage all librarians book collection"
           />
 
           {isLoading ? (

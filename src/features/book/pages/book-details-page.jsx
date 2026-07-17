@@ -28,7 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { useBook } from "@/features/books/hooks/use-books";
+import { useBook } from "@/features/book/hooks/use-books";
 import axiosInstance from "@/lib/axios";
 import useAuthStore from "@/store/use-auth-store";
 

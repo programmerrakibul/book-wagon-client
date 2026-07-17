@@ -1,30 +1,11 @@
-﻿import { useSearchParams } from "react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+﻿import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSearchParams } from "react-router";
+import { toast } from "sonner";
 
-import { fetchOrders } from "@/features/orders/services/orders.service";
-import axiosInstance from "@/lib/axios";
-import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Container } from "@/components/ui/container";
 import {
   Empty,
   EmptyContent,
@@ -33,6 +14,25 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Heading } from "@/components/ui/heading";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { fetchOrders } from "@/features/order/services/orders.service";
+import axiosInstance from "@/lib/axios";
 
 const statusConfig = {
   pending: {
@@ -87,10 +87,7 @@ export default function AllOrdersPage() {
   if (!orders.length) {
     return (
       <Container className="py-10">
-        <Heading
-          title="All Orders"
-          subtitle="Manage customer orders"
-        />
+        <Heading title="All Orders" subtitle="Manage customer orders" />
         <Empty className="mt-8">
           <EmptyHeader>
             <EmptyMedia variant="icon">

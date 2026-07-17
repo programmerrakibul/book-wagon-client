@@ -1,15 +1,14 @@
 ﻿import LoginPage from "@/features/auth/pages/login-page";
 import RegisterPage from "@/features/auth/pages/register-page";
-import AddBookPage from "@/features/books/pages/add-book-page";
-import BookDetailsPage from "@/features/books/pages/book-details-page";
-import BookListPage from "@/features/books/pages/book-list-page";
-import EditBookPage from "@/features/books/pages/edit-book-page";
-import ManageBooksPage from "@/features/books/pages/manage-books-page";
-import MyBooksPage from "@/features/books/pages/my-books-page";
+import AddBookPage from "@/features/book/pages/add-book-page";
+import BookDetailsPage from "@/features/book/pages/book-details-page";
+import BookListPage from "@/features/book/pages/book-list-page";
+import ManageBooksPage from "@/features/book/pages/manage-books-page";
+import MyBooksPage from "@/features/book/pages/my-books-page";
 import OverviewPage from "@/features/dashboard/pages/overview-page";
-import AllOrdersPage from "@/features/orders/pages/all-orders-page";
-import InvoicesPage from "@/features/orders/pages/invoices-page";
-import MyOrdersPage from "@/features/orders/pages/my-orders-page";
+import AllOrdersPage from "@/features/order/pages/all-orders-page";
+import InvoicesPage from "@/features/order/pages/invoices-page";
+import MyOrdersPage from "@/features/order/pages/my-orders-page";
 import EditProfilePage from "@/features/profile/pages/edit-profile-page";
 import ManageUsersPage from "@/features/profile/pages/manage-users-page";
 import ProfilePage from "@/features/profile/pages/profile-page";
@@ -73,14 +72,6 @@ const router = createBrowserRouter([
         element: (
           <LibrarianRoute>
             <MyBooksPage />
-          </LibrarianRoute>
-        ),
-      },
-      {
-        path: "edit-book/:id",
-        element: (
-          <LibrarianRoute>
-            <EditBookPage />
           </LibrarianRoute>
         ),
       },

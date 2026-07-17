@@ -1,4 +1,5 @@
 ﻿import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -17,6 +18,7 @@ export function DataTable({
   sort,
   onSort,
   emptyState,
+  renderCard,
 }) {
   const toggleSort = (key) =>
     onSort?.(
@@ -24,55 +26,74 @@ export function DataTable({
         ? { key, direction: sort.direction === "asc" ? "desc" : "asc" }
         : { key, direction: "asc" },
     );
+
   return (
-    <div className="overflow-x-auto rounded-xl border bg-card">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {columns.map((column) => (
-              <TableHead key={column.key} className={column.className}>
-                {column.sortable ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="-ml-3 h-8"
-                    onClick={() => toggleSort(column.key)}
-                  >
-                    {column.header}
-                    {sort?.key === column.key &&
-                      (sort.direction === "asc" ? (
-                        <ChevronUp />
-                      ) : (
-                        <ChevronDown />
-                      ))}
-                  </Button>
-                ) : (
-                  column.header
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.length ? (
-            data.map((row) => (
-              <TableRow key={getRowId(row)}>
+    <>
+      {renderCard && (
+        <div className="grid gap-4 sm:hidden">
+          {data.length
+            ? data.map((row) => (
+                <div key={getRowId(row)}>{renderCard(row)}</div>
+              ))
+            : emptyState || <EmptyState />}
+        </div>
+      )}
+
+      <div className="hidden w-full rounded-xl border bg-card sm:block">
+        <ScrollArea className="w-full">
+          <Table className="min-w-[540px]">
+            <TableHeader>
+              <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.key} className={column.cellClassName}>
-                    {column.cell ? column.cell(row) : row[column.key]}
-                  </TableCell>
+                  <TableHead key={column.key} className={column.className}>
+                    {column.sortable ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="-ml-3 h-8"
+                        onClick={() => toggleSort(column.key)}
+                      >
+                        {column.header}
+                        {sort?.key === column.key &&
+                          (sort.direction === "asc" ? (
+                            <ChevronUp />
+                          ) : (
+                            <ChevronDown />
+                          ))}
+                      </Button>
+                    ) : (
+                      column.header
+                    )}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="p-0">
-                {emptyState || <EmptyState />}
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            </TableHeader>
+            <TableBody>
+              {data.length ? (
+                data.map((row) => (
+                  <TableRow key={getRowId(row)}>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.key}
+                        className={column.cellClassName}
+                      >
+                        {column.cell ? column.cell(row) : row[column.key]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="p-0">
+                    {emptyState || <EmptyState />}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
+    </>
   );
 }
