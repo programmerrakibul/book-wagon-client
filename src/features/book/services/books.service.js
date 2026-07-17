@@ -42,6 +42,13 @@ export async function deleteBook(id) {
 }
 
 export async function changeBookStatus(id, status) {
-  const { data } = await axiosInstance.patch(`/books/${id}`, { status });
+  const { data } = await axiosInstance.patch(`/books/${id}/status`, { status });
+  return data || {};
+}
+
+export async function toggleActiveStatus(id, isActive) {
+  const { data } = await axiosInstance.patch(`/books/${id}/active-status`, {
+    isActive,
+  });
   return data || {};
 }

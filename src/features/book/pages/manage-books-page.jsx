@@ -1,106 +1,125 @@
-﻿import { useMutation, useQuery } from "@tanstack/react-query";
-import { BookOpen, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { useSearchParams } from "react-router";
-import { toast } from "sonner";
+﻿import { BookOpen } from "lucide-react";
+import { useCallback, useState } from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { BookActionsDropdown } from "@/features/book/components/book-actions-dropdown";
+import { BookViewModal } from "@/features/book/components/book-view-modal";
+
+import { DataTable } from "@/components/shared/data-table";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Pagination } from "@/components/shared/pagination";
+import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Container } from "@/components/ui/container";
-import {
-  Empty,
-  EmptyDescription,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
 import { Heading } from "@/components/ui/heading";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import axiosInstance from "@/lib/axios";
-import useAuthStore from "@/store/use-auth-store";
+import { useBooks, useDeleteBook } from "@/features/book/hooks/use-books";
+import useBookFilters, { setPage } from "@/store/use-book-filters";
 
-function ManageBooksSkeleton() {
-  return (
-    <div className="space-y-3">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-4 border-b p-4">
-          <Skeleton className="size-12 rounded" />
-          <Skeleton className="h-4 w-40" />
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-8 w-20" />
-        </div>
-      ))}
-    </div>
-  );
-}
+import useAuthStore from "@/store/use-auth-store";
+import { ActiveToggle } from "../components/active-toggle";
+import StatusDropdown from "../components/status-dropdown";
 
 function ManageBooksPage() {
+  const [viewBook, setViewBook] = useState(null);
+  const page = useBookFilters((s) => s.page);
   const user = useAuthStore((s) => s.user);
-  const [searchParams] = useSearchParams();
-  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-  const limit = 10;
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ["manage-books", "admin", user?.email, page, limit],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/books", {
-        params: { email: user.email, page, limit },
-      });
-      return data || {};
-    },
-    enabled: !!user?.email,
-  });
-
-  const statusMutation = useMutation({
-    mutationFn: ({ bookId, status }) =>
-      axiosInstance.patch(`/books/${bookId}`, { status }),
-    onSuccess: () => {
-      refetch();
-      toast.success("Book status updated.");
-    },
-    onError: (err) => {
-      toast.error(err.response?.data?.message || "Failed to update status.");
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (bookId) => axiosInstance.delete(`/books/${bookId}`),
-    onSuccess: () => {
-      refetch();
-      toast.success("Book deleted successfully.");
-    },
-    onError: () => {
-      toast.error("Failed to delete book.");
-    },
-  });
+  const { data, isLoading } = useBooks({ page, email: user.email });
+  const deleteMutation = useDeleteBook();
 
   const books = data?.data || [];
   const { totalPages = 1, totalDocs = 0 } = data?.pagination || {};
+
+  const handlePageChange = useCallback((p) => {
+    setPage(p);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const columns = [
+    {
+      key: "image",
+      header: "Image",
+      className: "w-16",
+      cell: (row) => (
+        <img
+          src={row.photoUrl}
+          alt={row.name}
+          className="h-14 w-10 rounded-md object-cover ring-1 ring-border"
+        />
+      ),
+    },
+    {
+      key: "name",
+      header: "Name",
+      cell: (row) => (
+        <span className="line-clamp-2 w-[170px] whitespace-break-spaces truncate text-sm font-medium">
+          {row.name}
+        </span>
+      ),
+    },
+    {
+      key: "author",
+      header: "Author",
+      className: "hidden md:table-cell",
+      cell: (row) => <span className="text-sm">{row.author}</span>,
+    },
+    {
+      key: "status",
+      header: "Status",
+      className: "min-w-36",
+      cell: (row) => <StatusDropdown bookId={row._id} status={row.status} />,
+    },
+    {
+      key: "isActive",
+      header: "Active",
+      className: "min-w-28",
+      cell: (row) => <ActiveToggle bookId={row._id} isActive={row.isActive} />,
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      className: "text-right",
+      cell: (row) => (
+        <BookActionsDropdown
+          book={row}
+          onView={setViewBook}
+          onDelete={deleteMutation.mutate}
+          showEdit={false}
+        />
+      ),
+    },
+  ];
+
+  const emptyState = (
+    <EmptyState
+      icon={BookOpen}
+      title="No Books Found"
+      description="There are no books in the system yet."
+    />
+  );
+
+  const renderCard = (row) => (
+    <div className="flex gap-4 rounded-xl border bg-card p-4">
+      <img
+        src={row.photoUrl}
+        alt={row.name}
+        className="h-24 w-16 shrink-0 rounded-md object-cover ring-1 ring-border"
+      />
+      <div className="flex flex-1 flex-col justify-between">
+        <div>
+          <h3 className="line-clamp-1 text-sm font-medium">{row.name}</h3>
+          <p className="mt-1 text-xs text-muted-foreground">{row.author}</p>
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <ActiveToggle bookId={row._id} isActive={row.isActive} />
+          <BookActionsDropdown
+            book={row}
+            onView={setViewBook}
+            onDelete={deleteMutation.mutate}
+            showEdit={false}
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -114,146 +133,43 @@ function ManageBooksPage() {
           />
 
           {isLoading ? (
-            <ManageBooksSkeleton />
-          ) : totalDocs > 0 ? (
+            <div className="mt-6">
+              <SkeletonLayout variant="table" count={10} />
+            </div>
+          ) : (
             <>
-              <div className="mt-6 overflow-x-auto rounded-lg border">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-muted/50">
-                      <TableHead className="w-12">#</TableHead>
-                      <TableHead className="w-16">Image</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Author</TableHead>
-                      <TableHead className="min-w-40">Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {books.map((book, index) => (
-                      <TableRow key={book._id}>
-                        <TableCell className="font-semibold">
-                          {(page - 1) * limit + index + 1}
-                        </TableCell>
-                        <TableCell>
-                          <img
-                            src={book.photoUrl || book.bookImage}
-                            alt={book.name || book.bookName}
-                            className="h-16 w-12 rounded object-cover shadow"
-                          />
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {book.name || book.bookName}
-                        </TableCell>
-                        <TableCell>{book.author}</TableCell>
-                        <TableCell>
-                          <Select
-                            value={book.status}
-                            onValueChange={(val) =>
-                              statusMutation.mutate({
-                                bookId: book._id,
-                                status: val,
-                              })
-                            }
-                          >
-                            <SelectTrigger className="w-36 capitalize">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="published">
-                                Published
-                              </SelectItem>
-                              <SelectItem value="unpublished">
-                                Unpublished
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <AlertDialog>
-                            <AlertDialogTrigger
-                              render={
-                                <Button
-                                  variant="destructive"
-                                  size="sm"
-                                  className="gap-1"
-                                />
-                              }
-                            >
-                              <Trash2 className="size-3.5" />
-                              Delete
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will
-                                  permanently delete this book.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() =>
-                                    deleteMutation.mutate(book._id)
-                                  }
-                                >
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <div className="mt-6">
+                <DataTable
+                  columns={columns}
+                  data={books}
+                  emptyState={emptyState}
+                  renderCard={renderCard}
+                />
               </div>
 
-              {totalPages > 1 && (
-                <nav
-                  aria-label="Manage books pagination"
-                  className="mt-6 flex items-center justify-center gap-3"
-                >
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={page <= 1}
-                    onClick={() => setPage((p) => p - 1)}
-                  >
-                    <ChevronLeft />
-                    Previous
-                  </Button>
-                  <span className="text-sm text-muted-foreground">
-                    Page {page} of {totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={page >= totalPages}
-                    onClick={() => setPage((p) => p + 1)}
-                  >
-                    Next
-                    <ChevronRight />
-                  </Button>
-                </nav>
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+
+              {totalDocs > 0 && (
+                <p className="mt-4 text-center text-xs text-muted-foreground">
+                  Showing {books.length} of {totalDocs} books
+                </p>
               )}
             </>
-          ) : (
-            <Empty className="mt-8">
-              <EmptyMedia variant="icon">
-                <BookOpen />
-              </EmptyMedia>
-              <EmptyTitle>No Books Found</EmptyTitle>
-              <EmptyDescription>
-                There are no books in the system yet.
-              </EmptyDescription>
-            </Empty>
           )}
         </Container>
       </section>
+
+      <BookViewModal
+        open={!!viewBook}
+        onOpenChange={(open) => {
+          if (!open) setViewBook(null);
+        }}
+        book={viewBook}
+      />
     </>
   );
 }
