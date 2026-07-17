@@ -7,7 +7,9 @@ import {
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
+import { queryClient } from "@/App";
 import {
+  changeBookStatus,
   createBook,
   fetchBook,
   fetchBooks,
@@ -81,3 +83,24 @@ export function useUpdateBook(id) {
     },
   });
 }
+
+export const useUpdateStatus = () => {
+  return useMutation({
+    mutationFn: ({ bookId, status }) => changeBookStatus(bookId, status),
+    onSuccess: (result) => {
+      if (result.success) {
+        queryClient.invalidateQueries({ queryKey: ["books"] });
+        toast.success("Book status updated.");
+      } else {
+        throw new Error(result.message);
+      }
+    },
+    onError: (err) => {
+      toast.error(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to update status.",
+      );
+    },
+  });
+};

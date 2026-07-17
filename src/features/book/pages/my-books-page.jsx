@@ -1,7 +1,6 @@
-﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
+﻿import { useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Pencil } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 
 import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -18,8 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EditBookModal } from "@/features/book/components/edit-book-modal";
-import { useBooks } from "@/features/book/hooks/use-books";
-import { changeBookStatus } from "@/features/book/services/books.service";
+import { useBooks, useUpdateStatus } from "@/features/book/hooks/use-books";
 import useAuthStore from "@/store/use-auth-store";
 
 function MyBooksPage() {
@@ -31,24 +29,7 @@ function MyBooksPage() {
 
   const { data, isLoading } = useBooks({ page, limit, email: user.email });
 
-  const statusMutation = useMutation({
-    mutationFn: ({ bookId, status }) => changeBookStatus(bookId, status),
-    onSuccess: (result) => {
-      if (result.success) {
-        queryClient.invalidateQueries({ queryKey: ["books"] });
-        toast.success("Book status updated.");
-      } else {
-        throw new Error(result.message);
-      }
-    },
-    onError: (err) => {
-      toast.error(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to update status.",
-      );
-    },
-  });
+  const statusMutation = useUpdateStatus();
 
   const books = data?.data || [];
   const { totalPages = 1, totalDocs = 0 } = data?.pagination || {};
