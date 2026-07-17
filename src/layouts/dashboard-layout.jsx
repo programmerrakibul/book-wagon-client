@@ -184,17 +184,6 @@ const DashboardLayout = () => {
         <header className="sticky top-0 z-20 flex h-14 items-center border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 px-4">
           <div className="hidden lg:flex lg:flex-1" />
 
-          <div className="flex flex-1 items-center lg:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <Menu className="size-5" />
-              <span className="sr-only">Open sidebar</span>
-            </Button>
-          </div>
-
           <div className="flex flex-1 items-center justify-end gap-2">
             <AvatarDropdown />
           </div>

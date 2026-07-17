@@ -1,21 +1,14 @@
-﻿import { useSearchParams } from "react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+﻿import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  ShoppingBag,
-  CreditCard,
-  XCircle,
   ChevronLeft,
   ChevronRight,
+  CreditCard,
+  ShoppingBag,
+  XCircle,
 } from "lucide-react";
+import { useSearchParams } from "react-router";
+import { toast } from "sonner";
 
-import { fetchOrders } from "@/features/orders/services/orders.service";
-import axiosInstance from "@/lib/axios";
-import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,14 +20,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
 import {
   Empty,
   EmptyContent,
@@ -43,6 +31,18 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Heading } from "@/components/ui/heading";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { fetchOrders } from "@/features/order/services/orders.service";
+import axiosInstance from "@/lib/axios";
 
 const statusConfig = {
   pending: {
@@ -127,7 +127,8 @@ export default function MyOrdersPage() {
             </EmptyMedia>
             <EmptyTitle>No orders yet</EmptyTitle>
             <EmptyDescription>
-              You haven&apos;t placed any orders. Browse our collection to get started.
+              You haven&apos;t placed any orders. Browse our collection to get
+              started.
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -174,18 +175,12 @@ export default function MyOrdersPage() {
                     ${Number(order.totalPrice ?? order.price ?? 0).toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={status.className}
-                    >
+                    <Badge variant="outline" className={status.className}>
                       {status.label}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant="outline"
-                      className={payment.className}
-                    >
+                    <Badge variant="outline" className={payment.className}>
                       {payment.label}
                     </Badge>
                   </TableCell>
@@ -204,35 +199,24 @@ export default function MyOrdersPage() {
                       {order.status === "pending" && (
                         <AlertDialog>
                           <AlertDialogTrigger
-                            render={
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                              />
-                            }
+                            render={<Button size="sm" variant="destructive" />}
                           >
                             <XCircle className="size-3.5" />
                             Cancel
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Cancel Order?
-                              </AlertDialogTitle>
+                              <AlertDialogTitle>Cancel Order?</AlertDialogTitle>
                               <AlertDialogDescription>
                                 This action cannot be undone. The order will be
                                 permanently cancelled.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>
-                                Keep Order
-                              </AlertDialogCancel>
+                              <AlertDialogCancel>Keep Order</AlertDialogCancel>
                               <AlertDialogAction
                                 variant="destructive"
-                                onClick={() =>
-                                  cancelMutation.mutate(order._id)
-                                }
+                                onClick={() => cancelMutation.mutate(order._id)}
                               >
                                 Yes, Cancel
                               </AlertDialogAction>

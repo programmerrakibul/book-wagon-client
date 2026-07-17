@@ -22,7 +22,7 @@
 src/
 ├── assets/                  # Static images (PNG, JPG, AVIF)
 ├── components/
-│   └── ui/                  # Shadcn + shared primitives (Button, Card, Field, etc.)
+│   └── ui/                  # Shadcn + shared primitives (Button, Card, Field, FormField, etc.)
 ├── config/                  # constants.js (API_BASE_URL)
 ├── features/
 │   ├── auth/                # Login, Register, useAuthStore
@@ -30,10 +30,12 @@ src/
 │   │   ├── hooks/           # use-role.js
 │   │   ├── pages/           # login-page.jsx, register-page.jsx
 │   │   └── services/        # auth.service.js
-│   ├── books/               # CRUD, filters, details
+│   ├── book/                # CRUD, filters, details
 │   │   ├── hooks/           # use-books.js, use-categories.js
 │   │   ├── pages/           # 6 page components
-│   │   └── services/        # books.service.js, categories.service.js
+│   │   ├── services/        # books.service.js, categories.service.js
+│   │   ├── validation/      # Zod schemas (book.js)
+│   │   └── constants/       # defaultValues, etc.
 │   ├── dashboard/           # Admin/Librarian/User dashboards
 │   │   ├── components/      # metric-card, admin/librarian/user-overview
 │   │   └── pages/           # overview-page.jsx
@@ -74,52 +76,94 @@ src/
 
 ### Forms (every form must follow this pattern)
 
+**Preferred: FormField hashmap for forms with many fields.**
+
+Define fields as a hashmap array, then render via `<FormField>`:
+
 ```jsx
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod/v4";
-import { Controller } from "react-hook-form";
-import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { FormField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const schema = z.object({
   name: z.string().min(1, "Required"),
-  email: z.string().email("Invalid email"),
+  role: z.string().min(1, "Required"),
 });
+
+const fields = [
+  { name: "name", label: "Name", type: "input", placeholder: "Enter name" },
+  {
+    name: "role",
+    label: "Role",
+    type: "select",
+    placeholder: "Select role",
+    options: [
+      { value: "user", label: "User" },
+      { value: "admin", label: "Admin" },
+    ],
+  },
+];
 
 function MyForm() {
   const form = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", email: "" },
+    defaultValues: { name: "", role: "" },
   });
-
-  const onSubmit = (data) => {
-    toast.success("Submitted!");
-  };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Controller
-        name="name"
-        control={form.control}
-        render={({ field, fieldState }) => (
-          <Field invalid={!!fieldState.error}>
-            <FieldLabel>Name</FieldLabel>
-            <Input {...field} />
-            {fieldState.error && (
-              <FieldError>{fieldState.error.message}</FieldError>
-            )}
-          </Field>
-        )}
-      />
+      {fields.map((f) => (
+        <FormField
+          key={f.name}
+          field={f}
+          control={form.control}
+          disabled={form.formState.isSubmitting}
+        />
+      ))}
       <Button type="submit" disabled={form.formState.isSubmitting}>
         Submit
       </Button>
     </form>
   );
 }
+```
+
+Supported field types: `input`, `textarea`, `select`, `file`. Each field gets
+`data-invalid` and `aria-invalid` when there's an error. Fields are disabled
+when `disabled` is true (during submission).
+
+**For simple forms**, manual Controller pattern:
+
+```jsx
+import { Controller, useForm } from "react-hook-form";
+import {
+  Field,
+  FieldLabel,
+  FieldError,
+  FieldContent,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+
+<Controller
+  name="email"
+  control={form.control}
+  render={({ field, fieldState }) => (
+    <Field data-invalid={!!fieldState.error || undefined}>
+      <FieldLabel>Email</FieldLabel>
+      <FieldContent>
+        <Input
+          {...field}
+          aria-invalid={!!fieldState.error || undefined}
+          data-invalid={!!fieldState.error || undefined}
+          disabled={form.formState.isSubmitting}
+        />
+        <FieldError>{fieldState.error?.message}</FieldError>
+      </FieldContent>
+    </Field>
+  )}
+/>;
 ```
 
 ### Data Fetching (TanStack Query)
@@ -134,7 +178,7 @@ const { data, isLoading, error } = useQuery({
   queryFn: () => fetchBooks(filters),
 });
 
-// Mutations
+// Mutations — place in feature hooks/ folder, NOT in pages
 const queryClient = useQueryClient();
 const mutation = useMutation({
   mutationFn: createBook,
@@ -145,6 +189,9 @@ const mutation = useMutation({
   onError: (err) => toast.error(err.message),
 });
 ```
+
+**All mutations must live in `hooks/use-*.js`**, not in page components. Pages
+consume hooks: `const createMutation = useCreateBook()`.
 
 ### Client State (Zustand + Immer)
 

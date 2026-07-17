@@ -1,21 +1,10 @@
-﻿import { useSearchParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Receipt, ChevronLeft, ChevronRight } from "lucide-react";
+﻿import { useQuery } from "@tanstack/react-query";
+import { ChevronLeft, ChevronRight, Receipt } from "lucide-react";
+import { useSearchParams } from "react-router";
 
-import { fetchInvoices } from "@/features/orders/services/orders.service";
-import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Container } from "@/components/ui/container";
 import {
   Empty,
   EmptyContent,
@@ -24,6 +13,17 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Heading } from "@/components/ui/heading";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { fetchInvoices } from "@/features/order/services/orders.service";
 
 export default function InvoicesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -116,7 +116,8 @@ export default function InvoicesPage() {
                   {new Date(invoice.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="text-right font-medium">
-                  ${Number(invoice.amount ?? invoice.totalPrice ?? 0).toFixed(2)}
+                  $
+                  {Number(invoice.amount ?? invoice.totalPrice ?? 0).toFixed(2)}
                 </TableCell>
               </TableRow>
             ))}

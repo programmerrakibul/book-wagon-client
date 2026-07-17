@@ -1,0 +1,16 @@
+export const defaultValues = {
+  name: "",
+  description: "",
+  author: "",
+  categoryId: "",
+  subcategoryId: "",
+  formatId: "",
+  publicationYear: "",
+  pageCount: "",
+  weight: "",
+  price: "",
+  discount: "",
+  stock: "",
+  status: "",
+  bookImage: null,
+};

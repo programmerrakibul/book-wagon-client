@@ -20,3 +20,7 @@ const authErrorMessages = {
 export const getAuthErrorMessage = (errorCode) => {
   return authErrorMessages[errorCode] || authErrorMessages.default;
 };
+
+export const getAxiosError = (error) => {
+  return error.response?.data?.message || error.message;
+};

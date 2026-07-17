@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import {
+  getBookFormats,
   getCategories,
   getSubCategories,
-  getBookFormats,
-} from "../services/categories.service";
+} from "@/features/book/services/categories.service";
+import { useQuery } from "@tanstack/react-query";
 
 const STALE_TIME = 1000 * 60 * 60 * 24;
 const placeholderData = (previousData) => previousData;

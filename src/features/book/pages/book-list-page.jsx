@@ -1,38 +1,41 @@
-﻿import { useMemo } from "react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+﻿import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { useMemo } from "react";
 
+import { BookCard } from "@/components/ui/book-card";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Empty, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
-import { BookCard } from "@/components/ui/book-card";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { useBooks } from "@/features/books/hooks/use-books";
-import { useCategories } from "@/features/books/hooks/use-categories";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useBooks } from "@/features/book/hooks/use-books";
+import { useCategories } from "@/features/book/hooks/use-categories";
 import useBookFilters, {
-  setSearch,
-  setSort,
   setCategory,
   setPage,
+  setSearch,
+  setSort,
 } from "@/store/use-book-filters";
 import { BookOpen } from "lucide-react";
-import { getCategories } from "@/features/books/services/categories.service";
 
 function BookListSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {Array.from({ length: 10 }).map((_, i) => (
         <div key={i} className="flex flex-col gap-3 rounded-xl border p-0">
-          <Skeleton className="aspect-[3/4] w-full rounded-none rounded-t-xl" />
+          <Skeleton className="aspect-3/4 w-full rounded-none rounded-t-xl" />
           <div className="flex flex-col gap-2 px-4 pb-4">
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-3 w-1/2" />
@@ -50,14 +53,17 @@ function BookListPage() {
 
   const params = useMemo(
     () => ({ search, sort, category, page, limit }),
-    [search, sort, category, page, limit]
+    [search, sort, category, page, limit],
   );
 
   const { data = {}, isLoading } = useBooks(params);
 
   const books = data?.data || [];
-  const { totalPages = 0, totalDocs = 0, page: currentPage = 1 } =
-    data?.pagination || {};
+  const {
+    totalPages = 0,
+    totalDocs = 0,
+    page: currentPage = 1,
+  } = data?.pagination || {};
 
   const handlePageChange = (next) => {
     setPage(next);
