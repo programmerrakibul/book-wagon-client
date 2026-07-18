@@ -1,20 +1,18 @@
 ﻿import {
+  BookAlertIcon,
   BookOpen,
-  Heart,
   DollarSign,
+  Heart,
+  HeartCrackIcon,
   ShoppingCart,
 } from "lucide-react";
 
-import { useUserDashboard } from "@/features/dashboard/hooks/use-dashboard";
-import {
-  OrderStatusConfig,
-  getStatusBadge,
-} from "@/features/shared/constants/statuses";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Spinner } from "@/components/ui/spinner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -24,6 +22,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MetricCard } from "@/features/dashboard/components/metric-card";
+import { useUserDashboard } from "@/features/dashboard/hooks/use-dashboard";
+import { getStatusBadge } from "@/features/shared/constants/statuses";
+import { getPrice } from "@/utils/utils";
 
 export default function UserOverview() {
   const { data, isLoading } = useUserDashboard();
@@ -90,8 +91,16 @@ export default function UserOverview() {
                   <TableBody>
                     {recentOrders.map((order) => {
                       const p = getStatusBadge(order.paymentStatus, {
-                        paid: { label: "Paid", className: "bg-green-100 text-green-800 border-green-200" },
-                        unpaid: { label: "Unpaid", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
+                        paid: {
+                          label: "Paid",
+                          className:
+                            "bg-green-100 text-green-800 border-green-200",
+                        },
+                        unpaid: {
+                          label: "Unpaid",
+                          className:
+                            "bg-yellow-100 text-yellow-800 border-yellow-200",
+                        },
                       });
                       return (
                         <TableRow key={order.id}>
@@ -113,9 +122,11 @@ export default function UserOverview() {
                 </Table>
               </div>
             ) : (
-              <p className="py-8 text-center text-sm text-muted-foreground">
-                No orders yet
-              </p>
+              <EmptyState
+                icon={BookAlertIcon}
+                title="No recent orders"
+                description="You haven't made any recent orders yet."
+              />
             )}
           </CardContent>
         </Card>
@@ -129,18 +140,18 @@ export default function UserOverview() {
               <div className="space-y-3">
                 {wishlist.map((item, index) => (
                   <div
-                    key={item.bookId ?? index}
+                    key={item._id ?? index}
                     className="flex items-center justify-between gap-3 rounded-lg border p-3"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <img
-                        src={item.image ?? ""}
-                        alt={item.title ?? "Book"}
+                        src={item.photoUrl ?? ""}
+                        alt={item.name ?? "Book"}
                         className="h-10 w-8 shrink-0 rounded object-cover"
                       />
                       <div className="min-w-0">
                         <p className="truncate text-sm font-medium">
-                          {item.title ?? "Unknown"}
+                          {item.name ?? "Unknown"}
                         </p>
                         <p className="truncate text-xs text-muted-foreground">
                           {item.author ?? "—"}
@@ -148,15 +159,21 @@ export default function UserOverview() {
                       </div>
                     </div>
                     <span className="text-sm font-medium shrink-0">
-                      ${Number(item.price ?? 0).toFixed(2)}
+                      ${getPrice(item)}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="py-8 text-center text-sm text-muted-foreground">
-                No wishlist items yet
-              </p>
+              <EmptyState
+                icon={HeartCrackIcon}
+                title="Your wishlist is empty"
+                description="Try adding some books to your wishlist."
+                action={{
+                  label: "Browse books",
+                  to: "/books",
+                }}
+              />
             )}
           </CardContent>
         </Card>

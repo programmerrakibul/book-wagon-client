@@ -9,6 +9,7 @@ import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { useWishlist } from "@/features/wishlist/hooks/use-wishlist";
+import { getPrice } from "@/utils/utils";
 
 export default function WishlistPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,16 +24,6 @@ export default function WishlistPage() {
     (p) => setSearchParams({ page: String(p) }),
     [setSearchParams],
   );
-
-  const getPrice = (book = {}) => {
-    const originalPrice = book.price;
-    const discount = book.discount > 0;
-    const price = discount
-      ? (book.discountedPrice ?? originalPrice)
-      : originalPrice;
-
-    return price;
-  };
 
   const columns = [
     {
@@ -83,7 +74,7 @@ export default function WishlistPage() {
 
   const renderCard = (row) => (
     <Link
-      to={`/book-details/${row._id}`}
+      to={`/book-details/${row.bookId?._id}`}
       className="flex items-center gap-4 rounded-xl border bg-card p-4 hover:bg-muted/50 transition-colors"
     >
       <img
