@@ -118,7 +118,6 @@ export function useToggleActive() {
     mutationFn: ({ bookId, isActive }) => toggleActiveStatus(bookId, isActive),
     onSuccess: (data) => {
       if (data.success) {
-
         console.log(data);
 
         toast.success("Book status updated!");

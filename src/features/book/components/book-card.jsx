@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router";
 
 function BookCard({ book = {} }) {
@@ -14,11 +14,14 @@ function BookCard({ book = {} }) {
     <Link to={`/book-details/${book._id}`} className="group block">
       <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 h-full">
         <div
-          className={"aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted"}
+          className={
+            "aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted"
+          }
         >
           <img
             src={image}
             alt={name}
+            loading="lazy"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>

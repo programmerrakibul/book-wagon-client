@@ -4,18 +4,18 @@ import { useCallback, useMemo } from "react";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import BookCardSkeleton from "@/components/skeletons/book-card-skeleton";
-import { BookCard } from "@/components/ui/book-card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
+import { BookCard } from "@/features/book/components/book-card";
 import { useBooks } from "@/features/book/hooks/use-books";
 import useBookFilters, {
   resetFilters,
   setPage,
 } from "@/store/use-book-filters";
 
+import Section from "@/components/ui/section";
 import BookFilters from "../components/book-filters";
 import SearchResultsInfo from "../components/search-results-info";
-import Section from "@/components/ui/section";
 
 function BookListPage() {
   const { category, search, sort, page, limit } = useBookFilters();

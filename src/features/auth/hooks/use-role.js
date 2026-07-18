@@ -1,6 +1,6 @@
+import useAuthStore from "@/store/use-auth-store";
 import { useQuery } from "@tanstack/react-query";
 import { getUserRole } from "../services/auth.service";
-import useAuthStore from "@/store/use-auth-store";
 
 const useRole = () => {
   const user = useAuthStore((s) => s.user);

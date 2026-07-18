@@ -1,12 +1,15 @@
-﻿import { useQuery } from "@tanstack/react-query";
-import {
+﻿import {
   BookOpen,
   Heart,
   DollarSign,
   ShoppingCart,
 } from "lucide-react";
 
-import axiosInstance from "@/lib/axios";
+import { useUserDashboard } from "@/features/dashboard/hooks/use-dashboard";
+import {
+  OrderStatusConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Spinner } from "@/components/ui/spinner";
@@ -22,16 +25,6 @@ import {
 } from "@/components/ui/table";
 import { MetricCard } from "@/features/dashboard/components/metric-card";
 
-function useUserDashboard() {
-  return useQuery({
-    queryKey: ["dashboard", "user"],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/dashboard/user");
-      return data?.data ?? data ?? {};
-    },
-  });
-}
-
 export default function UserOverview() {
   const { data, isLoading } = useUserDashboard();
 
@@ -45,24 +38,24 @@ export default function UserOverview() {
 
   const stats = data?.stats ?? {};
   const recentOrders = data?.recentOrders ?? [];
-  const readingSummary = data?.readingSummary ?? {};
+  const wishlist = data?.wishlist ?? [];
 
   return (
-    <Container className="py-10 space-y-8">
+    <Container className="py-6 sm:py-8 lg:py-10 space-y-8">
       <Heading title="My Dashboard" subtitle="Your reading activity overview" />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          title="Books Read"
-          value={stats.booksRead ?? 0}
-          icon={<BookOpen className="size-5" />}
-          description="Books you've purchased"
+          title="Total Orders"
+          value={stats.totalOrders ?? 0}
+          icon={<ShoppingCart className="size-5" />}
+          description="Orders placed"
         />
         <MetricCard
-          title="Wishlist Items"
-          value={stats.wishlistItems ?? 0}
-          icon={<Heart className="size-5" />}
-          description="Books you're interested in"
+          title="Books Purchased"
+          value={stats.booksPurchased ?? 0}
+          icon={<BookOpen className="size-5" />}
+          description="Books you've bought"
         />
         <MetricCard
           title="Total Spent"
@@ -71,10 +64,10 @@ export default function UserOverview() {
           description="Total amount spent"
         />
         <MetricCard
-          title="Orders"
-          value={stats.totalOrders ?? 0}
-          icon={<ShoppingCart className="size-5" />}
-          description="Total orders placed"
+          title="Wishlist Items"
+          value={stats.wishlistItems ?? 0}
+          icon={<Heart className="size-5" />}
+          description="Books you're interested in"
         />
       </div>
 
@@ -85,34 +78,40 @@ export default function UserOverview() {
           </CardHeader>
           <CardContent>
             {recentOrders.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Book</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentOrders.map((order) => (
-                    <TableRow key={order._id}>
-                      <TableCell className="font-medium truncate max-w-[150px]">
-                        {order.bookTitle ?? order.book?.title ?? "—"}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        ${Number(order.totalPrice ?? order.price ?? 0).toFixed(2)}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{order.status ?? "pending"}</Badge>
-                      </TableCell>
+              <div className="rounded-lg border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Book</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Payment</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {recentOrders.map((order) => {
+                      const p = getStatusBadge(order.paymentStatus, {
+                        paid: { label: "Paid", className: "bg-green-100 text-green-800 border-green-200" },
+                        unpaid: { label: "Unpaid", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
+                      });
+                      return (
+                        <TableRow key={order.id}>
+                          <TableCell className="font-medium truncate max-w-[150px]">
+                            {order.bookName ?? "—"}
+                          </TableCell>
+                          <TableCell>
+                            ${Number(order.amount ?? 0).toFixed(2)}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className={p.className}>
+                              {p.label}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             ) : (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 No orders yet
@@ -123,35 +122,42 @@ export default function UserOverview() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Reading Summary</CardTitle>
+            <CardTitle className="text-base">Wishlist</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Favorite Genre</p>
-                  <p className="text-sm font-medium">
-                    {readingSummary.favoriteGenre ?? "—"}
-                  </p>
-                </div>
+            {wishlist.length > 0 ? (
+              <div className="space-y-3">
+                {wishlist.map((item, index) => (
+                  <div
+                    key={item.bookId ?? index}
+                    className="flex items-center justify-between gap-3 rounded-lg border p-3"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <img
+                        src={item.image ?? ""}
+                        alt={item.title ?? "Book"}
+                        className="h-10 w-8 shrink-0 rounded object-cover"
+                      />
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium">
+                          {item.title ?? "Unknown"}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {item.author ?? "—"}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-sm font-medium shrink-0">
+                      ${Number(item.price ?? 0).toFixed(2)}
+                    </span>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Books This Month</p>
-                  <p className="text-sm font-medium">
-                    {readingSummary.booksThisMonth ?? 0}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center justify-between rounded-lg border p-4">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Pages Read</p>
-                  <p className="text-sm font-medium">
-                    {readingSummary.totalPagesRead ?? 0}
-                  </p>
-                </div>
-              </div>
-            </div>
+            ) : (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                No wishlist items yet
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>

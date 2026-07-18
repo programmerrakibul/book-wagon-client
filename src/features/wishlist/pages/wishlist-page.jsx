@@ -1,143 +1,154 @@
-﻿import { useSearchParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
+﻿import { Heart } from "lucide-react";
+import { useCallback } from "react";
+import { Link, useSearchParams } from "react-router";
 
-import { fetchWishlist } from "@/features/wishlist/services/wishlist.service";
+import { DataTable } from "@/components/shared/data-table";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Pagination } from "@/components/shared/pagination";
+import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import { useWishlist } from "@/features/wishlist/hooks/use-wishlist";
 
 export default function WishlistPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["wishlist", page],
-    queryFn: () => fetchWishlist({ page, limit: 10 }),
-  });
+  const { data, isLoading } = useWishlist({ page, limit: 10 });
 
   const items = data?.data ?? [];
-  const totalPages = data?.totalPages ?? 1;
+  const totalPages = data?.pagination?.totalPages ?? 1;
+
+  const handlePageChange = useCallback(
+    (p) => setSearchParams({ page: String(p) }),
+    [setSearchParams],
+  );
+
+  const getPrice = (book = {}) => {
+    const originalPrice = book.price;
+    const discount = book.discount > 0;
+    const price = discount
+      ? (book.discountedPrice ?? originalPrice)
+      : originalPrice;
+
+    return price;
+  };
+
+  const columns = [
+    {
+      key: "image",
+      header: "Image",
+      className: "w-16",
+      cell: (row) => (
+        <img
+          src={row.bookId?.photoUrl ?? ""}
+          alt={row.bookId?.name ?? "Book cover"}
+          className="h-10 w-10 rounded-md object-cover"
+        />
+      ),
+    },
+    {
+      key: "name",
+      header: "Book Name",
+      cell: (row) => (
+        <Link
+          to={`/book-details/${row.bookId?._id}`}
+          className="font-medium max-w-[250px] truncate block hover:underline"
+        >
+          {row.bookId?.name ?? "Unknown Book"}
+        </Link>
+      ),
+    },
+    {
+      key: "author",
+      header: "Author",
+      className: "hidden sm:table-cell",
+      cell: (row) => (
+        <span className="text-muted-foreground">
+          {row.bookId?.author ?? "—"}
+        </span>
+      ),
+    },
+    {
+      key: "price",
+      header: "Price",
+      className: "text-right",
+      cell: (row) => (
+        <span className="font-medium text-right">
+          ${getPrice(row.bookId || {})}
+        </span>
+      ),
+    },
+  ];
+
+  const renderCard = (row) => (
+    <Link
+      to={`/book-details/${row._id}`}
+      className="flex items-center gap-4 rounded-xl border bg-card p-4 hover:bg-muted/50 transition-colors"
+    >
+      <img
+        src={row.bookId?.photoUrl ?? ""}
+        alt={row.bookId?.name ?? "Book cover"}
+        className="h-16 w-12 shrink-0 rounded-md object-cover ring-1 ring-border"
+      />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium">
+          {row.bookId?.name ?? "Unknown Book"}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          {row.bookId?.author ?? "—"}
+        </p>
+        <p className="mt-1 text-sm font-medium">
+          ${getPrice(row.bookId || {})}
+        </p>
+      </div>
+    </Link>
+  );
 
   if (isLoading) {
     return (
-      <Container className="py-10 flex items-center justify-center min-h-[50vh]">
-        <Spinner className="size-8" />
+      <Container className="py-6 sm:py-8 lg:py-10">
+        <Heading title="Wishlist" subtitle="Your favorite books" />
+        <div className="mt-6">
+          <SkeletonLayout variant="table" count={10} />
+        </div>
       </Container>
     );
   }
 
   if (!items.length) {
     return (
-      <Container className="py-10">
+      <Container className="py-6 sm:py-8 lg:py-10">
         <Heading title="Wishlist" subtitle="Your favorite books" />
-        <Empty className="mt-8">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <Heart />
-            </EmptyMedia>
-            <EmptyTitle>Your wishlist is empty</EmptyTitle>
-            <EmptyDescription>
-              Browse our collection and add books you love to your wishlist.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Button asChild>
-              <a href="/books">Browse Books</a>
-            </Button>
-          </EmptyContent>
-        </Empty>
+        <div className="mt-8">
+          <EmptyState
+            icon={Heart}
+            title="Your wishlist is empty"
+            description="Browse our collection and add books you love to your wishlist."
+            action={{ label: "Browse Books", to: "/books" }}
+          />
+        </div>
       </Container>
     );
   }
 
   return (
-    <Container className="py-10">
-      <Heading title="Wishlist" subtitle="Your favorite books" />
+    <>
+      <title>Wishlist | BookWagon</title>
 
-      <div className="mt-6 rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[60px]">Image</TableHead>
-              <TableHead>Book Name</TableHead>
-              <TableHead className="hidden sm:table-cell">Category</TableHead>
-              <TableHead className="text-right">Price</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((item) => {
-              const book = item.book ?? item;
-              return (
-                <TableRow key={item._id ?? book._id}>
-                  <TableCell>
-                    <img
-                      src={book.image ?? book.coverImage ?? ""}
-                      alt={book.title ?? "Book cover"}
-                      className="size-10 rounded-md object-cover"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium max-w-[250px] truncate">
-                    {book.title ?? "Unknown Book"}
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <Badge variant="secondary">
-                      {book.category ?? "General"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    ${Number(book.price ?? 0).toFixed(2)}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+      <Container className="py-6 sm:py-8 lg:py-10">
+        <Heading title="Wishlist" subtitle="Your favorite books" />
 
-      {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page <= 1}
-            onClick={() => setSearchParams({ page: String(page - 1) })}
-          >
-            <ChevronLeft className="size-4" />
-            Previous
-          </Button>
-          <span className="text-sm text-muted-foreground px-2">
-            Page {page} of {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page >= totalPages}
-            onClick={() => setSearchParams({ page: String(page + 1) })}
-          >
-            Next
-            <ChevronRight className="size-4" />
-          </Button>
+        <div className="mt-6">
+          <DataTable columns={columns} data={items} renderCard={renderCard} />
         </div>
-      )}
-    </Container>
+
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </Container>
+    </>
   );
 }

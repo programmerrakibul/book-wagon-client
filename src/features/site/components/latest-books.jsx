@@ -1,8 +1,8 @@
-﻿import { BookCard } from "@/components/ui/book-card";
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Loading } from "@/components/ui/loading";
+import { BookCard } from "@/features/book/components/book-card";
 import { useBooks } from "@/features/book/hooks/use-books";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
