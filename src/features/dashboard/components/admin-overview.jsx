@@ -1,5 +1,4 @@
-﻿import { useQuery } from "@tanstack/react-query";
-import {
+﻿import {
   BookOpen,
   Users,
   ShoppingCart,
@@ -21,7 +20,12 @@ import {
   Cell,
 } from "recharts";
 
-import axiosInstance from "@/lib/axios";
+import { useAdminDashboard } from "@/features/dashboard/hooks/use-dashboard";
+import {
+  OrderStatusConfig,
+  PaymentStatusConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Spinner } from "@/components/ui/spinner";
@@ -39,16 +43,6 @@ import { MetricCard } from "@/features/dashboard/components/metric-card";
 
 const PIE_COLORS = ["#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6"];
 
-function useAdminDashboard() {
-  return useQuery({
-    queryKey: ["dashboard", "admin"],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/dashboard/admin");
-      return data?.data ?? data ?? {};
-    },
-  });
-}
-
 export default function AdminOverview() {
   const { data, isLoading } = useAdminDashboard();
 
@@ -61,14 +55,18 @@ export default function AdminOverview() {
   }
 
   const stats = data?.stats ?? {};
-  const userStats = data?.userStats ?? {};
   const recentOrders = data?.recentOrders ?? [];
   const topBooks = data?.topBooks ?? [];
-  const ordersByStatus = data?.ordersByStatus ?? [];
-  const monthlyOrders = data?.monthlyOrders ?? [];
+  const orderStatusDistribution = data?.orderStatusDistribution ?? {};
+  const chartData = data?.userGrowthChartData ?? [];
+  const recentUsers = data?.recentUsers ?? [];
+
+  const orderStatusData = Object.entries(orderStatusDistribution).map(
+    ([status, count]) => ({ status, count }),
+  );
 
   return (
-    <Container className="py-10 space-y-8">
+    <Container className="py-6 sm:py-8 lg:py-10 space-y-8">
       <Heading title="Admin Dashboard" subtitle="Platform overview and analytics" />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -91,35 +89,35 @@ export default function AdminOverview() {
           description="All time orders"
         />
         <MetricCard
-          title="Platform Health"
-          value={stats.platformHealth ?? "Good"}
+          title="Success Rate"
+          value={`${Number(stats.successRate ?? 0).toFixed(1)}%`}
           icon={<Activity className="size-5" />}
-          description="System status"
+          description="Order completion"
         />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Readers"
-          value={userStats.readers ?? 0}
+          value={stats.totalReaders ?? 0}
           icon={<Users className="size-5" />}
           description="Regular users"
         />
         <MetricCard
           title="Librarians"
-          value={userStats.librarians ?? 0}
+          value={stats.totalLibrarians ?? 0}
           icon={<Star className="size-5" />}
           description="Staff members"
         />
         <MetricCard
           title="Active Users"
-          value={userStats.activeUsers ?? 0}
+          value={stats.activeUsers ?? 0}
           icon={<TrendingUp className="size-5" />}
           description="Active this month"
         />
         <MetricCard
           title="Wishlist Items"
-          value={userStats.wishlistItems ?? 0}
+          value={stats.totalWishlistItems ?? 0}
           icon={<Heart className="size-5" />}
           description="Total wishlisted"
         />
@@ -128,17 +126,17 @@ export default function AdminOverview() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Monthly Orders</CardTitle>
+            <CardTitle className="text-base">User Growth</CardTitle>
           </CardHeader>
           <CardContent>
-            {monthlyOrders.length > 0 ? (
+            {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={monthlyOrders}>
+                <BarChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                  <XAxis dataKey="month" className="text-xs" />
+                  <XAxis dataKey="monthName" className="text-xs" />
                   <YAxis className="text-xs" />
                   <Tooltip />
-                  <Bar dataKey="count" fill="var(--color-primary, #3b82f6)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="totalUsers" fill="var(--color-primary, #3b82f6)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
@@ -154,11 +152,11 @@ export default function AdminOverview() {
             <CardTitle className="text-base">Orders by Status</CardTitle>
           </CardHeader>
           <CardContent>
-            {ordersByStatus.length > 0 ? (
+            {orderStatusData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
-                    data={ordersByStatus}
+                    data={orderStatusData}
                     dataKey="count"
                     nameKey="status"
                     cx="50%"
@@ -166,7 +164,7 @@ export default function AdminOverview() {
                     outerRadius={100}
                     label={({ status, count }) => `${status}: ${count}`}
                   >
-                    {ordersByStatus.map((_, index) => (
+                    {orderStatusData.map((_, index) => (
                       <Cell
                         key={index}
                         fill={PIE_COLORS[index % PIE_COLORS.length]}
@@ -192,30 +190,37 @@ export default function AdminOverview() {
           </CardHeader>
           <CardContent>
             {recentOrders.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Book</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentOrders.map((order) => (
-                    <TableRow key={order._id}>
-                      <TableCell className="font-medium truncate max-w-[150px]">
-                        {order.bookTitle ?? order.book?.title ?? "—"}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground truncate max-w-[120px]">
-                        {order.userEmail ?? order.user?.email ?? "—"}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{order.status ?? "pending"}</Badge>
-                      </TableCell>
+              <div className="rounded-lg border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Book</TableHead>
+                      <TableHead className="hidden sm:table-cell">Customer</TableHead>
+                      <TableHead>Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {recentOrders.map((order) => {
+                      const s = getStatusBadge(order.status, OrderStatusConfig);
+                      return (
+                        <TableRow key={order.id}>
+                          <TableCell className="font-medium truncate max-w-[150px]">
+                            {order.bookName ?? "—"}
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell text-muted-foreground truncate max-w-[120px]">
+                            {order.customerEmail ?? "—"}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className={s.className}>
+                              {s.label}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             ) : (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 No recent orders
@@ -233,7 +238,7 @@ export default function AdminOverview() {
               <div className="space-y-3">
                 {topBooks.map((book, index) => (
                   <div
-                    key={book._id ?? index}
+                    key={book.bookId ?? index}
                     className="flex items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-3 min-w-0">
@@ -245,7 +250,7 @@ export default function AdminOverview() {
                       </span>
                     </div>
                     <span className="text-sm font-medium text-muted-foreground shrink-0">
-                      {book.soldCount ?? book.sales ?? 0} sold
+                      {book.sales ?? 0} sold
                     </span>
                   </div>
                 ))}
@@ -259,33 +264,48 @@ export default function AdminOverview() {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Platform Insights</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="rounded-lg border p-4">
-              <p className="text-sm text-muted-foreground">Total Revenue</p>
-              <p className="text-xl font-bold">
-                ${Number(stats.totalRevenue ?? 0).toFixed(2)}
-              </p>
+      {recentUsers.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Recent Users</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead className="hidden sm:table-cell">Email</TableHead>
+                    <TableHead>Role</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentUsers.map((u, index) => {
+                    const rc = getStatusBadge(u.role, {
+                      admin: { label: "Admin", className: "bg-red-100 text-red-800 border-red-200" },
+                      librarian: { label: "Librarian", className: "bg-blue-100 text-blue-800 border-blue-200" },
+                      user: { label: "User", className: "bg-green-100 text-green-800 border-green-200" },
+                    });
+                    return (
+                      <TableRow key={u.email ?? index}>
+                        <TableCell className="font-medium">{u.name}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-muted-foreground">
+                          {u.email}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className={rc.className}>
+                            {rc.label}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             </div>
-            <div className="rounded-lg border p-4">
-              <p className="text-sm text-muted-foreground">Avg. Order Value</p>
-              <p className="text-xl font-bold">
-                ${Number(stats.avgOrderValue ?? 0).toFixed(2)}
-              </p>
-            </div>
-            <div className="rounded-lg border p-4">
-              <p className="text-sm text-muted-foreground">Conversion Rate</p>
-              <p className="text-xl font-bold">
-                {Number(stats.conversionRate ?? 0).toFixed(1)}%
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </Container>
   );
 }

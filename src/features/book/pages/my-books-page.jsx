@@ -1,33 +1,41 @@
 ﻿import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Pencil, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { BookOpen } from "lucide-react";
+import { useCallback, useState } from "react";
 
-import { ConfirmDialog } from "@/components/shared/confirm-dialog";
+import { BookActionsDropdown } from "@/features/book/components/book-actions-dropdown";
+import { BookViewModal } from "@/features/book/components/book-view-modal";
+
 import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { EditBookModal } from "@/features/book/components/edit-book-modal";
 import { useBooks, useDeleteBook } from "@/features/book/hooks/use-books";
 import useAuthStore from "@/store/use-auth-store";
+import useBookFilters, { setPage } from "@/store/use-book-filters";
+
+import { ActiveToggle } from "../components/active-toggle";
 import StatusDropdown from "../components/status-dropdown";
 
 function MyBooksPage() {
   const queryClient = useQueryClient();
   const user = useAuthStore((s) => s.user);
-  const [page, setPage] = useState(1);
   const [editId, setEditId] = useState(null);
-  const limit = 10;
+  const [viewBook, setViewBook] = useState(null);
+  const page = useBookFilters((s) => s.page);
 
-  const { data, isLoading } = useBooks({ page, limit, email: user.email });
+  const { data, isLoading } = useBooks({ page, email: user.email });
 
   const deleteMutation = useDeleteBook();
 
   const books = data?.data || [];
   const { totalPages = 1, totalDocs = 0 } = data?.pagination || {};
+
+  const handleEdit = useCallback((book) => {
+    setEditId(book._id);
+  }, []);
 
   const columns = [
     {
@@ -78,28 +86,13 @@ function MyBooksPage() {
       header: "Actions",
       className: "text-right",
       cell: (row) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setEditId(row._id)}
-            className="gap-1"
-          >
-            <Pencil className="size-3.5" />
-            <span className="hidden sm:inline">Edit</span>
-          </Button>
-          <ConfirmDialog
-            title="Delete Book?"
-            description={`This will permanently delete "${row.name}". This action cannot be undone.`}
-            confirmLabel="Delete"
-            onConfirm={() => deleteMutation.mutate(row._id)}
-          >
-            <Button variant="destructive" size="sm" className="gap-1">
-              <Trash2 className="size-3.5" />
-              <span className="hidden sm:inline">Delete</span>
-            </Button>
-          </ConfirmDialog>
-        </div>
+        <BookActionsDropdown
+          book={row}
+          onView={setViewBook}
+          onEdit={handleEdit}
+          onDelete={deleteMutation.mutate}
+          showEdit
+        />
       ),
     },
   ];
@@ -130,30 +123,22 @@ function MyBooksPage() {
         </div>
         <div className="flex items-center justify-between gap-2">
           <StatusDropdown bookId={row._id} status={row.status} />
-          <div className="flex items-center gap-1.5">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setEditId(row._id)}
-              className="gap-1"
-            >
-              <Pencil className="size-3.5" />
-            </Button>
-            <ConfirmDialog
-              title="Delete Book?"
-              description={`This will permanently delete "${row.name}". This action cannot be undone.`}
-              confirmLabel="Delete"
-              onConfirm={() => deleteMutation.mutate(row._id)}
-            >
-              <Button variant="destructive" size="sm" className="gap-1">
-                <Trash2 className="size-3.5" />
-              </Button>
-            </ConfirmDialog>
-          </div>
+          <BookActionsDropdown
+            book={row}
+            onView={setViewBook}
+            onEdit={handleEdit}
+            onDelete={deleteMutation.mutate}
+            showEdit
+          />
         </div>
       </div>
     </div>
   );
+
+  const handlePageChange = useCallback((page) => {
+    setPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -181,7 +166,7 @@ function MyBooksPage() {
               <Pagination
                 page={page}
                 totalPages={totalPages}
-                onPageChange={setPage}
+                onPageChange={handlePageChange}
               />
 
               {totalDocs > 0 && (
@@ -203,6 +188,14 @@ function MyBooksPage() {
           }
         }}
         id={editId}
+      />
+
+      <BookViewModal
+        open={!!viewBook}
+        onOpenChange={(open) => {
+          if (!open) setViewBook(null);
+        }}
+        book={viewBook}
       />
     </>
   );

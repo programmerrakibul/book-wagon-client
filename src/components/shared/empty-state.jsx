@@ -20,8 +20,13 @@ export function EmptyState({
         {description}
       </p>
       {action && (
-        <Button asChild className="mt-6">
-          <Link to={action.to}>{action.label}</Link>
+        <Button
+          asChild={Boolean(action.to)}
+          variant="outline"
+          className="mt-6"
+          onClick={action.onClick}
+        >
+          {action.to ? <Link to={action.to}>{action.label}</Link> : action.label}
         </Button>
       )}
     </section>

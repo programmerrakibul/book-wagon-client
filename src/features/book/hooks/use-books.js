@@ -1,9 +1,4 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -14,6 +9,7 @@ import {
   deleteBook,
   fetchBook,
   fetchBooks,
+  toggleActiveStatus,
   updateBook,
 } from "@/features/book/services/books.service";
 import { getAxiosError } from "@/utils/error";
@@ -43,7 +39,6 @@ export function useBook(id) {
 }
 
 export function useCreateBook() {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
@@ -65,8 +60,6 @@ export function useCreateBook() {
 }
 
 export function useUpdateBook(id) {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (payload) => updateBook(id, payload),
     onSuccess: (data) => {
@@ -103,8 +96,6 @@ export const useUpdateStatus = () => {
 };
 
 export function useDeleteBook() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: deleteBook,
     onSuccess: (data) => {
@@ -118,6 +109,26 @@ export function useDeleteBook() {
     onError: (error) => {
       const msg = getAxiosError(error);
       toast.error(msg || "Failed to delete the book.");
+    },
+  });
+}
+
+export function useToggleActive() {
+  return useMutation({
+    mutationFn: ({ bookId, isActive }) => toggleActiveStatus(bookId, isActive),
+    onSuccess: (data) => {
+      if (data.success) {
+        console.log(data);
+
+        toast.success("Book status updated!");
+        queryClient.invalidateQueries({ queryKey: bookKeys.all });
+      } else {
+        throw new Error(data.message);
+      }
+    },
+    onError: (error) => {
+      const msg = getAxiosError(error);
+      toast.error(msg || "Failed to update book status.");
     },
   });
 }

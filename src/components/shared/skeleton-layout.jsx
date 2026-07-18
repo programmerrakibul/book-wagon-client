@@ -9,6 +9,7 @@ export function SkeletonLayout({ variant = "cards", count = 6 }) {
         ))}
       </div>
     );
+
   if (variant === "details")
     return (
       <div className="grid gap-8 lg:grid-cols-2">
@@ -20,11 +21,12 @@ export function SkeletonLayout({ variant = "cards", count = 6 }) {
         </div>
       </div>
     );
+
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="overflow-hidden rounded-xl border">
-          <Skeleton className="h-44 w-full" />
+          <Skeleton className="aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full" />
           <div className="space-y-3 p-4">
             <Skeleton className="h-5 w-4/5" />
             <Skeleton className="h-4 w-full" />

@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const helpfulLinks = [
   { icon: BookOpen, label: "Browse Books", to: "/all-books" },

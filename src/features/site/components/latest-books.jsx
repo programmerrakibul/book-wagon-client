@@ -1,6 +1,12 @@
-﻿import { useQuery } from "@tanstack/react-query";
+﻿import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { Heading } from "@/components/ui/heading";
+import { Loading } from "@/components/ui/loading";
+import { BookCard } from "@/features/book/components/book-card";
+import { useBooks } from "@/features/book/hooks/use-books";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,12 +15,6 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import { Autoplay, FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { BookCard } from "@/components/ui/book-card";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
-import { Loading } from "@/components/ui/loading";
-import axiosInstance from "@/lib/axios";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,15 +25,7 @@ function LatestBooks() {
   const swiperRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const { data: books, isLoading } = useQuery({
-    queryKey: ["latest-books"],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/books", {
-        params: { limit: 6 },
-      });
-      return data?.data || [];
-    },
-  });
+  const { data: { data: books = [] } = {}, isLoading } = useBooks({ limit: 6 });
 
   useEffect(() => {
     if (isLoading || !books?.length) return;
@@ -47,9 +39,23 @@ function LatestBooks() {
       },
     });
 
-    tl.fromTo(headingRef.current, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" })
-      .fromTo(swiperRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
-      .fromTo(buttonRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" }, "-=0.4");
+    tl.fromTo(
+      headingRef.current,
+      { opacity: 0, y: -30 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+    )
+      .fromTo(
+        swiperRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        "-=0.4",
+      )
+      .fromTo(
+        buttonRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" },
+        "-=0.4",
+      );
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -62,7 +68,7 @@ function LatestBooks() {
       className="py-12 sm:py-16 lg:py-20 bg-linear-to-br from-secondary/5 via-primary/5 to-secondary/5"
     >
       <Container>
-        <div ref={headingRef}>
+        <div ref={headingRef} className="mb-8">
           <Heading
             title="Latest Arrivals"
             subtitle="Discover our newest collection of books"
@@ -79,17 +85,22 @@ function LatestBooks() {
                 grabCursor
                 freeMode
                 loop
-                autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }}
                 modules={[FreeMode, Autoplay]}
                 breakpoints={{
-                  320: { slidesPerView: 1, spaceBetween: 16 },
-                  640: { slidesPerView: 2, spaceBetween: 20 },
-                  1024: { slidesPerView: 3, spaceBetween: 24 },
-                  1280: { slidesPerView: 4, spaceBetween: 24 },
+                  320: { slidesPerView: 2, spaceBetween: 16 },
+                  640: { slidesPerView: 3, spaceBetween: 20 },
+                  768: { slidesPerView: 4, spaceBetween: 24 },
+                  1280: { slidesPerView: 5, spaceBetween: 24 },
+                  1536: { slidesPerView: 6, spaceBetween: 24 },
                 }}
               >
                 {books.map((book) => (
-                  <SwiperSlide key={book._id}>
+                  <SwiperSlide key={book._id} className="h-full!">
                     <BookCard book={book} />
                   </SwiperSlide>
                 ))}

@@ -1,14 +1,18 @@
-﻿import { useSearchParams } from "react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+﻿import { useCallback } from "react";
+import { useSearchParams } from "react-router";
+import { Users } from "lucide-react";
 
-import axiosInstance from "@/lib/axios";
+import {
+  UserRoleConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
+import { useUsers, useUpdateUserRole } from "@/features/profile/hooks/use-users";
+import { EmptyState } from "@/components/shared/empty-state";
+import { Pagination } from "@/components/shared/pagination";
+import { SkeletonLayout } from "@/components/shared/skeleton-layout";
+import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select,
@@ -17,209 +21,190 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import { DataTable } from "@/components/shared/data-table";
 
-const roleConfig = {
-  admin: {
-    label: "Admin",
-    className: "bg-red-100 text-red-800 border-red-200",
-  },
-  librarian: {
-    label: "Librarian",
-    className: "bg-blue-100 text-blue-800 border-blue-200",
-  },
-  user: {
-    label: "User",
-    className: "bg-green-100 text-green-800 border-green-200",
-  },
-};
+const ROLE_OPTIONS = [
+  { value: "user", label: "User" },
+  { value: "librarian", label: "Librarian" },
+  { value: "admin", label: "Admin" },
+];
 
-function useUsers(page) {
-  return useQuery({
-    queryKey: ["users", page],
-    queryFn: async () => {
-      const { data } = await axiosInstance.get("/users", {
-        params: { page, limit: 10 },
-      });
-      return data ?? {};
-    },
-  });
+function getInitials(name) {
+  return (name ?? "U")
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 }
 
 export default function ManageUsersPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryClient = useQueryClient();
   const page = Number(searchParams.get("page")) || 1;
 
-  const { data, isLoading } = useUsers(page);
+  const { data, isLoading } = useUsers({ page, limit: 10 });
+  const roleMutation = useUpdateUserRole();
 
   const users = data?.data ?? [];
-  const totalPages = data?.totalPages ?? 1;
+  const totalPages = data?.pagination?.totalPages ?? 1;
 
-  const roleMutation = useMutation({
-    mutationFn: ({ id, role }) =>
-      axiosInstance.patch(`/users/${id}`, { role }),
-    onSuccess: () => {
-      toast.success("User role updated");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+  const handlePageChange = useCallback(
+    (p) => setSearchParams({ page: String(p) }),
+    [setSearchParams],
+  );
+
+  const columns = [
+    {
+      key: "avatar",
+      header: "Avatar",
+      className: "w-[50px]",
+      cell: (row) => (
+        <Avatar className="size-8">
+          <AvatarImage src={row.photoUrl} alt={row.name} />
+          <AvatarFallback>{getInitials(row.name)}</AvatarFallback>
+        </Avatar>
+      ),
     },
-    onError: () => toast.error("Failed to update user role"),
-  });
+    {
+      key: "name",
+      header: "Name",
+      cell: (row) => (
+        <span className="font-medium">{row.name ?? "—"}</span>
+      ),
+    },
+    {
+      key: "email",
+      header: "Email",
+      className: "hidden sm:table-cell",
+      cell: (row) => (
+        <span className="text-muted-foreground">{row.email}</span>
+      ),
+    },
+    {
+      key: "role",
+      header: "Role",
+      cell: (row) => {
+        const rc = getStatusBadge(row.role, UserRoleConfig);
+        return (
+          <Badge variant="outline" className={rc.className}>
+            {rc.label}
+          </Badge>
+        );
+      },
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      className: "text-right",
+      cell: (row) => (
+        <Select
+          value={row.role}
+          onValueChange={(value) =>
+            roleMutation.mutate({ id: row._id, role: value })
+          }
+          disabled={roleMutation.isPending}
+        >
+          <SelectTrigger className="w-[120px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {ROLE_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ),
+    },
+  ];
+
+  const renderCard = (row) => {
+    const rc = getStatusBadge(row.role, UserRoleConfig);
+    return (
+      <div className="flex items-center gap-4 rounded-xl border bg-card p-4">
+        <Avatar className="size-10">
+          <AvatarImage src={row.photoUrl} alt={row.name} />
+          <AvatarFallback>{getInitials(row.name)}</AvatarFallback>
+        </Avatar>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium">{row.name ?? "—"}</p>
+          <p className="truncate text-xs text-muted-foreground">{row.email}</p>
+          <div className="mt-1 flex items-center gap-2">
+            <Badge variant="outline" className={rc.className}>
+              {rc.label}
+            </Badge>
+          </div>
+        </div>
+        <Select
+          value={row.role}
+          onValueChange={(value) =>
+            roleMutation.mutate({ id: row._id, role: value })
+          }
+          disabled={roleMutation.isPending}
+        >
+          <SelectTrigger className="w-[110px] h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {ROLE_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  };
 
   if (isLoading) {
     return (
-      <Container className="py-10 flex items-center justify-center min-h-[50vh]">
-        <Spinner className="size-8" />
+      <Container className="py-6 sm:py-8 lg:py-10">
+        <Heading title="Manage Users" subtitle="Administer user accounts" />
+        <div className="mt-6">
+          <SkeletonLayout variant="table" count={10} />
+        </div>
       </Container>
     );
   }
 
   if (!users.length) {
     return (
-      <Container className="py-10">
+      <Container className="py-6 sm:py-8 lg:py-10">
         <Heading title="Manage Users" subtitle="Administer user accounts" />
-        <Empty className="mt-8">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </EmptyMedia>
-            <EmptyTitle>No users found</EmptyTitle>
-            <EmptyDescription>
-              There are no users to display at this time.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent />
-        </Empty>
+        <div className="mt-8">
+          <EmptyState
+            icon={Users}
+            title="No users found"
+            description="There are no users to display at this time."
+          />
+        </div>
       </Container>
     );
   }
 
   return (
-    <Container className="py-10">
-      <Heading title="Manage Users" subtitle="Administer user accounts" />
+    <>
+      <title>Manage Users | BookWagon</title>
 
-      <div className="mt-6 rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[50px]">Avatar</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden sm:table-cell">Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {users.map((u) => {
-              const rc = roleConfig[u.role] ?? roleConfig.user;
-              const initials = (u.displayName ?? u.name ?? "U")
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .toUpperCase()
-                .slice(0, 2);
+      <Container className="py-6 sm:py-8 lg:py-10">
+        <Heading title="Manage Users" subtitle="Administer user accounts" />
 
-              return (
-                <TableRow key={u._id}>
-                  <TableCell>
-                    <Avatar className="size-8">
-                      <AvatarImage src={u.photoURL} alt={u.displayName} />
-                      <AvatarFallback>{initials}</AvatarFallback>
-                    </Avatar>
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {u.displayName ?? u.name ?? "—"}
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-muted-foreground">
-                    {u.email}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className={rc.className}>
-                      {rc.label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Select
-                      value={u.role}
-                      onValueChange={(value) =>
-                        roleMutation.mutate({
-                          id: u._id,
-                          role: value,
-                        })
-                      }
-                    >
-                      <SelectTrigger className="w-[120px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="librarian">Librarian</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
-
-      {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page <= 1}
-            onClick={() => setSearchParams({ page: String(page - 1) })}
-          >
-            <ChevronLeft className="size-4" />
-            Previous
-          </Button>
-          <span className="text-sm text-muted-foreground px-2">
-            Page {page} of {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page >= totalPages}
-            onClick={() => setSearchParams({ page: String(page + 1) })}
-          >
-            Next
-            <ChevronRight className="size-4" />
-          </Button>
+        <div className="mt-6">
+          <DataTable
+            columns={columns}
+            data={users}
+            renderCard={renderCard}
+          />
         </div>
-      )}
-    </Container>
+
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </Container>
+    </>
   );
 }
