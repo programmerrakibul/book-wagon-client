@@ -42,6 +42,10 @@ export default function UserOverview() {
   const wishlist = data?.wishlist ?? [];
 
   return (
+
+    <>
+      <title>Overview | BookWagon</title>
+
     <Container className="py-6 sm:py-8 lg:py-10 space-y-8">
       <Heading title="My Dashboard" subtitle="Your reading activity overview" />
 
@@ -179,5 +183,7 @@ export default function UserOverview() {
         </Card>
       </div>
     </Container>
+    </>
+
   );
 }

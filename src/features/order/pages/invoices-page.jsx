@@ -1,15 +1,15 @@
-﻿import { useCallback } from "react";
+﻿import { Receipt } from "lucide-react";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router";
-import { Receipt } from "lucide-react";
 
-import { useInvoices } from "@/features/order/hooks/use-orders";
+import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { DataTable } from "@/components/shared/data-table";
+import { useInvoices } from "@/features/order/hooks/use-orders";
 
 export default function InvoicesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,32 +91,6 @@ export default function InvoicesPage() {
     </div>
   );
 
-  if (isLoading) {
-    return (
-      <Container className="py-6 sm:py-8 lg:py-10">
-        <Heading title="Invoices" subtitle="View your payment history" />
-        <div className="mt-6">
-          <SkeletonLayout variant="table" count={10} />
-        </div>
-      </Container>
-    );
-  }
-
-  if (!invoices.length) {
-    return (
-      <Container className="py-6 sm:py-8 lg:py-10">
-        <Heading title="Invoices" subtitle="View your payment history" />
-        <div className="mt-8">
-          <EmptyState
-            icon={Receipt}
-            title="No invoices yet"
-            description="Your payment invoices will appear here once you make a purchase."
-          />
-        </div>
-      </Container>
-    );
-  }
-
   return (
     <>
       <title>Invoices | BookWagon</title>
@@ -135,25 +109,43 @@ export default function InvoicesPage() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Spent</p>
-                <p className="text-2xl font-bold">${totalSpent.toFixed(2)}</p>
+                <p className="text-2xl font-bold">
+                  ${(totalSpent ?? 0).toFixed(2)}
+                </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="mt-6">
-          <DataTable
-            columns={columns}
-            data={invoices}
-            renderCard={renderCard}
-          />
-        </div>
+        {isLoading ? (
+          <div className="mt-6">
+            <SkeletonLayout variant="table" count={10} />
+          </div>
+        ) : invoices.length > 0 ? (
+          <>
+            <div className="mt-6">
+              <DataTable
+                columns={columns}
+                data={invoices}
+                renderCard={renderCard}
+              />
+            </div>
 
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        ) : (
+          <div className="mt-8">
+            <EmptyState
+              icon={Receipt}
+              title="No invoices yet"
+              description="Your payment invoices will appear here once you make a purchase."
+            />
+          </div>
+        )}
       </Container>
     </>
   );
