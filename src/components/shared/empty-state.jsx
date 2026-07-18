@@ -10,7 +10,7 @@ export function EmptyState({
   action,
 }) {
   return (
-    <section className="rounded-xl border bg-card px-4 py-12 text-center shadow-sm sm:px-8">
+    <div className="rounded-xl border bg-card px-4 py-12 text-center shadow-sm sm:px-8">
       <Icon
         aria-hidden
         className="mx-auto mb-4 size-10 text-muted-foreground"
@@ -29,6 +29,6 @@ export function EmptyState({
           {action.to ? <Link to={action.to}>{action.label}</Link> : action.label}
         </Button>
       )}
-    </section>
+    </div>
   );
 }
