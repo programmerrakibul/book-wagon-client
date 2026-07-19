@@ -1,5 +1,5 @@
 ﻿import { ShoppingBag } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router";
 
 import { DataTable } from "@/components/shared/data-table";
@@ -9,10 +9,7 @@ import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import {
-  useOrders,
-  useRetrieveCheckout,
-} from "@/features/order/hooks/use-orders";
+import { useOrders } from "@/features/order/hooks/use-orders";
 import {
   OrderStatusConfig,
   PaymentStatusConfig,
@@ -23,10 +20,8 @@ import RowActions from "../components/row-actions";
 export default function MyOrdersPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const sessionId = searchParams.get("session_id");
 
   const { data, isLoading } = useOrders({ page, limit: 10 });
-  const { mutate } = useRetrieveCheckout();
 
   const orders = data?.data ?? [];
   const totalPages = data?.pagination?.totalPages ?? 1;
@@ -127,16 +122,6 @@ export default function MyOrdersPage() {
       </div>
     );
   };
-
-  useEffect(() => {
-    if (sessionId) {
-      mutate(sessionId, {
-        onSuccess: () => {
-          searchParams.delete("sessionId");
-        },
-      });
-    }
-  }, [sessionId, mutate, searchParams]);
 
   if (isLoading) {
     return (
