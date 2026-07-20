@@ -12,50 +12,43 @@ import PaymentModal from "./payment-modal";
 const RowActions = ({ row }) => {
   const updateOrderStatusMutation = useUpdateOrderStatus();
   const [isOpen, setIsOpen] = useState(false);
+  const canPerformAction =
+    row.paymentStatus === PaymentStatuses.PAID ||
+    row.status !== OrderStatuses.PENDING;
 
   return (
     <div className="flex items-center justify-end gap-2">
-      {row.status === OrderStatuses.PENDING ? (
-        <>
-          {PaymentStatuses.UNPAID === row.paymentStatus && (
-            <>
-              <Button
-                size="sm"
-                onClick={() => setIsOpen(true)}
-                disabled={isOpen}
-              >
-                <CreditCardIcon className="size-3.5" />
-                Pay Now
-              </Button>
+      <Button
+        size="sm"
+        onClick={() => setIsOpen(true)}
+        disabled={canPerformAction}
+      >
+        <CreditCardIcon className="size-3.5" />
+        Pay Now
+      </Button>
 
-              <PaymentModal
-                orderId={row._id}
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-              />
-            </>
-          )}
+      <PaymentModal
+        orderId={row._id}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
 
-          <ConfirmDialog
-            title="Cancel Order?"
-            description="This action cannot be undone. The order will be permanently cancelled."
-            confirmLabel="Yes, Cancel"
-            onConfirm={() =>
-              updateOrderStatusMutation.mutate({
-                id: row._id,
-                status: OrderStatuses.CANCELLED,
-              })
-            }
-          >
-            <Button size="sm" variant="destructive">
-              <XCircleIcon className="size-3.5" />
-              Cancel
-            </Button>
-          </ConfirmDialog>
-        </>
-      ) : (
-        <span>No Actions</span>
-      )}
+      <ConfirmDialog
+        title="Cancel Order?"
+        description="This action cannot be undone. The order will be permanently cancelled."
+        confirmLabel="Yes, Cancel"
+        onConfirm={() =>
+          updateOrderStatusMutation.mutate({
+            id: row._id,
+            status: OrderStatuses.CANCELLED,
+          })
+        }
+      >
+        <Button size="sm" variant="destructive" disabled={canPerformAction}>
+          <XCircleIcon className="size-3.5" />
+          Cancel
+        </Button>
+      </ConfirmDialog>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-﻿import { ShoppingBag } from "lucide-react";
+﻿import { CopyIcon, ShoppingBag } from "lucide-react";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router";
 
@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { useOrders } from "@/features/order/hooks/use-orders";
@@ -15,6 +16,7 @@ import {
   PaymentStatusConfig,
   getStatusBadge,
 } from "@/features/shared/constants/statuses";
+import { copyToClipboard } from "@/utils/utils";
 import RowActions from "../components/row-actions";
 
 export default function MyOrdersPage() {
@@ -42,21 +44,46 @@ export default function MyOrdersPage() {
       ),
     },
     {
+      key: "transaction ID",
+      header: "Transaction ID",
+      cell: (row) => {
+        const txId = row.transactionId?.trim();
+
+        if (!txId) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+
+        return (
+          <div className="flex items-center gap-2 group max-w-[200px]">
+            <span className="font-medium truncate block flex-1">{txId}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+              onClick={() => copyToClipboard(txId)}
+            >
+              <CopyIcon className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        );
+      },
+    },
+    {
       key: "createdAt",
       header: "Order Date",
       className: "hidden sm:table-cell",
       cell: (row) => (
-        <span className="text-muted-foreground">
+        <span className="text-muted-foreground capitalize">
           {new Date(row.createdAt).toLocaleDateString()}
         </span>
       ),
     },
     {
-      key: "totalPrice",
+      key: "price",
       header: "Price",
       cell: (row) => (
         <span className="font-medium">
-          ${Number(row.totalPrice ?? 0).toFixed(2)}
+          ৳{row.price}×{row.quantity}
         </span>
       ),
     },
@@ -101,6 +128,23 @@ export default function MyOrdersPage() {
           <p className="truncate text-sm font-medium">
             {row.bookId?.name ?? "Unknown Book"}
           </p>
+          <p className="text-sm text-muted-foreground truncate flex items-center gap-2">
+            {row.transactionId?.trim() ? (
+              <>
+                <span className="truncate">{row.transactionId.trim()}</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6"
+                  onClick={() => copyToClipboard(row.transactionId)}
+                >
+                  <CopyIcon className="h-3.5 w-3.5" />
+                </Button>
+              </>
+            ) : (
+              "—"
+            )}
+          </p>
           <p className="text-xs text-muted-foreground">
             {new Date(row.createdAt).toLocaleDateString()}
           </p>
@@ -115,7 +159,7 @@ export default function MyOrdersPage() {
         </div>
         <div className="ml-4 flex flex-col items-end gap-2">
           <span className="text-sm font-medium">
-            ${Number(row.totalPrice ?? 0).toFixed(2)}
+            ৳{row.price}×{row.quantity}
           </span>
           <RowActions row={row} />
         </div>

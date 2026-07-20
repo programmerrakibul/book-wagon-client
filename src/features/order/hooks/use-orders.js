@@ -94,6 +94,9 @@ export function useDeleteOrder() {
 export function useCheckout() {
   return useMutation({
     mutationFn: (orderId) => checkoutOrder(orderId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+    },
     onError: (error) => {
       const msg = getAxiosError(error);
       toast.error(msg || "Failed to initiate payment.");

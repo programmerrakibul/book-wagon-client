@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { CheckoutElementsProvider } from "@stripe/react-stripe-js/checkout";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useCheckout } from "../hooks/use-orders";
 import PaymentForm from "./payment-form";
 import PaymentSuccessModal from "./payment-success-modal";
@@ -43,16 +43,16 @@ const elementsOptions = {
 export default function PaymentModal({ isOpen, onClose, orderId }) {
   const [clientSecret, setClientSecret] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const checkoutMutation = useCheckout();
+  const { mutate, isPending } = useCheckout();
 
-  const openPayment = async () => {
-    checkoutMutation.mutate(orderId, {
+  const openPayment = useCallback(() => {
+    mutate(orderId, {
       onSuccess: (data) => {
         console.log(data);
         setClientSecret(data.clientSecret);
       },
     });
-  };
+  }, [mutate, orderId]);
 
   const resetModal = () => {
     onClose();
@@ -71,7 +71,7 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
               Load Secure Checkout
             </Button>
           </div>
-        ) : checkoutMutation.isPending ? (
+        ) : isPending ? (
           <>
             <div className="py-12 text-center">Loading secure checkout...</div>
           </>
@@ -80,7 +80,11 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
         ) : (
           <CheckoutElementsProvider
             stripe={stripePromise}
-            options={{ clientSecret, elementsOptions }}
+            options={{
+              clientSecret,
+              elementsOptions,
+              adaptivePricing: { allowed: true },
+            }}
           >
             <PaymentForm
               onSuccess={() => setShowSuccess(true)}

@@ -1,3 +1,4 @@
+import { queryClient } from "@/App";
 import { Button } from "@/components/ui/button";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -8,6 +9,7 @@ import {
 } from "@stripe/react-stripe-js/checkout";
 import { Loader2Icon } from "lucide-react";
 import { useState, useTransition } from "react";
+import { orderKeys } from "../hooks/use-orders";
 
 export default function PaymentForm({ onSuccess, onCancel }) {
   const checkoutState = useCheckoutElements();
@@ -35,6 +37,7 @@ export default function PaymentForm({ onSuccess, onCancel }) {
           setError(result.error.message ?? "Payment failed. Please try again.");
         } else {
           onSuccess(result?.checkoutSession?.id || "unknown");
+          queryClient.invalidateQueries({ queryKey: orderKeys.all });
         }
       } catch (err) {
         console.error("Confirm error:", err);

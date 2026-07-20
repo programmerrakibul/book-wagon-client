@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import useRole from "@/features/auth/hooks/use-role";
+import { UserRoles } from "@/features/shared/constants/statuses";
 import useAuthStore from "@/store/use-auth-store";
 import { useUiStore } from "@/store/use-ui-store";
 import { cn } from "@/utils/utils";
@@ -43,7 +44,7 @@ function SidebarNav({ onNavClick }) {
       { to: "/dashboard/profile", label: "Profile", icon: User },
     ];
 
-    if (["user", "librarian"].includes(role)) {
+    if ([UserRoles.LIBRARIAN, UserRoles.USER].includes(role)) {
       items.splice(
         1,
         0,
@@ -53,7 +54,7 @@ function SidebarNav({ onNavClick }) {
       );
     }
 
-    if (role === "admin") {
+    if (role === UserRoles.ADMIN) {
       items.splice(
         1,
         0,
@@ -66,7 +67,7 @@ function SidebarNav({ onNavClick }) {
       );
     }
 
-    if (role === "librarian") {
+    if (role === UserRoles.LIBRARIAN) {
       items.splice(
         4,
         0,

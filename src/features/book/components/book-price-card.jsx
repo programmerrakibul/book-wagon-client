@@ -1,6 +1,7 @@
 import { Tag } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { getPrice } from "@/utils/utils";
 
 function BookPriceCard({ price, discountedPrice, discount }) {
   return (
@@ -11,12 +12,12 @@ function BookPriceCard({ price, discountedPrice, discount }) {
           <p className="text-xs text-muted-foreground sm:text-sm">Price</p>
           <div className="flex items-baseline gap-2">
             <p className="text-3xl font-bold text-primary sm:text-4xl lg:text-5xl">
-              &#2547; {price}
+              &#2547; {getPrice({ price, discountedPrice, discount })}
             </p>
             {discount > 0 && discountedPrice && (
-              <p className="text-sm text-muted-foreground line-through">
-                &#2547; {discountedPrice}
-              </p>
+              <del className="text-sm text-muted-foreground">
+                &#2547; {price}
+              </del>
             )}
           </div>
         </div>
