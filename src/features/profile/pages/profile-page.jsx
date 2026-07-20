@@ -20,6 +20,7 @@ import {
   getStatusBadge,
 } from "@/features/shared/constants/statuses";
 import useAuthStore from "@/store/use-auth-store";
+import { getInitials } from "@/utils/utils";
 
 export default function ProfilePage() {
   const user = useAuthStore((s) => s.user);
@@ -33,13 +34,6 @@ export default function ProfilePage() {
       </Container>
     );
   }
-
-  const initials = (user?.name ?? "U")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 
   const roleBadge = getStatusBadge(role, UserRoleConfig);
 
@@ -55,7 +49,9 @@ export default function ProfilePage() {
             <CardContent className="flex flex-col items-center gap-4 pt-0">
               <Avatar className="size-20 mt-[-24px]">
                 <AvatarImage src={user?.photoUrl} alt={user?.name} />
-                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+                <AvatarFallback className="text-lg">
+                  {getInitials(user?.name)}
+                </AvatarFallback>
               </Avatar>
               <div className="text-center">
                 <h2 className="text-lg font-semibold">{user?.name}</h2>
@@ -72,11 +68,7 @@ export default function ProfilePage() {
               <CardTitle className="text-base">Account Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <DetailRow
-                icon={User}
-                label="Full Name"
-                value={user?.name}
-              />
+              <DetailRow icon={User} label="Full Name" value={user?.name} />
               <Separator />
               <DetailRow icon={Mail} label="Email" value={user?.email} />
               <Separator />

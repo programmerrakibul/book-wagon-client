@@ -9,6 +9,7 @@ import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
+import { NumberTicker } from "@/components/ui/number-ticker";
 import { useInvoices } from "@/features/order/hooks/use-orders";
 
 export default function InvoicesPage() {
@@ -18,9 +19,8 @@ export default function InvoicesPage() {
   const { data = {}, isLoading } = useInvoices({ page, limit: 10 });
 
   const invoices = data?.data || [];
+  const totalSpent = data?.totalSpent ?? 0;
   const totalPages = data?.pagination?.totalPages ?? 1;
-
-
 
   const handlePageChange = useCallback(
     (p) => setSearchParams({ page: String(p) }),
@@ -106,7 +106,12 @@ export default function InvoicesPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Total Spent</p>
                 <p className="text-2xl font-bold">
-                  ৳{(data?.totalSpent ?? 0).toFixed(2)}
+                  ৳
+                  <NumberTicker
+                    value={totalSpent}
+                    decimalPlaces={2}
+                    startValue={totalSpent * 0.95}
+                  />
                 </p>
               </div>
             </div>

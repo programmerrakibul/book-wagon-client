@@ -1,8 +1,6 @@
-﻿import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Camera, Save } from "lucide-react";
+﻿import { Camera, Save } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -12,52 +10,24 @@ import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { updateProfile } from "@/features/profile/services/profile.service";
-import { uploadImage } from "@/lib/upload-image";
-import useAuthStore, { updateUserProfile } from "@/store/use-auth-store";
+import useAuthStore from "@/store/use-auth-store";
+import { getInitials } from "@/utils/utils";
+import { useUpdateUserProfile } from "../hooks/use-users";
 
 export default function EditProfilePage() {
   const user = useAuthStore((s) => s.user);
   const authLoading = useAuthStore((s) => s.authLoading);
-  const queryClient = useQueryClient();
 
   const [preview, setPreview] = useState(user?.photoUrl ?? "");
   const [imageFile, setImageFile] = useState(null);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       displayName: user?.name ?? "",
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: async (values) => {
-      let photoURL = user?.photoUrl;
-
-      if (imageFile) {
-        photoURL = await uploadImage(imageFile);
-      }
-
-      await updateUserProfile({
-        displayName: values.displayName,
-        photoURL,
-      });
-
-      await updateProfile({
-        displayName: values.displayName,
-        photoURL,
-      });
-    },
-    onSuccess: () => {
-      toast.success("Profile updated successfully");
-      queryClient.invalidateQueries({ queryKey: ["role"] });
-    },
-    onError: () => toast.error("Failed to update profile"),
-  });
+  const mutation = useUpdateUserProfile();
 
   if (authLoading) {
     return (
@@ -66,13 +36,6 @@ export default function EditProfilePage() {
       </Container>
     );
   }
-
-  const initials = (user?.name ?? "U")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
 
   return (
     <>
@@ -90,7 +53,12 @@ export default function EditProfilePage() {
           </CardHeader>
           <CardContent>
             <form
-              onSubmit={handleSubmit((values) => mutation.mutate(values))}
+              onSubmit={handleSubmit((values) =>
+                mutation.mutate({
+                  displayName: values.displayName,
+                  imageFile,
+                }),
+              )}
               className="space-y-6"
             >
               <div className="flex items-center flex-wrap-reverse gap-6">
@@ -98,7 +66,7 @@ export default function EditProfilePage() {
                   <Avatar className="size-20">
                     <AvatarImage src={preview} alt={user?.name} />
                     <AvatarFallback className="text-lg">
-                      {initials}
+                      {getInitials(user?.name ?? "U")}
                     </AvatarFallback>
                   </Avatar>
                   <label className="absolute -bottom-1 -right-1 flex size-7 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm hover:bg-primary/90">
@@ -129,18 +97,20 @@ export default function EditProfilePage() {
                 name="displayName"
                 control={control}
                 rules={{ required: "Name is required" }}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <Field>
                     <FieldContent>
-                      <FieldLabel>Display Name</FieldLabel>
+                      <FieldLabel data-invalid={fieldState.invalid}>
+                        Display Name
+                      </FieldLabel>
                       <Input
                         {...field}
                         placeholder="Enter your name"
-                        aria-invalid={!!errors.displayName}
+                        aria-invalid={fieldState.invalid}
                       />
-                      {errors.displayName && (
+                      {fieldState.error && (
                         <p className="text-sm text-destructive">
-                          {errors.displayName.message}
+                          {fieldState.error.message}
                         </p>
                       )}
                     </FieldContent>
