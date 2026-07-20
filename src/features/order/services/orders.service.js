@@ -28,13 +28,8 @@ export async function deleteOrder(id) {
 }
 
 export async function checkoutOrder(orderID) {
-  const { data } = await axiosInstance.post(`/checkout/${orderID}`);
+  const { data } = await axiosInstance.post(`/orders/checkout/${orderID}`);
   return data?.data ?? data ?? {};
-}
-
-export async function retrieveCheckout(sessionId) {
-  const { data } = await axiosInstance.get(`/checkout/retrieve/${sessionId}`);
-  return data?.data ?? {};
 }
 
 export async function fetchInvoices(params) {

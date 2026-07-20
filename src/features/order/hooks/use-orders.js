@@ -8,7 +8,6 @@ import {
   deleteOrder,
   fetchInvoices,
   fetchOrders,
-  retrieveCheckout,
   updateOrderStatus,
 } from "@/features/order/services/orders.service";
 import { getAxiosError } from "@/utils/error";
@@ -94,24 +93,9 @@ export function useDeleteOrder() {
 
 export function useCheckout() {
   return useMutation({
-    mutationFn: checkoutOrder,
-    onSuccess: (data) => {
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    },
-    onError: (error) => {
-      const msg = getAxiosError(error);
-      toast.error(msg || "Failed to initiate payment.");
-    },
-  });
-}
-
-export function useRetrieveCheckout() {
-  return useMutation({
-    mutationFn: (sessionId) => retrieveCheckout(sessionId),
+    mutationFn: (orderId) => checkoutOrder(orderId),
     onSuccess: () => {
-      toast.success("Payment Successful!");
+      queryClient.invalidateQueries({ queryKey: orderKeys.all });
     },
     onError: (error) => {
       const msg = getAxiosError(error);

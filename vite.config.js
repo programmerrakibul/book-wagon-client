@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [tailwindcss(), react()],
   server: {
     port: 3000,
+    allowedHosts: ["commutable-jalen-greatly.ngrok-free.dev"],
   },
   resolve: {
     alias: {
