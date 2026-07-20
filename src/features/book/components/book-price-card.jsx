@@ -12,11 +12,12 @@ function BookPriceCard({ price, discountedPrice, discount }) {
           <p className="text-xs text-muted-foreground sm:text-sm">Price</p>
           <div className="flex items-baseline gap-2">
             <p className="text-3xl font-bold text-primary sm:text-4xl lg:text-5xl">
-              &#2547; {getPrice({ price, discountedPrice, discount })}
+              &#2547;{" "}
+              {getPrice({ price, discountedPrice, discount }).toLocaleString()}
             </p>
             {discount > 0 && discountedPrice && (
               <del className="text-sm text-muted-foreground">
-                &#2547; {price}
+                &#2547; {price.toLocaleString()}
               </del>
             )}
           </div>

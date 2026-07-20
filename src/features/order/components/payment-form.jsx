@@ -66,44 +66,50 @@ export default function PaymentForm({ onSuccess, onCancel }) {
         <DialogTitle>Complete your payment</DialogTitle>
       </DialogHeader>
 
-      <ScrollArea className="flex-1 -mx-1 px-1">
-        <div className="pb-6">
+      <ScrollArea className="flex-1 -mx-1 px-1 max-h-[50dvh]">
+        <div className="py-6">
           <PaymentElement
             id="payment-element"
             options={{
               layout: "tabs",
+              fields: {
+                billingDetails: "never",
+              },
+              wallets: {
+                link: "never",
+              },
             }}
           />
         </div>
+
+        {error && <p className="text-destructive text-sm mt-3 px-1">{error}</p>}
+
+        <div className="flex gap-3 pt-6 border-t mt-auto">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={isProcessing}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isProcessing || checkoutState.type !== "success"}
+            className="flex-1"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Pay Securely"
+            )}
+          </Button>
+        </div>
       </ScrollArea>
-
-      {error && <p className="text-destructive text-sm mt-3 px-1">{error}</p>}
-
-      <div className="flex gap-3 pt-6 border-t mt-auto">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onCancel}
-          disabled={isProcessing}
-          className="flex-1"
-        >
-          Cancel
-        </Button>
-        <Button
-          type="submit"
-          disabled={isProcessing || checkoutState.type !== "success"}
-          className="flex-1"
-        >
-          {isProcessing ? (
-            <>
-              <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            "Pay Securely"
-          )}
-        </Button>
-      </div>
     </form>
   );
 }

@@ -38,12 +38,12 @@ function BookCard({ book = {} }) {
           </span>
           <div className="flex items-center justify-start gap-2">
             <p className="mt-auto pt-1 text-sm font-bold">
-              ${discountedPrice || originalPrice}
+              ৳{(discountedPrice || originalPrice).toLocaleString()}
             </p>
 
             {discount && (
               <p className="text-xs text-destructive line-through">
-                ${originalPrice}
+                ৳{originalPrice.toLocaleString()}
               </p>
             )}
           </div>

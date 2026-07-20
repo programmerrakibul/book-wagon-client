@@ -1,5 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckoutElementsProvider } from "@stripe/react-stripe-js/checkout";
 import { loadStripe } from "@stripe/stripe-js";
 import { useCallback, useState } from "react";
@@ -64,13 +73,27 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={resetModal}>
-      <DialogContent className="sm:max-w-lg p-6">
+      <DialogContent className="sm:max-w-lg p-6 max-h-[80vh]">
         {!clientSecret ? (
-          <div className="text-center py-8 transition-all duration-300 ease-in-out">
-            <Button onClick={openPayment} size="lg">
-              Load Secure Checkout
-            </Button>
-          </div>
+          <>
+            <DialogHeader className="px-0">
+              <DialogTitle>Secure Checkout</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to checkout this order now?
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogFooter className="pt-3">
+              <DialogClose
+                render={
+                  <Button variant="outline" onClick={onClose}>
+                    Later
+                  </Button>
+                }
+              />
+              <Button onClick={openPayment}>Proceed Now</Button>
+            </DialogFooter>
+          </>
         ) : isPending ? (
           <>
             <div className="py-12 text-center">Loading secure checkout...</div>
@@ -78,19 +101,19 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
         ) : showSuccess ? (
           <PaymentSuccessModal onClose={resetModal} />
         ) : (
-          <CheckoutElementsProvider
-            stripe={stripePromise}
-            options={{
-              clientSecret,
-              elementsOptions,
-              adaptivePricing: { allowed: true },
-            }}
-          >
-            <PaymentForm
-              onSuccess={() => setShowSuccess(true)}
-              onCancel={resetModal}
-            />
-          </CheckoutElementsProvider>
+            <CheckoutElementsProvider
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                elementsOptions,
+                adaptivePricing: { allowed: true },
+              }}
+            >
+              <PaymentForm
+                onSuccess={() => setShowSuccess(true)}
+                onCancel={resetModal}
+              />
+            </CheckoutElementsProvider>
         )}
       </DialogContent>
     </Dialog>
