@@ -96,7 +96,7 @@ function LatestBooks() {
                   }),
                 ]}
               >
-                <CarouselContent className="-ml-4 cursor-grab">
+                <CarouselContent className="-ml-4 cursor-grab items-stretch">
                   {books.map((book) => (
                     <CarouselItem
                       key={book._id}

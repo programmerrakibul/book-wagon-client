@@ -26,7 +26,7 @@ function BookCard({ book = {} }) {
           />
         </div>
         <CardContent className="flex flex-col gap-2 p-4">
-          <CardTitle className="line-clamp-1 md:line-clamp-2 text-sm font-semibold leading-snug group-hover:text-primary">
+          <CardTitle className="line-clamp-1 md:line-clamp-2 md:min-h-10 text-sm font-semibold leading-snug group-hover:text-primary">
             {name}
           </CardTitle>
           <p className="text-xs text-muted-foreground line-clamp-1 truncate">
