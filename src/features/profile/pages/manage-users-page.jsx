@@ -1,19 +1,15 @@
-﻿import { useCallback } from "react";
+﻿import { Users } from "lucide-react";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router";
-import { Users } from "lucide-react";
 
-import {
-  UserRoleConfig,
-  getStatusBadge,
-} from "@/features/shared/constants/statuses";
-import { useUsers, useUpdateUserRole } from "@/features/profile/hooks/use-users";
+import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select,
   SelectContent,
@@ -21,7 +17,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DataTable } from "@/components/shared/data-table";
+import {
+  useUpdateUserRole,
+  useUsers,
+} from "@/features/profile/hooks/use-users";
+import {
+  UserRoleConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
 
 const ROLE_OPTIONS = [
   { value: "user", label: "User" },
@@ -68,17 +71,13 @@ export default function ManageUsersPage() {
     {
       key: "name",
       header: "Name",
-      cell: (row) => (
-        <span className="font-medium">{row.name ?? "—"}</span>
-      ),
+      cell: (row) => <span className="font-medium">{row.name ?? "—"}</span>,
     },
     {
       key: "email",
       header: "Email",
       className: "hidden sm:table-cell",
-      cell: (row) => (
-        <span className="text-muted-foreground">{row.email}</span>
-      ),
+      cell: (row) => <span className="text-muted-foreground">{row.email}</span>,
     },
     {
       key: "role",
@@ -192,11 +191,7 @@ export default function ManageUsersPage() {
         <Heading title="Manage Users" subtitle="Administer user accounts" />
 
         <div className="mt-6">
-          <DataTable
-            columns={columns}
-            data={users}
-            renderCard={renderCard}
-          />
+          <DataTable columns={columns} data={users} renderCard={renderCard} />
         </div>
 
         <Pagination

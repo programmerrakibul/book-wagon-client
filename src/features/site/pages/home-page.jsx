@@ -1,22 +1,18 @@
-﻿import { useEffect } from "react";
-
+﻿import { Authors } from "../components/authors";
 import { Banner } from "../components/banner";
-import { LatestBooks } from "../components/latest-books";
-import { ReadingTips } from "../components/reading-tips";
-import { Authors } from "../components/authors";
 import { ChooseUs } from "../components/choose-us";
-import { Values } from "../components/values";
 import { Coverage } from "../components/coverage";
 import { FAQ } from "../components/faq";
+import { LatestBooks } from "../components/latest-books";
 import { NewsLetter } from "../components/news-letter";
+import { ReadingTips } from "../components/reading-tips";
+import { Values } from "../components/values";
 
 export default function HomePage() {
-  useEffect(() => {
-    document.title = "Home | BookWagon";
-  }, []);
-
   return (
-    <main>
+    <>
+      <title>Home | BookWagon</title>
+
       <Banner />
       <LatestBooks />
       <ReadingTips />
@@ -26,6 +22,6 @@ export default function HomePage() {
       <Coverage />
       <FAQ />
       <NewsLetter />
-    </main>
+    </>
   );
 }
