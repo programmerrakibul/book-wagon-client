@@ -11,7 +11,7 @@ function BookCard({ book = {} }) {
     : originalPrice;
 
   return (
-    <Link to={`/book-details/${book._id}`} className="group block">
+    <Link to={`/book-details/${book._id}`} className="group block h-full">
       <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 h-full">
         <div
           className={
