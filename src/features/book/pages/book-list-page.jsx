@@ -41,53 +41,56 @@ function BookListPage() {
   }, []);
 
   return (
-    <Section className="bg-muted/30">
-      <Container>
-        <Heading
-          title="Explore Our Collection"
-          subtitle="Discover amazing books from our extensive library collection"
-        />
-
-        <BookFilters />
-
-        {isLoading ? (
-          <BookCardSkeleton length={10} />
-        ) : totalDocs > 0 ? (
-          <>
-            <SearchResultsInfo totalDocs={totalDocs} />
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-              {books.map((book) => (
-                <BookCard key={book._id} book={book} />
-              ))}
-            </div>
-
-            {totalPages > 1 && (
-              <Pagination
-                page={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </>
-        ) : (
-          <EmptyState
-            icon={BookOpen}
-            title={hasActiveFilters ? "No books found" : "No books available"}
-            description={
-              hasActiveFilters
-                ? "Try adjusting your filters or search terms."
-                : "Check back later for new additions to our collection."
-            }
-            action={
-              hasActiveFilters
-                ? { label: "Reset Filters", onClick: resetFilters }
-                : undefined
-            }
+    <>
+      <title>Explore Our Collection | BookWagon</title>
+      
+      <Section className="bg-muted/30">
+        <Container>
+          <Heading
+            title="Explore Our Collection"
+            subtitle="Discover amazing books from our extensive library collection"
           />
-        )}
-      </Container>
-    </Section>
+
+          <BookFilters />
+          <SearchResultsInfo totalDocs={totalDocs} />
+
+          {isLoading ? (
+            <BookCardSkeleton length={10} />
+          ) : totalDocs > 0 ? (
+            <>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+                {books.map((book) => (
+                  <BookCard key={book._id} book={book} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <Pagination
+                  page={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
+            </>
+          ) : (
+            <EmptyState
+              icon={BookOpen}
+              title={hasActiveFilters ? "No books found" : "No books available"}
+              description={
+                hasActiveFilters
+                  ? "Try adjusting your filters or search terms."
+                  : "Check back later for new additions to our collection."
+              }
+              action={
+                hasActiveFilters
+                  ? { label: "Reset Filters", onClick: resetFilters }
+                  : undefined
+              }
+            />
+          )}
+        </Container>
+      </Section>
+    </>
   );
 }
 

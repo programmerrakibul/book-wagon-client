@@ -1,8 +1,8 @@
-﻿import { MapPin, CheckCircle, TrendingUp } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+﻿import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { availableCities } from "@/features/site/data/available-cities";
+import { CheckCircle, MapPin, TrendingUp } from "lucide-react";
 
 function Coverage() {
   return (
@@ -26,10 +26,15 @@ function Coverage() {
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <MapPin className="size-5 text-primary" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold">{city.name}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold">
+                      {city.name}
+                    </h3>
                   </div>
                   <p className="text-sm text-muted-foreground mb-3">
-                    Population served: <span className="font-semibold text-foreground">{city.population}</span>
+                    Population served:{" "}
+                    <span className="font-semibold text-foreground">
+                      {city.population}
+                    </span>
                   </p>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="size-4 text-green-600 dark:text-green-400" />
@@ -46,8 +51,8 @@ function Coverage() {
             <CardContent className="p-6 sm:p-8 text-center">
               <TrendingUp className="size-8 text-primary mx-auto mb-3" />
               <p className="text-sm sm:text-base">
-                <strong className="text-primary">Expanding Soon!</strong>{" "}
-                We're working to bring our services to more cities across Bangladesh.
+                <strong className="text-primary">Expanding Soon!</strong> We're
+                working to bring our services to more cities across Bangladesh.
               </p>
             </CardContent>
           </Card>

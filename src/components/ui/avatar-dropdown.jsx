@@ -23,7 +23,7 @@ function AvatarDropdown() {
 
   if (!user) return null;
 
-  const initials = (user.displayName || user.email || "U")
+  const initials = (user.name || user.email || "U")
     .split(" ")
     .map((w) => w[0])
     .join("")
@@ -36,13 +36,13 @@ function AvatarDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
         <Avatar className="size-8">
-          <AvatarImage src={user.photoURL} alt={user.displayName} />
+          <AvatarImage src={user.photoUrl} alt={user.name} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
-          <p className="text-sm font-medium">{user.displayName}</p>
+          <p className="text-sm font-medium">{user.name}</p>
           <p className="text-xs text-muted-foreground">{user.email}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

@@ -9,21 +9,18 @@ import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
+import { NumberTicker } from "@/components/ui/number-ticker";
 import { useInvoices } from "@/features/order/hooks/use-orders";
 
 export default function InvoicesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  const { data, isLoading } = useInvoices({ page, limit: 10 });
+  const { data = {}, isLoading } = useInvoices({ page, limit: 10 });
 
-  const invoices = data?.data ?? [];
+  const invoices = data?.data || [];
+  const totalSpent = data?.totalSpent ?? 0;
   const totalPages = data?.pagination?.totalPages ?? 1;
-
-  const totalSpent = invoices.reduce(
-    (sum, inv) => sum + Number(inv.price ?? 0),
-    0,
-  );
 
   const handlePageChange = useCallback(
     (p) => setSearchParams({ page: String(p) }),
@@ -61,12 +58,11 @@ export default function InvoicesPage() {
       ),
     },
     {
-      key: "price",
+      key: "totalPrice",
       header: "Amount",
-      className: "text-right",
       cell: (row) => (
         <span className="font-medium text-right">
-          ${Number(row.price ?? 0).toFixed(2)}
+          ৳{Number(row.totalPrice ?? 0).toFixed(2)}
         </span>
       ),
     },
@@ -79,14 +75,14 @@ export default function InvoicesPage() {
           {row.bookId?.name ?? "Unknown Book"}
         </p>
         <p className="text-xs text-muted-foreground font-mono">
-          {row.transactionId ?? "—"}
+          {row.transactionId?.trim() ?? "—"}
         </p>
         <p className="text-xs text-muted-foreground">
           {new Date(row.createdAt).toLocaleDateString()}
         </p>
       </div>
       <span className="ml-4 text-sm font-medium">
-        ${Number(row.price ?? 0).toFixed(2)}
+        ${Number(row.totalPrice ?? 0).toFixed(2)}
       </span>
     </div>
   );
@@ -110,7 +106,12 @@ export default function InvoicesPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Total Spent</p>
                 <p className="text-2xl font-bold">
-                  ${(totalSpent ?? 0).toFixed(2)}
+                  ৳
+                  <NumberTicker
+                    value={totalSpent}
+                    decimalPlaces={2}
+                    startValue={totalSpent * 0.95}
+                  />
                 </p>
               </div>
             </div>

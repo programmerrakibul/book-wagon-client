@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useBookFilters, { setSort } from "@/store/use-book-filters";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { sortOptions } from "../constants";
 
 const SortComponent = () => {
@@ -17,10 +17,16 @@ const SortComponent = () => {
     [],
   );
 
+  const selectedLabel = useMemo(() => {
+    if (!sort) return undefined;
+    if (sort === "default") return "Default";
+    return sortOptions.find((opt) => opt.value === sort)?.label;
+  }, [sort]);
+
   return (
     <Select value={sort} onValueChange={handleSort}>
       <SelectTrigger>
-        <SelectValue placeholder="Sort By" />
+        <SelectValue placeholder="Sort By">{selectedLabel}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {sortOptions.map((option) => (

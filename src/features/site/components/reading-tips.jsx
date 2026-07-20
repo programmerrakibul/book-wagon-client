@@ -1,76 +1,7 @@
-﻿import { Clock, Eye, BookOpen, Bookmark, Brain, Headphones, PenLine, Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+﻿import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-
-const tips = [
-  {
-    icon: Clock,
-    title: "Set a Reading Schedule",
-    description: "Dedicate 20-30 minutes daily at the same time to build a consistent reading habit.",
-    category: "Habit",
-  },
-  {
-    icon: Eye,
-    title: "Proper Lighting",
-    description: "Read in well-lit areas to reduce eye strain. Natural light is best during the day.",
-    category: "Health",
-  },
-  {
-    icon: BookOpen,
-    title: "Active Reading",
-    description: "Engage with the text by asking questions and summarizing key points.",
-    category: "Technique",
-  },
-  {
-    icon: Bookmark,
-    title: "Use Bookmarks",
-    description: "Mark interesting passages or quotes to revisit later for reflection.",
-    category: "Tools",
-  },
-  {
-    icon: Brain,
-    title: "Take Breaks",
-    description: "Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds.",
-    category: "Health",
-  },
-  {
-    icon: Headphones,
-    title: "Try Audiobooks",
-    description: "Listen during commutes or chores. It's a great way to 'read' while multitasking.",
-    category: "Alternative",
-  },
-  {
-    icon: PenLine,
-    title: "Keep a Reading Journal",
-    description: "Write down thoughts, favorite quotes, and lessons learned from each book.",
-    category: "Reflection",
-  },
-  {
-    icon: Star,
-    title: "Set Realistic Goals",
-    description: "Start with small, achievable targets like 1 book per month, then gradually increase.",
-    category: "Motivation",
-  },
-];
-
-const benefits = [
-  {
-    icon: Brain,
-    title: "Cognitive Enhancement",
-    description: "Improves memory, focus, and critical thinking skills",
-  },
-  {
-    icon: BookOpen,
-    title: "Knowledge Expansion",
-    description: "Broadens perspectives and increases vocabulary",
-  },
-  {
-    icon: Clock,
-    title: "Stress Reduction",
-    description: "Calms the mind and provides mental relaxation",
-  },
-];
+import { benefits, tips } from "../data/reading-tips";
 
 function ReadingTips() {
   return (
@@ -102,7 +33,9 @@ function ReadingTips() {
                     {tip.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground mb-4">{tip.description}</p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {tip.description}
+                  </p>
 
                   <span className="text-xs text-muted-foreground pt-4 border-t block">
                     Tip #{String(index + 1).padStart(2, "0")}
@@ -115,7 +48,9 @@ function ReadingTips() {
 
         <div className="mt-12 sm:mt-16 bg-linear-to-br from-primary/5 to-secondary/5 rounded-2xl p-6 sm:p-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-bold mb-6">Benefits of Effective Reading</h3>
+            <h3 className="text-2xl font-bold mb-6">
+              Benefits of Effective Reading
+            </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {benefits.map((benefit) => {
@@ -127,7 +62,9 @@ function ReadingTips() {
                         <Icon className="size-5" />
                       </div>
                       <h4 className="font-bold mb-2">{benefit.title}</h4>
-                      <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {benefit.description}
+                      </p>
                     </CardContent>
                   </Card>
                 );

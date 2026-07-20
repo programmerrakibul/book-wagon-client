@@ -1,15 +1,18 @@
-﻿import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail, Send, BookOpen, Users, LayoutGrid } from "lucide-react";
-import { toast } from "sonner";
-import bgImage from "@/assets/newsletter.jpg";
+﻿import bgImage from "@/assets/newsletter.jpg";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Spinner } from "@/components/ui/spinner";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { BookOpen, LayoutGrid, Mail, Send, Users } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const schema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email"),
 });
 
 function NewsLetter() {
@@ -69,11 +72,17 @@ function NewsLetter() {
                       />
                     </div>
                     {errors.email && (
-                      <p className="text-xs text-destructive mt-1.5">{errors.email.message}</p>
+                      <p className="text-xs text-destructive mt-1.5">
+                        {errors.email.message}
+                      </p>
                     )}
                   </div>
 
-                  <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                  <Button
+                    type="submit"
+                    className="w-full gap-2"
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? (
                       <Spinner className="size-4" />
                     ) : (
@@ -93,21 +102,31 @@ function NewsLetter() {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1 sm:mb-2">
                   <BookOpen className="size-5 text-primary" />
-                  <span className="text-2xl sm:text-3xl font-bold text-primary">10K+</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">
+                    10K+
+                  </span>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Subscribers</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Subscribers
+                </p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1 sm:mb-2">
                   <LayoutGrid className="size-5 text-primary" />
-                  <span className="text-2xl sm:text-3xl font-bold text-primary">Weekly</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">
+                    Weekly
+                  </span>
                 </div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Updates</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Updates
+                </p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-1 sm:mb-2">
                   <Users className="size-5 text-primary" />
-                  <span className="text-2xl sm:text-3xl font-bold text-primary">100%</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-primary">
+                    100%
+                  </span>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground">Free</p>
               </div>

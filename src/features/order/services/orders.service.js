@@ -33,6 +33,6 @@ export async function checkoutOrder(orderID) {
 }
 
 export async function fetchInvoices(params) {
-  const { data } = await axiosInstance.get("/payments", { params });
+  const { data } = await axiosInstance.get("/orders/invoices", { params });
   return data ?? {};
 }

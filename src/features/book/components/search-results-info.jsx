@@ -1,16 +1,24 @@
 import { useCategories } from "@/features/book/hooks/use-categories";
 import useBookFilters from "@/store/use-book-filters";
+import { useMemo } from "react";
 import { sortOptions } from "../constants";
 
 function SearchResultsInfo({ totalDocs = 0 }) {
   const { search, sort, category } = useBookFilters();
   const { data: categories = [] } = useCategories();
 
+  const categoryName = useMemo(() => {
+    if (!category || categories.length === 0) return "";
+
+    return categories.find((c) => c._id === category)?.name;
+  }, [category, categories]);
+  const sortLabel = useMemo(() => {
+    if (!sort) return "";
+
+    return sortOptions.find((o) => o.value === sort)?.label;
+  }, [sort]);
+
   if (!search && !sort && !category) return null;
-
-  const categoryName = categories.find((c) => c._id === category)?.name;
-  const sortLabel = sortOptions.find((o) => o.value === sort)?.label;
-
   const parts = [];
   if (search) parts.push(`"${search}"`);
   if (categoryName) parts.push(categoryName);

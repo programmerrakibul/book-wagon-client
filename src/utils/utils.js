@@ -30,3 +30,9 @@ export const copyToClipboard = async (text, description = "Transaction ID") => {
     console.error("Copy failed:", err);
   }
 };
+
+export const getInitials = (text) => {
+  const value = text?.trim() || "Unknown";
+
+  return value.charAt(0).toUpperCase();
+};

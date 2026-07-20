@@ -48,8 +48,8 @@ onAuthStateChanged(auth, async (currentUser) => {
     serializedUser = {
       uid: currentUser.uid,
       email: currentUser.email,
-      displayName: currentUser.displayName,
-      photoURL: currentUser.photoURL,
+      name: currentUser.displayName,
+      photoUrl: currentUser.photoURL,
       emailVerified: currentUser.emailVerified,
       metadata: currentUser.metadata,
     };
@@ -75,7 +75,7 @@ onAuthStateChanged(auth, async (currentUser) => {
     localStorage.removeItem("__bw__token__");
   }
 
-  // Atomic state batch updateâ€”updates user profile and closes loading flags simultaneously
+  // Atomic state batch updates user profile and closes loading flags simultaneously
   useAuthStore.setState({
     user: serializedUser,
     error: null,
@@ -188,27 +188,29 @@ export const createUser = async ({
  */
 export const updateUserProfile = async (info) => {
   if (!auth.currentUser) return;
-  useAuthStore.setState({ authLoading: true, error: null });
+  useAuthStore.setState({ error: null });
 
   try {
     await updateProfile(auth.currentUser, info);
 
     /**
-     * âš¡ PERFORMANCE OPTIMIZATION (Optimistic Update):
+     * PERFORMANCE OPTIMIZATION (Optimistic Update):
      * Force-inject updates straight into our state immediately instead of waiting for
      * Firebase's stream loop to complete. This ensures the client UI reflects changes instantly.
      */
-    useAuthStore.setState((state) => ({
-      user: state.user ? { ...state.user, ...info } : null,
-    }));
+    useAuthStore.setState({
+      user: {
+        ...useAuthStore.getState().user,
+        name: info.displayName,
+        photoUrl: info.photoURL,
+      },
+    });
   } catch (error) {
     console.error(`Error updating user profile: ${error}`);
     useAuthStore.setState({
       error: error.message || "Failed to update profile!",
     });
     throw error;
-  } finally {
-    useAuthStore.setState({ authLoading: false });
   }
 };
 
@@ -230,5 +232,3 @@ export const logoutUser = async () => {
 };
 
 export default useAuthStore;
-
-

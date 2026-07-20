@@ -42,8 +42,8 @@ function ReviewForm({ bookId, bookName }) {
         <div className="size-10 shrink-0 overflow-hidden rounded-full sm:size-12">
           {user ? (
             <img
-              src={user?.photoURL}
-              alt={user?.displayName}
+              src={user?.photoUrl}
+              alt={user?.name}
               loading="lazy"
               className="h-full w-full object-cover"
             />

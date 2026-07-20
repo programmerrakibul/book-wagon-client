@@ -1,6 +1,7 @@
 ﻿import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/utils/utils";
 import { LayoutDashboard, Pencil } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 
@@ -12,7 +13,7 @@ const ProfileLayout = () => {
   return (
     <section className="py-5 sm:py-8">
       <Container>
-        <Card className="mb-6 shadow-xs">
+        <Card className="mb-6 shadow-xs py-0">
           <Tabs
             value={currentTab}
             onValueChange={(value) =>
@@ -24,20 +25,34 @@ const ProfileLayout = () => {
             }
           >
             <TabsList className="grid h-auto w-full grid-cols-2">
-              <TabsTrigger
-                value="overview"
-                className="gap-2 py-3 text-xs sm:text-sm"
-              >
-                <LayoutDashboard className="size-4" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="edit"
-                className="gap-2 py-3 text-xs sm:text-sm"
-              >
-                <Pencil className="size-4" />
-                Edit profile
-              </TabsTrigger>
+              {[
+                {
+                  label: "Overview",
+                  value: "overview",
+                  icon: LayoutDashboard,
+                },
+                {
+                  label: "Edit profile",
+                  value: "edit",
+                  icon: Pencil,
+                },
+              ].map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className={cn(
+                    "gap-2 py-3 text-xs sm:text-sm",
+
+                    {
+                      "text-primary font-medium": tab.value === currentTab,
+                      "text-muted-foreground": tab.value !== currentTab,
+                    },
+                  )}
+                >
+                  <tab.icon className="size-4" />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
         </Card>

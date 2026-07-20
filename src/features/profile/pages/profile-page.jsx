@@ -1,25 +1,26 @@
 ﻿import {
-  User,
-  Mail,
-  ShieldCheck,
+  BadgeCheck,
   Calendar,
   Clock,
-  BadgeCheck,
+  Mail,
+  ShieldCheck,
+  User,
 } from "lucide-react";
 
-import useAuthStore from "@/store/use-auth-store";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
+import { Heading } from "@/components/ui/heading";
+import { Separator } from "@/components/ui/separator";
+import { Spinner } from "@/components/ui/spinner";
 import useRole from "@/features/auth/hooks/use-role";
 import {
   UserRoleConfig,
   getStatusBadge,
 } from "@/features/shared/constants/statuses";
-import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
+import useAuthStore from "@/store/use-auth-store";
+import { getInitials } from "@/utils/utils";
 
 export default function ProfilePage() {
   const user = useAuthStore((s) => s.user);
@@ -34,13 +35,6 @@ export default function ProfilePage() {
     );
   }
 
-  const initials = (user?.displayName ?? "U")
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
-
   const roleBadge = getStatusBadge(role, UserRoleConfig);
 
   return (
@@ -54,17 +48,16 @@ export default function ProfilePage() {
           <Card>
             <CardContent className="flex flex-col items-center gap-4 pt-0">
               <Avatar className="size-20 mt-[-24px]">
-                <AvatarImage src={user?.photoURL} alt={user?.displayName} />
-                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+                <AvatarImage src={user?.photoUrl} alt={user?.name} />
+                <AvatarFallback className="text-lg">
+                  {getInitials(user?.name)}
+                </AvatarFallback>
               </Avatar>
               <div className="text-center">
-                <h2 className="text-lg font-semibold">{user?.displayName}</h2>
+                <h2 className="text-lg font-semibold">{user?.name}</h2>
                 <p className="text-sm text-muted-foreground">{user?.email}</p>
               </div>
-              <Badge
-                variant="outline"
-                className={roleBadge.className}
-              >
+              <Badge variant="outline" className={roleBadge.className}>
                 {roleBadge.label}
               </Badge>
             </CardContent>
@@ -75,15 +68,15 @@ export default function ProfilePage() {
               <CardTitle className="text-base">Account Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <DetailRow
-                icon={User}
-                label="Full Name"
-                value={user?.displayName}
-              />
+              <DetailRow icon={User} label="Full Name" value={user?.name} />
               <Separator />
               <DetailRow icon={Mail} label="Email" value={user?.email} />
               <Separator />
-              <DetailRow icon={ShieldCheck} label="Role" value={roleBadge.label} />
+              <DetailRow
+                icon={ShieldCheck}
+                label="Role"
+                value={roleBadge.label}
+              />
               <Separator />
               <DetailRow
                 icon={BadgeCheck}
@@ -106,7 +99,9 @@ export default function ProfilePage() {
                 label="Last Sign In"
                 value={
                   user?.metadata?.lastSignInTime
-                    ? new Date(user.metadata.lastSignInTime).toLocaleDateString()
+                    ? new Date(
+                        user.metadata.lastSignInTime,
+                      ).toLocaleDateString()
                     : null
                 }
               />
