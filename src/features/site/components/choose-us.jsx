@@ -1,47 +1,8 @@
-﻿import { BookOpen, Tags, Truck, ShieldCheck, Headphones, Heart } from "lucide-react";
-import chooseUsImg from "@/assets/choose_us.png";
+﻿import chooseUsImg from "@/assets/choose_us.png";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-
-const features = [
-  {
-    icon: BookOpen,
-    title: "Vast Collection",
-    description:
-      "Access to thousands of books across all genres and categories for every reader.",
-  },
-  {
-    icon: Tags,
-    title: "Best Prices",
-    description:
-      "Competitive pricing with regular discounts and special offers on your favorite books.",
-  },
-  {
-    icon: Truck,
-    title: "Fast Delivery",
-    description:
-      "Quick and reliable delivery service to get your books to you as soon as possible.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure Payment",
-    description:
-      "Safe and secure payment options with multiple payment methods for your convenience.",
-  },
-  {
-    icon: Headphones,
-    title: "24/7 Support",
-    description:
-      "Dedicated customer support team ready to assist you anytime, anywhere.",
-  },
-  {
-    icon: Heart,
-    title: "Quality Assured",
-    description:
-      "Carefully curated collection ensuring only the best quality books for our readers.",
-  },
-];
+import { features } from "../data/features";
 
 function ChooseUs() {
   return (

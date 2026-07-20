@@ -1,5 +1,9 @@
-﻿import { useEffect, useRef } from "react";
+﻿import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { sliderData } from "@/features/site/data/slider-data";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ArrowRight } from "lucide-react";
@@ -8,9 +12,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
-import { sliderData } from "@/features/site/data/slider-data";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -35,10 +36,29 @@ function Banner() {
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    tl.fromTo(titleRef.current, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.8 })
-      .fromTo(descRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
-      .fromTo(buttonRef.current, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.6 }, "-=0.4")
-      .fromTo(imageRef.current, { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration: 1 }, "-=0.8");
+    tl.fromTo(
+      titleRef.current,
+      { opacity: 0, y: -30 },
+      { opacity: 1, y: 0, duration: 0.8 },
+    )
+      .fromTo(
+        descRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        "-=0.4",
+      )
+      .fromTo(
+        buttonRef.current,
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.6 },
+        "-=0.4",
+      )
+      .fromTo(
+        imageRef.current,
+        { opacity: 0, x: 50 },
+        { opacity: 1, x: 0, duration: 1 },
+        "-=0.8",
+      );
 
     return () => tl.kill();
   }, []);
@@ -56,7 +76,11 @@ function Banner() {
       >
         {sliderData.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <motion.div variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
               <Container>
                 <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 min-h-[70dvh]">
                   <div className="flex-1 text-center lg:text-left">
@@ -75,7 +99,10 @@ function Banner() {
                       {slide.description}
                     </motion.p>
                     <motion.div ref={buttonRef} variants={itemVariants}>
-                      <Button onClick={() => navigate("/books")} className="gap-2">
+                      <Button
+                        onClick={() => navigate("/books")}
+                        className="gap-2"
+                      >
                         Explore All Books
                         <ArrowRight className="size-4" />
                       </Button>
