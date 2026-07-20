@@ -125,11 +125,11 @@ function SidebarNav({ onNavClick }) {
         <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
           <Avatar className="size-9">
             <AvatarImage
-              src={user?.photoURL}
-              alt={user?.displayName || "User"}
+              src={user?.photoUrl}
+              alt={user?.name || "User"}
             />
             <AvatarFallback>
-              {(user?.displayName || user?.email || "U")
+              {(user?.name || user?.email || "U")
                 .split(" ")
                 .map((w) => w[0])
                 .join("")
@@ -139,7 +139,7 @@ function SidebarNav({ onNavClick }) {
           </Avatar>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">
-              {user?.displayName || "User"}
+              {user?.name || "User"}
             </p>
             <p className="truncate text-xs text-muted-foreground">
               {user?.email}

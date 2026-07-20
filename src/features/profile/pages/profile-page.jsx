@@ -34,7 +34,7 @@ export default function ProfilePage() {
     );
   }
 
-  const initials = (user?.displayName ?? "U")
+  const initials = (user?.name ?? "U")
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -54,11 +54,11 @@ export default function ProfilePage() {
           <Card>
             <CardContent className="flex flex-col items-center gap-4 pt-0">
               <Avatar className="size-20 mt-[-24px]">
-                <AvatarImage src={user?.photoURL} alt={user?.displayName} />
+                <AvatarImage src={user?.photoUrl} alt={user?.name} />
                 <AvatarFallback className="text-lg">{initials}</AvatarFallback>
               </Avatar>
               <div className="text-center">
-                <h2 className="text-lg font-semibold">{user?.displayName}</h2>
+                <h2 className="text-lg font-semibold">{user?.name}</h2>
                 <p className="text-sm text-muted-foreground">{user?.email}</p>
               </div>
               <Badge variant="outline" className={roleBadge.className}>
@@ -75,7 +75,7 @@ export default function ProfilePage() {
               <DetailRow
                 icon={User}
                 label="Full Name"
-                value={user?.displayName}
+                value={user?.name}
               />
               <Separator />
               <DetailRow icon={Mail} label="Email" value={user?.email} />

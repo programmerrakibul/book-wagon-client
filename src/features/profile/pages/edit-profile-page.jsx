@@ -21,7 +21,7 @@ export default function EditProfilePage() {
   const authLoading = useAuthStore((s) => s.authLoading);
   const queryClient = useQueryClient();
 
-  const [preview, setPreview] = useState(user?.photoURL ?? "");
+  const [preview, setPreview] = useState(user?.photoUrl ?? "");
   const [imageFile, setImageFile] = useState(null);
 
   const {
@@ -30,13 +30,13 @@ export default function EditProfilePage() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      displayName: user?.displayName ?? "",
+      displayName: user?.name ?? "",
     },
   });
 
   const mutation = useMutation({
     mutationFn: async (values) => {
-      let photoURL = user?.photoURL;
+      let photoURL = user?.photoUrl;
 
       if (imageFile) {
         photoURL = await uploadImage(imageFile);
@@ -67,7 +67,7 @@ export default function EditProfilePage() {
     );
   }
 
-  const initials = (user?.displayName ?? "U")
+  const initials = (user?.name ?? "U")
     .split(" ")
     .map((n) => n[0])
     .join("")
@@ -93,10 +93,10 @@ export default function EditProfilePage() {
               onSubmit={handleSubmit((values) => mutation.mutate(values))}
               className="space-y-6"
             >
-              <div className="flex items-center gap-6">
+              <div className="flex items-center flex-wrap-reverse gap-6">
                 <div className="relative">
                   <Avatar className="size-20">
-                    <AvatarImage src={preview} alt={user?.displayName} />
+                    <AvatarImage src={preview} alt={user?.name} />
                     <AvatarFallback className="text-lg">
                       {initials}
                     </AvatarFallback>

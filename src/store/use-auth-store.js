@@ -48,8 +48,8 @@ onAuthStateChanged(auth, async (currentUser) => {
     serializedUser = {
       uid: currentUser.uid,
       email: currentUser.email,
-      displayName: currentUser.displayName,
-      photoURL: currentUser.photoURL,
+      name: currentUser.displayName,
+      photoUrl: currentUser.photoURL,
       emailVerified: currentUser.emailVerified,
       metadata: currentUser.metadata,
     };
@@ -230,5 +230,3 @@ export const logoutUser = async () => {
 };
 
 export default useAuthStore;
-
-
