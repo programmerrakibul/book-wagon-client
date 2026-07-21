@@ -8,9 +8,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import useAuthStore, { logoutUser } from "@/store/use-auth-store";
-import { toggleTheme } from "@/store/use-theme-store";
 import { cn } from "@/utils/utils";
 import { MenuIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
@@ -27,6 +27,7 @@ const navLinks = [
 function Navbar() {
   const user = useAuthStore((s) => s.user);
   const [open, setOpen] = useState(false);
+  const { setTheme, theme } = useTheme();
 
   return (
     <header className="fixed w-full top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -52,7 +53,10 @@ function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <AnimatedThemeToggler onThemeChange={toggleTheme} />
+          <AnimatedThemeToggler
+            theme={theme}
+            onThemeChange={(theme) => setTheme(theme)}
+          />
 
           {user ? (
             <AvatarDropdown />
