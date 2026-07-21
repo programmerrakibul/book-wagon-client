@@ -1,12 +1,13 @@
+import logo from "@/assets/logo.png";
 import { Link } from "react-router";
 
-import logo from "@/assets/logo.png";
-import { cn } from "@/utils/utils";
-
-function Logo({ className }) {
+function Logo() {
   return (
-    <Link to="/" className={cn("inline-flex items-center gap-2", className)}>
-      <img src={logo} alt="BookWagon" className="h-8 w-auto" />
+    <Link to="/" className="flex items-center gap-2">
+      <img src={logo} alt="BookWagon" className="h-8" />
+      <span className="text-lg font-bold">
+        BookWagon
+      </span>
     </Link>
   );
 }

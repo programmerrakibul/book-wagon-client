@@ -1,9 +1,9 @@
-﻿import logo from "@/assets/logo.png";
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MailIcon, MapPinIcon, PhoneIcon, SendIcon } from "lucide-react";
 import { Link } from "react-router";
 import { Container } from "./container";
+import { Logo } from "./logo";
 
 const quickLinks = [
   { to: "/", label: "Home" },
@@ -17,10 +17,7 @@ function Footer() {
     <footer className="border-t bg-muted/30">
       <Container className="grid gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logo} alt="BookWagon" className="h-8" />
-            <span className="text-lg font-bold">BookWagon</span>
-          </Link>
+          <Logo />
           <p className="text-sm text-muted-foreground">
             Your trusted online bookstore for discovering and purchasing the
             best books across all genres.

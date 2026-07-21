@@ -1,5 +1,4 @@
-﻿import logo from "@/assets/logo.png";
-import { AvatarDropdown } from "@/components/ui/avatar-dropdown";
+﻿import { AvatarDropdown } from "@/components/ui/avatar-dropdown";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -16,6 +15,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
 import { Container } from "./container";
+import { Logo } from "./logo";
 
 const navLinks = [
   { to: "/", label: "Home", end: true },
@@ -31,12 +31,7 @@ function Navbar() {
   return (
     <header className="fixed w-full top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <Container className="flex h-14 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="BookWagon" className="h-8" />
-          <span className="hidden text-lg font-bold sm:inline-block">
-            BookWagon
-          </span>
-        </Link>
+        <Logo />
 
         <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
@@ -63,11 +58,8 @@ function Navbar() {
             <AvatarDropdown />
           ) : (
             <div className="hidden items-center gap-2 md:flex">
-              <Button asChild variant="ghost" size="sm">
-                <Link to="/auth/login">Login</Link>
-              </Button>
               <Button asChild size="sm">
-                <Link to="/auth/register">Register</Link>
+                <Link to="/auth/login">Login</Link>
               </Button>
             </div>
           )}
@@ -102,14 +94,9 @@ function Navbar() {
                 ))}
                 {!user && (
                   <div className="mt-4 flex flex-col gap-2">
-                    <Button asChild variant="outline" size="sm">
+                    <Button asChild size="sm">
                       <Link to="/auth/login" onClick={() => setOpen(false)}>
                         Login
-                      </Link>
-                    </Button>
-                    <Button asChild size="sm">
-                      <Link to="/auth/register" onClick={() => setOpen(false)}>
-                        Register
                       </Link>
                     </Button>
                   </div>
