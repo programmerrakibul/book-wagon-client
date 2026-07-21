@@ -62,7 +62,7 @@ export default function InvoicesPage() {
       header: "Amount",
       cell: (row) => (
         <span className="font-medium text-right">
-          ৳{Number(row.totalPrice ?? 0).toFixed(2)}
+          ৳{row.totalPrice.toLocaleString()}
         </span>
       ),
     },
@@ -82,7 +82,7 @@ export default function InvoicesPage() {
         </p>
       </div>
       <span className="ml-4 text-sm font-medium">
-        ${Number(row.totalPrice ?? 0).toFixed(2)}
+        ৳{row.totalPrice.toLocaleString()}
       </span>
     </div>
   );
@@ -110,7 +110,7 @@ export default function InvoicesPage() {
                   <NumberTicker
                     value={totalSpent}
                     decimalPlaces={2}
-                    startValue={totalSpent * 0.95}
+                    startValue={parseFloat((totalSpent * 0.98).toFixed(2))}
                   />
                 </p>
               </div>

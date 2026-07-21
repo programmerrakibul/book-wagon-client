@@ -22,40 +22,61 @@
 src/
 ├── assets/                  # Static images (PNG, JPG, AVIF)
 ├── components/
-│   └── ui/                  # Shadcn + shared primitives (Button, Card, Field, FormField, etc.)
-├── config/                  # constants.js (API_BASE_URL)
+│   ├── ui/                  # Shadcn + shared primitives (Button, Card, Field, FormField, etc.)
+│   ├── shared/              # Reusable composed components
+│   │   ├── data-table.jsx   # Responsive table with mobile card view
+│   │   ├── pagination.jsx   # Page-number pagination with ellipsis
+│   │   ├── skeleton-layout.jsx  # Table/card/details skeleton variants
+│   │   ├── empty-state.jsx  # Empty state with icon, title, description, action
+│   │   ├── confirm-dialog.jsx   # Reusable AlertDialog confirmation
+│   │   └── form-section.jsx # Card-wrapped form field group with title
+│   └── skeletons/           # Domain-specific skeleton loaders
+│       ├── book-card-skeleton.jsx
+│       └── book-details-skeleton.jsx
+├── config/                  # constants.js (APP_NAME, TOKEN_STORAGE_KEY)
 ├── features/
 │   ├── auth/                # Login, Register, useAuthStore
-│   │   ├── components/      # (future: auth-specific UI)
+│   │   ├── components/      # login-form.schema.js
 │   │   ├── hooks/           # use-role.js
 │   │   ├── pages/           # login-page.jsx, register-page.jsx
-│   │   └── services/        # auth.service.js
+│   │   └── services/        # auth.service.js (postUser, getUserRole)
 │   ├── book/                # CRUD, filters, details
-│   │   ├── hooks/           # use-books.js, use-categories.js
-│   │   ├── pages/           # 6 page components
-│   │   ├── services/        # books.service.js, categories.service.js
-│   │   ├── validation/      # Zod schemas (book.js)
-│   │   └── constants/       # defaultValues, etc.
+│   │   ├── components/      # book-card, book-form, book-filters, modals, etc.
+│   │   ├── constants/       # defaultValues, sortOptions
+│   │   ├── hooks/           # use-books.js, use-categories.js, use-favorites.js, use-comments.js
+│   │   ├── pages/           # book-list, book-details, add-book, my-books, manage-books
+│   │   ├── services/        # books.service.js, categories.service.js, favorites.service.js, comments.service.js
+│   │   └── validation/      # Zod schemas (book.js)
 │   ├── dashboard/           # Admin/Librarian/User dashboards
 │   │   ├── components/      # metric-card, admin/librarian/user-overview
-│   │   └── pages/           # overview-page.jsx
-│   ├── orders/              # Order management
+│   │   ├── hooks/           # use-dashboard.js (useAdminDashboard, useLibrarianDashboard, useUserDashboard)
+│   │   ├── pages/           # overview-page.jsx
+│   │   └── services/        # dashboard.service.js (fetchAdminDashboard, fetchLibrarianDashboard, fetchUserDashboard)
+│   ├── order/               # Order management
+│   │   ├── hooks/           # use-orders.js (useOrders, useCreateOrder, useUpdateOrderStatus, useDeleteOrder, useCheckout, useOrdered, useInvoices)
 │   │   ├── pages/           # my-orders, all-orders, invoices
-│   │   └── services/        # orders.service.js
+│   │   ├── services/        # orders.service.js
+│   │   └── validation/      # Zod schemas (order.js)
 │   ├── profile/             # Profile management
-│   │   └── pages/           # profile, edit-profile, manage-users
+│   │   ├── hooks/           # use-users.js (useUsers, useUpdateUserRole)
+│   │   ├── pages/           # profile, edit-profile, manage-users
+│   │   └── services/        # profile.service.js, users.service.js
+│   ├── shared/              # Cross-feature shared constants
+│   │   └── constants/       # statuses.js (UserRoles, UserRoleConfig, BookStatuses, OrderStatuses, PaymentStatuses, getStatusBadge)
 │   ├── site/                # Public-facing pages
 │   │   ├── components/      # banner, authors, FAQ, etc.
 │   │   ├── data/            # slider-data, available-cities
 │   │   └── pages/           # home, about, contact, not-found
 │   └── wishlist/            # Wishlist page
-│       └── pages/           # wishlist-page.jsx
+│       ├── hooks/           # use-wishlist.js (useWishlist)
+│       ├── pages/           # wishlist-page.jsx
+│       └── services/        # wishlist.service.js
 ├── hooks/                   # Shared hooks (use-mobile.js)
 ├── layouts/                 # Root, Dashboard, Auth, Profile layouts
 ├── lib/                     # axios.js, upload-image.js
 ├── routes/                  # router.jsx, private-route, admin-route, librarian-route
-├── store/                   # Zustand stores (auth, book-filters, theme)
-└── utils/                   # utils.js (cn helper)
+├── store/                   # Zustand stores (auth, book-filters, theme, ui)
+└── utils/                   # utils.js (cn helper), error.js (getAxiosError, getAuthErrorMessage)
 ```
 
 ## Conventions
@@ -73,6 +94,43 @@ src/
 - Add new primitives via CLI: `npx shadcn@latest add <component>`
 - Style with `cn()` from `@/utils/utils.js`
 - Icons: `lucide-react` ONLY
+
+### Shared Components
+
+Always use these composed components instead of building from scratch:
+
+| Component | Import | Purpose |
+|-----------|--------|---------|
+| `DataTable` | `@/components/shared/data-table` | Responsive table with mobile card view, sorting |
+| `Pagination` | `@/components/shared/pagination` | Page-number pagination with ellipsis |
+| `SkeletonLayout` | `@/components/shared/skeleton-layout` | Variants: `cards`, `table`, `details` |
+| `EmptyState` | `@/components/shared/empty-state` | Icon, title, description, action button |
+| `ConfirmDialog` | `@/components/shared/confirm-dialog` | AlertDialog with onConfirm callback |
+| `FormSection` | `@/components/shared/form-section` | Card-wrapped grouped form fields |
+
+### Shared Status/Role Constants
+
+**Never** define inline badge color objects. Use shared constants from
+`@/features/shared/constants/statuses`:
+
+```jsx
+import {
+  UserRoleConfig,
+  OrderStatusConfig,
+  PaymentStatusConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
+import { Badge } from "@/components/ui/badge";
+
+// Usage
+const s = getStatusBadge(order.status, OrderStatusConfig);
+return <Badge variant="outline" className={s.className}>{s.label}</Badge>;
+```
+
+Available configs: `UserRoleConfig`, `BookStatusConfig`, `OrderStatusConfig`,
+`PaymentStatusConfig`.
+
+Available enums: `UserRoles`, `BookStatuses`, `OrderStatuses`, `PaymentStatuses`.
 
 ### Forms (every form must follow this pattern)
 
@@ -130,6 +188,32 @@ function MyForm() {
 }
 ```
 
+For grouped forms, use `FormSection`:
+
+```jsx
+import { FormSection } from "@/components/shared/form-section";
+
+const sections = [
+  {
+    title: "Basic Information",
+    columns: 2,
+    fields: [/* field objects */],
+  },
+];
+
+// Render
+{sections.map((section) => (
+  <FormSection
+    key={section.title}
+    title={section.title}
+    fields={section.fields}
+    control={control}
+    disabled={disabled}
+    columns={section.columns}
+  />
+))}
+```
+
 Supported field types: `input`, `textarea`, `select`, `file`. Each field gets
 `data-invalid` and `aria-invalid` when there's an error. Fields are disabled
 when `disabled` is true (during submission).
@@ -168,30 +252,110 @@ import { Input } from "@/components/ui/input";
 
 ### Data Fetching (TanStack Query)
 
+**Architecture: Service → Hook → Page.**
+
+Services handle HTTP. Hooks wrap queries/mutations with cache keys and toasts.
+Pages consume hooks only.
+
+**Service pattern** (`features/<name>/services/<name>.service.js`):
+
 ```jsx
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axios";
+
+export async function fetchItems(params) {
+  const { data } = await axiosInstance.get("/items", { params });
+  return data ?? {};
+}
+
+export async function createItem(payload) {
+  const { data } = await axiosInstance.post("/items", payload);
+  return data || {};
+}
+```
+
+**Hook pattern** (`features/<name>/hooks/use-<name>.js`):
+
+```jsx
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getAxiosError } from "@/utils/error";
+import { fetchItems, createItem } from "../services/<name>.service";
 
-// Queries
-const { data, isLoading, error } = useQuery({
-  queryKey: ["books", filters],
-  queryFn: () => fetchBooks(filters),
-});
+// Organized query keys
+export const itemKeys = {
+  all: ["items"],
+  list: (params) => ["items", "list", params],
+  detail: (id) => ["items", "detail", id],
+};
 
-// Mutations — place in feature hooks/ folder, NOT in pages
-const queryClient = useQueryClient();
-const mutation = useMutation({
-  mutationFn: createBook,
-  onSuccess: () => {
-    toast.success("Created!");
-    queryClient.invalidateQueries({ queryKey: ["books"] });
-  },
-  onError: (err) => toast.error(err.message),
-});
+// Paginated query with placeholderData
+export function useItems(params) {
+  return useQuery({
+    queryKey: itemKeys.list(params),
+    queryFn: () => fetchItems(params),
+    placeholderData: keepPreviousData,
+    staleTime: 30_000,
+  });
+}
+
+// Mutation with toast + invalidation
+export function useCreateItem() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createItem,
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success("Created!");
+        queryClient.invalidateQueries({ queryKey: itemKeys.all });
+      } else {
+        throw new Error(data.message);
+      }
+    },
+    onError: (error) => {
+      const msg = getAxiosError(error);
+      toast.error(msg || "Failed to create.");
+    },
+  });
+}
 ```
 
 **All mutations must live in `hooks/use-*.js`**, not in page components. Pages
-consume hooks: `const createMutation = useCreateBook()`.
+consume hooks: `const createMutation = useCreateItem()`.
+
+**Page pattern** — use `DataTable`, `Pagination`, `SkeletonLayout`, `EmptyState`:
+
+```jsx
+import { useSearchParams } from "react-router";
+import { useItems } from "../hooks/use-items";
+import { DataTable } from "@/components/shared/data-table";
+import { Pagination } from "@/components/shared/pagination";
+import { SkeletonLayout } from "@/components/shared/skeleton-layout";
+import { EmptyState } from "@/components/shared/empty-state";
+
+function ItemsPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+
+  const { data, isLoading } = useItems({ page, limit: 10 });
+  const items = data?.data ?? [];
+  const totalPages = data?.pagination?.totalPages ?? 1;
+
+  const handlePageChange = useCallback(
+    (p) => setSearchParams({ page: String(p) }),
+    [setSearchParams],
+  );
+
+  if (isLoading) return <SkeletonLayout variant="table" count={10} />;
+  if (!items.length) return <EmptyState title="No items found" />;
+
+  return (
+    <>
+      <DataTable columns={columns} data={items} renderCard={renderCard} />
+      <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+    </>
+  );
+}
+```
 
 ### Client State (Zustand + Immer)
 
@@ -217,21 +381,22 @@ const useStore = create(
 ### Notifications
 
 - Success: `toast.success("Message")` from `sonner`
-- Confirmation dialogs: Shadcn `AlertDialog`
+- Confirmation dialogs: Use `ConfirmDialog` from `@/components/shared/confirm-dialog`
 - **Never** use SweetAlert2
 
 ### Routing
 
 - All routes defined in `src/routes/router.jsx`
 - Protected routes: `PrivateRoute`, `AdminRoute`, `LibrarianRoute`
-- Page titles set via `useEffect(() => { document.title = "..." }, [])`
+- Page titles set via `<title>` element at top of page component
 
 ### Responsive Design
 
 - Mobile-first: `sm:`, `md:`, `lg:` breakpoints
 - Responsive grids: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
 - Sidebar: Sheet on mobile, persistent on desktop
-- Navigation: Mobile hamburger menu, desktop horizontal nav
+- Tables: Use `DataTable` which renders cards on mobile (`renderCard` prop) and table on desktop
+- Always provide `renderCard` to `DataTable` for mobile responsiveness
 
 ### File Naming
 
@@ -240,6 +405,7 @@ const useStore = create(
 - Services: `resource.service.js`
 - Hooks: `use-resource.js`
 - Stores: `use-resource-store.js`
+- Constants: `index.js` or descriptive name (e.g., `statuses.js`)
 
 ### Layouts
 

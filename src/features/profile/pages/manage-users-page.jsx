@@ -23,14 +23,9 @@ import {
 } from "@/features/profile/hooks/use-users";
 import {
   UserRoleConfig,
+  UserRoles,
   getStatusBadge,
 } from "@/features/shared/constants/statuses";
-
-const ROLE_OPTIONS = [
-  { value: "user", label: "User" },
-  { value: "librarian", label: "Librarian" },
-  { value: "admin", label: "Admin" },
-];
 
 function getInitials(name) {
   return (name ?? "U")
@@ -56,6 +51,11 @@ export default function ManageUsersPage() {
     [setSearchParams],
   );
 
+  const ROLE_OPTIONS = Object.values(UserRoles).map((r) => ({
+    label: r,
+    value: r,
+  }));
+
   const columns = [
     {
       key: "avatar",
@@ -63,7 +63,11 @@ export default function ManageUsersPage() {
       className: "w-[50px]",
       cell: (row) => (
         <Avatar className="size-8">
-          <AvatarImage src={row.photoUrl} alt={row.name} />
+          <AvatarImage
+            src={row.photoUrl}
+            alt={row.name}
+            referrerPolicy="no-referrer"
+          />
           <AvatarFallback>{getInitials(row.name)}</AvatarFallback>
         </Avatar>
       ),
@@ -96,24 +100,26 @@ export default function ManageUsersPage() {
       header: "Actions",
       className: "text-right",
       cell: (row) => (
-        <Select
-          value={row.role}
-          onValueChange={(value) =>
-            roleMutation.mutate({ id: row._id, role: value })
-          }
-          disabled={roleMutation.isPending}
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {ROLE_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>
-                {opt.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex justify-end">
+          <Select
+            value={row.role}
+            onValueChange={(value) =>
+              roleMutation.mutate({ id: row._id, role: value })
+            }
+            disabled={roleMutation.isPending}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLE_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       ),
     },
   ];
@@ -123,7 +129,11 @@ export default function ManageUsersPage() {
     return (
       <div className="flex items-center gap-4 rounded-xl border bg-card p-4">
         <Avatar className="size-10">
-          <AvatarImage src={row.photoUrl} alt={row.name} />
+          <AvatarImage
+            src={row.photoUrl}
+            alt={row.name}
+            referrerPolicy="no-referrer"
+          />
           <AvatarFallback>{getInitials(row.name)}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1">

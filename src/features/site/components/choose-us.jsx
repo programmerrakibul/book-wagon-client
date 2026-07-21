@@ -20,6 +20,7 @@ function ChooseUs() {
               <img
                 src={chooseUsImg}
                 alt="Books"
+                loading="lazy"
                 className="w-full h-64 sm:h-80 lg:h-96 xl:h-fit object-cover rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-linear-to-t from-primary/20 to-transparent rounded-2xl" />

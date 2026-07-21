@@ -1,7 +1,7 @@
-﻿import logo from "@/assets/logo.png";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+﻿import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AvatarDropdown } from "@/components/ui/avatar-dropdown";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -24,7 +24,7 @@ import {
   Users,
 } from "lucide-react";
 import { useMemo } from "react";
-import { Link, NavLink, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
 
 const navLinkClass = ({ isActive }) =>
   cn(
@@ -87,10 +87,7 @@ function SidebarNav({ onNavClick }) {
   return (
     <aside className="flex h-full flex-col border-r bg-background">
       <div className="flex h-14 items-center border-b px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="BookWagon" className="h-8" />
-          <span className="text-base sm:text-lg font-bold">BookWagon</span>
-        </Link>
+        <Logo />
       </div>
 
       <Separator />
@@ -124,10 +121,7 @@ function SidebarNav({ onNavClick }) {
       <div className="p-3">
         <div className="flex items-center gap-3 rounded-lg bg-muted/50 p-3">
           <Avatar className="size-9">
-            <AvatarImage
-              src={user?.photoUrl}
-              alt={user?.name || "User"}
-            />
+            <AvatarImage src={user?.photoUrl} alt={user?.name || "User"} />
             <AvatarFallback>
               {(user?.name || user?.email || "U")
                 .split(" ")

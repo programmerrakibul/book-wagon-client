@@ -1,6 +1,7 @@
 ﻿import { Forbidden } from "@/components/ui/forbidden";
 import { Loading } from "@/components/ui/loading";
 import useRole from "@/features/auth/hooks/use-role";
+import { UserRoles } from "@/features/shared/constants/statuses";
 import useAuthStore from "@/store/use-auth-store";
 
 const AdminRoute = ({ children }) => {
@@ -11,7 +12,7 @@ const AdminRoute = ({ children }) => {
     return <Loading />;
   }
 
-  if (!user || role !== "admin") {
+  if (!user || role !== UserRoles.ADMIN) {
     return <Forbidden />;
   }
 
@@ -19,5 +20,3 @@ const AdminRoute = ({ children }) => {
 };
 
 export default AdminRoute;
-
-

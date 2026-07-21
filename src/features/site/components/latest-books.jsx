@@ -1,9 +1,15 @@
 ﻿import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Loading } from "@/components/ui/loading";
 import { BookCard } from "@/features/book/components/book-card";
 import { useBooks } from "@/features/book/hooks/use-books";
+import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 // eslint-disable-next-line no-unused-vars
@@ -11,10 +17,6 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, BookOpen } from "lucide-react";
-import "swiper/css";
-import "swiper/css/free-mode";
-import { Autoplay, FreeMode } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +24,7 @@ function LatestBooks() {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
-  const swiperRef = useRef(null);
+  const carouselRef = useRef(null);
   const buttonRef = useRef(null);
 
   const { data: { data: books = [] } = {}, isLoading } = useBooks({ limit: 6 });
@@ -45,7 +47,7 @@ function LatestBooks() {
       { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
     )
       .fromTo(
-        swiperRef.current,
+        carouselRef.current,
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
         "-=0.4",
@@ -80,31 +82,31 @@ function LatestBooks() {
           <Loading message="Loading latest books..." fullPage={false} />
         ) : books?.length > 0 ? (
           <>
-            <div ref={swiperRef}>
-              <Swiper
-                grabCursor
-                freeMode
-                loop
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                  pauseOnMouseEnter: true,
+            <div ref={carouselRef}>
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
                 }}
-                modules={[FreeMode, Autoplay]}
-                breakpoints={{
-                  320: { slidesPerView: 2, spaceBetween: 16 },
-                  640: { slidesPerView: 3, spaceBetween: 20 },
-                  768: { slidesPerView: 4, spaceBetween: 24 },
-                  1280: { slidesPerView: 5, spaceBetween: 24 },
-                  1536: { slidesPerView: 6, spaceBetween: 24 },
-                }}
+                plugins={[
+                  Autoplay({
+                    delay: 3000,
+                    stopOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                  }),
+                ]}
               >
-                {books.map((book) => (
-                  <SwiperSlide key={book._id} className="h-full!">
-                    <BookCard book={book} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                <CarouselContent className="-ml-4 cursor-grab items-stretch">
+                  {books.map((book) => (
+                    <CarouselItem
+                      key={book._id}
+                      className="pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 xl:basis-1/5 2xl:basis-1/6 h-full"
+                    >
+                      <BookCard book={book} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
 
             <motion.div

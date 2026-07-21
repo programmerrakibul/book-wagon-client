@@ -3,6 +3,7 @@ import {
   fetchLibrarianDashboard,
   fetchUserDashboard,
 } from "@/features/dashboard/services/dashboard.service";
+import useAuthStore from "@/store/use-auth-store";
 import { useQuery } from "@tanstack/react-query";
 
 export const dashboardKeys = {
@@ -12,22 +13,31 @@ export const dashboardKeys = {
 };
 
 export function useAdminDashboard() {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: dashboardKeys.admin,
+    queryKey: [...dashboardKeys.admin, user?.email],
     queryFn: fetchAdminDashboard,
+    enabled: !!user?.email,
   });
 }
 
 export function useLibrarianDashboard() {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: dashboardKeys.librarian,
+    queryKey: [...dashboardKeys.librarian, user?.email],
     queryFn: fetchLibrarianDashboard,
+    enabled: !!user?.email,
   });
 }
 
 export function useUserDashboard() {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: dashboardKeys.user,
+    queryKey: [...dashboardKeys.user, user?.email],
     queryFn: fetchUserDashboard,
+    enabled: !!user?.email,
   });
 }

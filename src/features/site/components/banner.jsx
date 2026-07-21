@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Section from "@/components/ui/section";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -64,7 +65,7 @@ function Banner() {
   }, []);
 
   return (
-    <section className="bg-linear-to-br from-primary/5 to-secondary/5">
+    <Section className="bg-linear-to-br from-primary/5 to-secondary/5">
       <Swiper
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         pagination={{ clickable: true, dynamicBullets: true }}
@@ -129,7 +130,7 @@ function Banner() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </Section>
   );
 }
 

@@ -11,7 +11,7 @@ function BookCard({ book = {} }) {
     : originalPrice;
 
   return (
-    <Link to={`/book-details/${book._id}`} className="group block">
+    <Link to={`/book-details/${book._id}`} className="group block h-full">
       <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 h-full">
         <div
           className={
@@ -26,7 +26,7 @@ function BookCard({ book = {} }) {
           />
         </div>
         <CardContent className="flex flex-col gap-2 p-4">
-          <CardTitle className="line-clamp-1 md:line-clamp-2 text-sm font-semibold leading-snug group-hover:text-primary">
+          <CardTitle className="line-clamp-1 md:line-clamp-2 md:min-h-10 text-sm font-semibold leading-snug group-hover:text-primary">
             {name}
           </CardTitle>
           <p className="text-xs text-muted-foreground line-clamp-1 truncate">
@@ -38,12 +38,12 @@ function BookCard({ book = {} }) {
           </span>
           <div className="flex items-center justify-start gap-2">
             <p className="mt-auto pt-1 text-sm font-bold">
-              ${discountedPrice || originalPrice}
+              ৳{(discountedPrice || originalPrice).toLocaleString()}
             </p>
 
             {discount && (
               <p className="text-xs text-destructive line-through">
-                ${originalPrice}
+                ৳{originalPrice.toLocaleString()}
               </p>
             )}
           </div>

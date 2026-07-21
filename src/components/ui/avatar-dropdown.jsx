@@ -36,7 +36,11 @@ function AvatarDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
         <Avatar className="size-8">
-          <AvatarImage src={user.photoUrl} alt={user.name} />
+          <AvatarImage
+            src={user.photoUrl}
+            alt={user.name}
+            referrerPolicy="no-referrer"
+          />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
