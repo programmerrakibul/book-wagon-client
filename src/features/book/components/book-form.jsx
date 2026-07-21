@@ -42,6 +42,10 @@ function BookForm({
     enabled: !!watchedValue,
   });
 
+  const options = useMemo(() => {}, []);
+
+  console.log(options);
+
   const categoryOptions = useMemo(
     () => categories.map((c) => ({ value: c._id, label: c.name })),
     [categories],
@@ -49,7 +53,7 @@ function BookForm({
 
   const subCategoryOptions = useMemo(
     () => [
-      { value: "none", label: "None" },
+      { value: "", label: "None" },
       ...subCategories.map((s) => ({ value: s._id, label: s.name })),
     ],
     [subCategories],
