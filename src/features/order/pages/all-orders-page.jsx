@@ -1,39 +1,25 @@
 ﻿import { useCallback } from "react";
 import { useSearchParams } from "react-router";
 
-import {
-  OrderStatusConfig,
-  getStatusBadge,
-} from "@/features/shared/constants/statuses";
-import { useOrders, useUpdateOrderStatus } from "@/features/order/hooks/use-orders";
+import { DataTable } from "@/components/shared/data-table";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
+import { useOrders } from "@/features/order/hooks/use-orders";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { DataTable } from "@/components/shared/data-table";
-
-const ORDER_STATUS_OPTIONS = [
-  { value: "pending", label: "Pending" },
-  { value: "shipped", label: "Shipped" },
-  { value: "delivered", label: "Delivered" },
-  { value: "cancelled", label: "Cancelled" },
-];
+  OrderStatusConfig,
+  PaymentStatusConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
 
 export default function AllOrdersPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  const { data, isLoading } = useOrders({ page, limit: 10 });
-  const statusMutation = useUpdateOrderStatus();
+  const { data, isLoading } = useOrders({ page, limit: 10, isLibrarian: true });
 
   const orders = data?.data ?? [];
   const totalPages = data?.pagination?.totalPages ?? 1;
@@ -95,34 +81,24 @@ export default function AllOrdersPage() {
       },
     },
     {
-      key: "actions",
-      header: "Actions",
-      className: "text-right min-w-[140px]",
-      cell: (row) => (
-        <Select
-          value={row.status}
-          onValueChange={(value) =>
-            statusMutation.mutate({ id: row._id, status: value })
-          }
-          disabled={statusMutation.isPending}
-        >
-          <SelectTrigger className="h-8 w-[130px] text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {ORDER_STATUS_OPTIONS.map((opt) => (
-              <SelectItem key={opt.value} value={opt.value}>
-                {opt.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      ),
+      key: "paymentStatus",
+      header: "Payment Status",
+      cell: (row) => {
+        const s = getStatusBadge(row.paymentStatus, PaymentStatusConfig);
+
+        return (
+          <Badge variant="outline" className={s.className}>
+            {s.label}
+          </Badge>
+        );
+      },
     },
   ];
 
   const renderCard = (row) => {
     const s = getStatusBadge(row.status, OrderStatusConfig);
+    const ps = getStatusBadge(row.paymentStatus, PaymentStatusConfig);
+
     return (
       <div className="flex items-center justify-between rounded-xl border bg-card p-4">
         <div className="min-w-0 flex-1">
@@ -136,6 +112,9 @@ export default function AllOrdersPage() {
             <Badge variant="outline" className={s.className}>
               {s.label}
             </Badge>
+            <Badge variant="outline" className={ps.className}>
+              {ps.label}
+            </Badge>
             <span className="text-xs text-muted-foreground">
               {new Date(row.createdAt).toLocaleDateString()}
             </span>
@@ -145,24 +124,6 @@ export default function AllOrdersPage() {
           <span className="text-sm font-medium">
             ${Number(row.totalPrice ?? 0).toFixed(2)}
           </span>
-          <Select
-            value={row.status}
-            onValueChange={(value) =>
-              statusMutation.mutate({ id: row._id, status: value })
-            }
-            disabled={statusMutation.isPending}
-          >
-            <SelectTrigger className="h-8 w-[120px] text-xs">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {ORDER_STATUS_OPTIONS.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
       </div>
     );
@@ -201,11 +162,7 @@ export default function AllOrdersPage() {
         <Heading title="All Orders" subtitle="Manage customer orders" />
 
         <div className="mt-6">
-          <DataTable
-            columns={columns}
-            data={orders}
-            renderCard={renderCard}
-          />
+          <DataTable columns={columns} data={orders} renderCard={renderCard} />
         </div>
 
         <Pagination

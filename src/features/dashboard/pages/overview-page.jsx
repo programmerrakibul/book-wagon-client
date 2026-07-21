@@ -3,6 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import AdminOverview from "@/features/dashboard/components/admin-overview";
 import LibrarianOverview from "@/features/dashboard/components/librarian-overview";
 import UserOverview from "@/features/dashboard/components/user-overview";
+import { UserRoles } from "@/features/shared/constants/statuses";
 
 export default function OverviewPage() {
   const { role, roleLoading } = useRole();
@@ -15,7 +16,8 @@ export default function OverviewPage() {
     );
   }
 
-  if (role === "admin") return <AdminOverview />;
-  if (role === "librarian") return <LibrarianOverview />;
+  if (role === UserRoles.ADMIN) return <AdminOverview />;
+  if (role === UserRoles.LIBRARIAN) return <LibrarianOverview />;
+
   return <UserOverview />;
 }

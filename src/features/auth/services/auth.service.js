@@ -10,7 +10,7 @@ export async function postUser(user) {
   return data;
 }
 
-export async function getUserRole() {
-  const { data } = await axiosInstance.get("/users/role");
+export async function getUserRole(email) {
+  const { data } = await axiosInstance.get(`/users/role/${email}`);
   return data || {};
 }

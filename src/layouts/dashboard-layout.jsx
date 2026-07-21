@@ -38,6 +38,8 @@ function SidebarNav({ onNavClick }) {
   const user = useAuthStore((s) => s.user);
   const { role, roleLoading } = useRole();
 
+  console.log(role)
+
   const menuItems = useMemo(() => {
     const items = [
       { to: "/dashboard", label: "Overview", icon: LayoutDashboard },

@@ -5,11 +5,12 @@ import { getUserRole } from "../services/auth.service";
 const useRole = () => {
   const user = useAuthStore((s) => s.user);
   const isLoading = useAuthStore((s) => s.authLoading);
+  const email = user?.email;
 
   const { data = {}, isLoading: roleLoading } = useQuery({
-    queryKey: ["role", user?.email],
-    queryFn: getUserRole,
-    enabled: !!user?.email,
+    queryKey: ["role", email],
+    queryFn: () => getUserRole(email),
+    enabled: !!email,
   });
 
   const role = data?.data?.role;

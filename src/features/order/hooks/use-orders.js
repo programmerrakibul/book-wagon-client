@@ -10,6 +10,7 @@ import {
   fetchOrders,
   updateOrderStatus,
 } from "@/features/order/services/orders.service";
+import useAuthStore from "@/store/use-auth-store";
 import { getAxiosError } from "@/utils/error";
 
 export const orderKeys = {
@@ -20,8 +21,10 @@ export const orderKeys = {
 };
 
 export function useOrders(params) {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: orderKeys.list(params),
+    queryKey: orderKeys.list({ ...params, email: user?.email }),
     queryFn: () => fetchOrders(params),
     placeholderData: keepPreviousData,
     staleTime: 30_000,
@@ -29,8 +32,10 @@ export function useOrders(params) {
 }
 
 export function useInvoices(params) {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: orderKeys.invoices(params),
+    queryKey: orderKeys.invoices({ ...params, email: user?.email }),
     queryFn: () => fetchInvoices(params),
     placeholderData: keepPreviousData,
     staleTime: 30_000,

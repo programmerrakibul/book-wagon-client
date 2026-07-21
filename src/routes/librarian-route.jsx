@@ -1,6 +1,7 @@
 ﻿import { Forbidden } from "@/components/ui/forbidden";
 import { Loading } from "@/components/ui/loading";
 import useRole from "@/features/auth/hooks/use-role";
+import { UserRoles } from "@/features/shared/constants/statuses";
 import useAuthStore from "@/store/use-auth-store";
 
 const LibrarianRoute = ({ children }) => {
@@ -11,7 +12,7 @@ const LibrarianRoute = ({ children }) => {
     return <Loading />;
   }
 
-  if (!user || role !== "librarian") {
+  if (!user || role !== UserRoles.LIBRARIAN) {
     return <Forbidden />;
   }
 
@@ -19,5 +20,3 @@ const LibrarianRoute = ({ children }) => {
 };
 
 export default LibrarianRoute;
-
-
