@@ -17,8 +17,10 @@ export const userKeys = {
 };
 
 export function useUsers(params) {
+  const user = useAuthStore((s) => s.user);
+
   return useQuery({
-    queryKey: userKeys.list(params),
+    queryKey: userKeys.list({ ...params, email: user?.email }),
     queryFn: () => fetchUsers(params),
     staleTime: 30_000,
   });

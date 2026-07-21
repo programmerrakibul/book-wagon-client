@@ -3,7 +3,6 @@
   BookOpen,
   DollarSign,
   Heart,
-  HeartCrackIcon,
   ShoppingCart,
 } from "lucide-react";
 
@@ -12,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -21,25 +19,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { BarChartCard } from "@/features/dashboard/components/bar-chart-card";
+import { DashboardSkeleton } from "@/features/dashboard/components/dashboard-skeleton";
 import { MetricCard } from "@/features/dashboard/components/metric-card";
 import { useUserDashboard } from "@/features/dashboard/hooks/use-dashboard";
-import { getStatusBadge } from "@/features/shared/constants/statuses";
-import { getPrice } from "@/utils/utils";
+import {
+  PaymentStatusConfig,
+  getStatusBadge,
+} from "@/features/shared/constants/statuses";
+
+const userChartConfig = {
+  amount: {
+    label: "Spending",
+    color: "var(--color-chart-1, #3b82f6)",
+  },
+};
 
 export default function UserOverview() {
   const { data, isLoading } = useUserDashboard();
 
-  if (isLoading) {
-    return (
-      <Container className="py-10 flex items-center justify-center min-h-[50vh]">
-        <Spinner className="size-8" />
-      </Container>
-    );
-  }
+  if (isLoading) return <DashboardSkeleton />;
 
   const stats = data?.stats ?? {};
   const recentOrders = data?.recentOrders ?? [];
   const wishlist = data?.wishlist ?? [];
+  const chartData = data?.chartData ?? [];
 
   return (
     <>
@@ -66,7 +70,7 @@ export default function UserOverview() {
           />
           <MetricCard
             title="Total Spent"
-            value={`$${Number(stats.totalSpent ?? 0).toFixed(2)}`}
+            value={`৳${Number(stats.totalSpent ?? 0).toFixed(2)}`}
             icon={<DollarSign className="size-5" />}
             description="Total amount spent"
           />
@@ -78,6 +82,14 @@ export default function UserOverview() {
           />
         </div>
 
+        <BarChartCard
+          title="Monthly Spending"
+          data={chartData}
+          config={userChartConfig}
+          dataKey="amount"
+          nameKey="month"
+        />
+
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
@@ -85,48 +97,67 @@ export default function UserOverview() {
             </CardHeader>
             <CardContent>
               {recentOrders.length > 0 ? (
-                <div className="rounded-lg border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Book</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Payment</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {recentOrders.map((order) => {
-                        const p = getStatusBadge(order.paymentStatus, {
-                          paid: {
-                            label: "Paid",
-                            className:
-                              "bg-green-100 text-green-800 border-green-200",
-                          },
-                          unpaid: {
-                            label: "Unpaid",
-                            className:
-                              "bg-yellow-100 text-yellow-800 border-yellow-200",
-                          },
-                        });
-                        return (
-                          <TableRow key={order.id}>
-                            <TableCell className="font-medium truncate max-w-[150px]">
+                <>
+                  <div className="rounded-lg border hidden sm:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Book</TableHead>
+                          <TableHead>Payment</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {recentOrders.map((order) => {
+                          const p = getStatusBadge(
+                            order.paymentStatus,
+                            PaymentStatusConfig,
+                          );
+                          return (
+                            <TableRow key={order.id}>
+                              <TableCell className="font-medium truncate max-w-[150px]">
+                                {order.bookName ?? "—"}
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant="outline"
+                                  className={p.className}
+                                >
+                                  {p.label}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="space-y-3 sm:hidden">
+                    {recentOrders.map((order) => {
+                      const p = getStatusBadge(
+                        order.paymentStatus,
+                        PaymentStatusConfig,
+                      );
+                      return (
+                        <div
+                          key={order.id}
+                          className="rounded-lg border p-3 space-y-2"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="font-medium text-sm truncate">
                               {order.bookName ?? "—"}
-                            </TableCell>
-                            <TableCell>
-                              ${Number(order.amount ?? 0).toFixed(2)}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline" className={p.className}>
-                                {p.label}
-                              </Badge>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
+                            </p>
+                            <span className="text-sm font-medium shrink-0">
+                              ৳{Number(order.amount ?? 0).toFixed(2)}
+                            </span>
+                          </div>
+                          <Badge variant="outline" className={p.className}>
+                            {p.label}
+                          </Badge>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
               ) : (
                 <EmptyState
                   icon={BookAlertIcon}
@@ -165,14 +196,19 @@ export default function UserOverview() {
                         </div>
                       </div>
                       <span className="text-sm font-medium shrink-0">
-                        ${getPrice(item)}
+                        ৳
+                        {Number(
+                          item.discount > 0
+                            ? item.discountedPrice || item.price
+                            : item.price,
+                        ).toFixed(2)}
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
                 <EmptyState
-                  icon={HeartCrackIcon}
+                  icon={Heart}
                   title="Your wishlist is empty"
                   description="Try adding some books to your wishlist."
                   action={{

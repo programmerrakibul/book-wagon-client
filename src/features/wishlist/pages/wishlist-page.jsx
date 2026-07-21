@@ -66,7 +66,12 @@ export default function WishlistPage() {
       className: "text-right",
       cell: (row) => (
         <span className="font-medium text-right">
-          ${getPrice(row.bookId || {})}
+          ৳
+          {getPrice({
+            price: row.bookId?.price,
+            discount: row.bookId?.discount,
+            discountedPrice: row.bookId?.discountedPrice,
+          })}
         </span>
       ),
     },
@@ -90,7 +95,12 @@ export default function WishlistPage() {
           {row.bookId?.author ?? "—"}
         </p>
         <p className="mt-1 text-sm font-medium">
-          ${getPrice(row.bookId || {})}
+          ৳
+          {getPrice({
+            price: row.bookId?.price,
+            discount: row.bookId?.discount,
+            discountedPrice: row.bookId?.discountedPrice,
+          })}
         </p>
       </div>
     </Link>

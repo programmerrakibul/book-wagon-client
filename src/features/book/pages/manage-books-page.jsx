@@ -15,7 +15,6 @@ import useBookFilters, { setPage } from "@/store/use-book-filters";
 
 import useAuthStore from "@/store/use-auth-store";
 import { ActiveToggle } from "../components/active-toggle";
-import StatusDropdown from "../components/status-dropdown";
 
 function ManageBooksPage() {
   const [viewBook, setViewBook] = useState(null);
@@ -56,16 +55,19 @@ function ManageBooksPage() {
       ),
     },
     {
+      key: "description",
+      header: "Description",
+      cell: (row) => (
+        <span className="line-clamp-2 w-[260px] whitespace-break-spaces truncate text-sm">
+          {row.description}
+        </span>
+      ),
+    },
+    {
       key: "author",
       header: "Author",
       className: "hidden md:table-cell",
       cell: (row) => <span className="text-sm">{row.author}</span>,
-    },
-    {
-      key: "status",
-      header: "Status",
-      className: "min-w-36",
-      cell: (row) => <StatusDropdown bookId={row._id} status={row.status} />,
     },
     {
       key: "isActive",
@@ -78,12 +80,14 @@ function ManageBooksPage() {
       header: "Actions",
       className: "text-right",
       cell: (row) => (
-        <BookActionsDropdown
-          book={row}
-          onView={setViewBook}
-          onDelete={deleteMutation.mutate}
-          showEdit={false}
-        />
+        <div className="flex items-center justify-end gap-2">
+          <BookActionsDropdown
+            book={row}
+            onView={setViewBook}
+            onDelete={deleteMutation.mutate}
+            showEdit={false}
+          />
+        </div>
       ),
     },
   ];
@@ -104,9 +108,10 @@ function ManageBooksPage() {
         className="h-24 w-16 shrink-0 rounded-md object-cover ring-1 ring-border"
       />
       <div className="flex flex-1 flex-col justify-between">
-        <div>
+        <div className="space-y-1">
           <h3 className="line-clamp-1 text-sm font-medium">{row.name}</h3>
-          <p className="mt-1 text-xs text-muted-foreground">{row.author}</p>
+          <p className="text-[10px] text-muted-foreground">{row.author}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2 whitespace-break-spaces truncate">{row.description}</p>
         </div>
         <div className="flex items-center justify-between gap-2">
           <ActiveToggle bookId={row._id} isActive={row.isActive} />

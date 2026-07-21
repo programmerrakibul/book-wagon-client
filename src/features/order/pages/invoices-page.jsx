@@ -82,7 +82,7 @@ export default function InvoicesPage() {
         </p>
       </div>
       <span className="ml-4 text-sm font-medium">
-        ${row.totalPrice.toLocaleString()}
+        ৳{row.totalPrice.toLocaleString()}
       </span>
     </div>
   );

@@ -64,7 +64,7 @@ export default function AllOrdersPage() {
       header: "Price",
       cell: (row) => (
         <span className="font-medium">
-          ${Number(row.totalPrice ?? 0).toFixed(2)}
+          ৳{Number(row.totalPrice ?? 0).toFixed(2)}
         </span>
       ),
     },
@@ -122,7 +122,7 @@ export default function AllOrdersPage() {
         </div>
         <div className="ml-4 flex flex-col items-end gap-2">
           <span className="text-sm font-medium">
-            ${Number(row.totalPrice ?? 0).toFixed(2)}
+            ৳{Number(row.totalPrice ?? 0).toFixed(2)}
           </span>
         </div>
       </div>

@@ -7,24 +7,11 @@
   TrendingUp,
   Users,
 } from "lucide-react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
   TableBody,
@@ -33,25 +20,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { BarChartCard } from "@/features/dashboard/components/bar-chart-card";
+import { DashboardSkeleton } from "@/features/dashboard/components/dashboard-skeleton";
 import { MetricCard } from "@/features/dashboard/components/metric-card";
+import { PieChartCard } from "@/features/dashboard/components/pie-chart-card";
 import { useAdminDashboard } from "@/features/dashboard/hooks/use-dashboard";
 import {
   OrderStatusConfig,
+  UserRoleConfig,
   getStatusBadge,
 } from "@/features/shared/constants/statuses";
 
-const PIE_COLORS = ["#3b82f6", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6"];
+const userGrowthChartConfig = {
+  totalUsers: {
+    label: "Total Users",
+    color: "var(--color-chart-1, #3b82f6)",
+  },
+};
 
 export default function AdminOverview() {
   const { data, isLoading } = useAdminDashboard();
 
-  if (isLoading) {
-    return (
-      <Container className="py-10 flex items-center justify-center min-h-[50vh]">
-        <Spinner className="size-8" />
-      </Container>
-    );
-  }
+  if (isLoading) return <DashboardSkeleton />;
 
   const stats = data?.stats ?? {};
   const recentOrders = data?.recentOrders ?? [];
@@ -62,6 +52,16 @@ export default function AdminOverview() {
 
   const orderStatusData = Object.entries(orderStatusDistribution).map(
     ([status, count]) => ({ status, count }),
+  );
+
+  const orderStatusChartConfig = Object.fromEntries(
+    Object.entries(orderStatusDistribution).map(([status], i) => [
+      status,
+      {
+        label: status,
+        color: `var(--color-chart-${(i % 5) + 1})`,
+      },
+    ]),
   );
 
   return (
@@ -129,70 +129,18 @@ export default function AdminOverview() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">User Growth</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={chartData}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      className="stroke-border"
-                    />
-                    <XAxis dataKey="monthName" className="text-xs" />
-                    <YAxis className="text-xs" />
-                    <Tooltip />
-                    <Bar
-                      dataKey="totalUsers"
-                      fill="var(--color-primary, #3b82f6)"
-                      radius={[4, 4, 0, 0]}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                <p className="flex h-[300px] items-center justify-center text-sm text-muted-foreground">
-                  No chart data available
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Orders by Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {orderStatusData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={orderStatusData}
-                      dataKey="count"
-                      nameKey="status"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label={({ status, count }) => `${status}: ${count}`}
-                    >
-                      {orderStatusData.map((_, index) => (
-                        <Cell
-                          key={index}
-                          fill={PIE_COLORS[index % PIE_COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <p className="flex h-[300px] items-center justify-center text-sm text-muted-foreground">
-                  No chart data available
-                </p>
-              )}
-            </CardContent>
-          </Card>
+          <BarChartCard
+            title="User Growth"
+            data={chartData}
+            config={userGrowthChartConfig}
+            dataKey="totalUsers"
+            nameKey="monthName"
+          />
+          <PieChartCard
+            title="Orders by Status"
+            data={orderStatusData}
+            config={orderStatusChartConfig}
+          />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -202,42 +150,70 @@ export default function AdminOverview() {
             </CardHeader>
             <CardContent>
               {recentOrders.length > 0 ? (
-                <div className="rounded-lg border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Book</TableHead>
-                        <TableHead className="hidden sm:table-cell">
-                          Customer
-                        </TableHead>
-                        <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {recentOrders.map((order) => {
-                        const s = getStatusBadge(
-                          order.status,
-                          OrderStatusConfig,
-                        );
-                        return (
-                          <TableRow key={order.id}>
-                            <TableCell className="font-medium truncate max-w-[150px]">
+                <>
+                  <div className="rounded-lg border hidden sm:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Book</TableHead>
+                          <TableHead className="hidden sm:table-cell">
+                            Customer
+                          </TableHead>
+                          <TableHead>Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {recentOrders.map((order) => {
+                          const s = getStatusBadge(
+                            order.status,
+                            OrderStatusConfig,
+                          );
+                          return (
+                            <TableRow key={order.id}>
+                              <TableCell className="font-medium truncate max-w-[150px]">
+                                {order.bookName ?? "—"}
+                              </TableCell>
+                              <TableCell className="hidden sm:table-cell text-muted-foreground truncate max-w-[120px]">
+                                {order.customerEmail ?? "—"}
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  variant="outline"
+                                  className={s.className}
+                                >
+                                  {s.label}
+                                </Badge>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="space-y-3 sm:hidden">
+                    {recentOrders.map((order) => {
+                      const s = getStatusBadge(order.status, OrderStatusConfig);
+                      return (
+                        <div
+                          key={order.id}
+                          className="rounded-lg border p-3 space-y-2"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="font-medium text-sm truncate">
                               {order.bookName ?? "—"}
-                            </TableCell>
-                            <TableCell className="hidden sm:table-cell text-muted-foreground truncate max-w-[120px]">
-                              {order.customerEmail ?? "—"}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline" className={s.className}>
-                                {s.label}
-                              </Badge>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
+                            </p>
+                            <Badge variant="outline" className={s.className}>
+                              {s.label}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {order.customerEmail ?? "—"}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
               ) : (
                 <p className="py-8 text-center text-sm text-muted-foreground">
                   No recent orders
@@ -255,7 +231,7 @@ export default function AdminOverview() {
                 <div className="space-y-3">
                   {topBooks.map((book, index) => (
                     <div
-                      key={book.bookId ?? index}
+                      key={book.bookId ?? book._id ?? index}
                       className="flex items-center justify-between gap-3"
                     >
                       <div className="flex items-center gap-3 min-w-0">
@@ -287,7 +263,7 @@ export default function AdminOverview() {
               <CardTitle className="text-base">Recent Users</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border">
+              <div className="rounded-lg border hidden sm:block">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -300,22 +276,7 @@ export default function AdminOverview() {
                   </TableHeader>
                   <TableBody>
                     {recentUsers.map((u, index) => {
-                      const rc = getStatusBadge(u.role, {
-                        admin: {
-                          label: "Admin",
-                          className: "bg-red-100 text-red-800 border-red-200",
-                        },
-                        librarian: {
-                          label: "Librarian",
-                          className:
-                            "bg-blue-100 text-blue-800 border-blue-200",
-                        },
-                        user: {
-                          label: "User",
-                          className:
-                            "bg-green-100 text-green-800 border-green-200",
-                        },
-                      });
+                      const rc = getStatusBadge(u.role, UserRoleConfig);
                       return (
                         <TableRow key={u.email ?? index}>
                           <TableCell className="font-medium">
@@ -334,6 +295,27 @@ export default function AdminOverview() {
                     })}
                   </TableBody>
                 </Table>
+              </div>
+              <div className="space-y-3 sm:hidden">
+                {recentUsers.map((u, index) => {
+                  const rc = getStatusBadge(u.role, UserRoleConfig);
+                  return (
+                    <div
+                      key={u.email ?? index}
+                      className="rounded-lg border p-3 space-y-1"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="font-medium text-sm">{u.name}</p>
+                        <Badge variant="outline" className={rc.className}>
+                          {rc.label}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {u.email}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
