@@ -52,23 +52,17 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
         theme: resolvedTheme === "light" ? "stripe" : "night",
         labels: "floating",
         variables: {
-          colorPrimary: "hsl(var(--primary))",
-          colorBackground: "hsl(var(--card))",
-          colorText: "hsl(var(--foreground))",
-          colorDanger: "hsl(var(--destructive))",
-          colorTextSecondary: "hsl(var(--muted-foreground))",
-          colorBorder: "hsl(var(--border))",
-          borderRadius: "var(--radius)",
-          iconColor: "hsl(var(--foreground))",
+          colorPrimary: "#6366f1",
+          colorDanger: "#ef4444",
+          iconColor: "#6366f1",
         },
         rules: {
           ".Input": {
-            borderColor: "hsl(var(--primary))",
             backgroundColor: "hsl(var(--card))",
             color: "hsl(var(--foreground))",
           },
           ".Input:focus": {
-            borderColor: "hsl(var(--primary))",
+            borderColor: "#6366f1",
           },
         },
       },
