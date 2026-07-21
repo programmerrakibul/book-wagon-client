@@ -1,5 +1,6 @@
 ﻿import router from "@/routes/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { RouterProvider } from "react-router";
 import { Toaster } from "./components/ui/sonner";
 
@@ -10,8 +11,14 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster closeButton richColors position="top-center" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          value={{ light: "light", dark: "dark" }}
+        >
+          <RouterProvider router={router} />
+          <Toaster closeButton richColors position="top-center" />
+        </ThemeProvider>
       </QueryClientProvider>
     </>
   );

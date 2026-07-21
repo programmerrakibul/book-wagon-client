@@ -2,7 +2,6 @@ import { queryClient } from "@/App";
 import { Button } from "@/components/ui/button";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useAuthStore from "@/store/use-auth-store";
 import {
   PaymentElement,
   useCheckoutElements,
@@ -15,7 +14,6 @@ export default function PaymentForm({ onSuccess, onCancel }) {
   const checkoutState = useCheckoutElements();
   const [isProcessing, startTransition] = useTransition(false);
   const [error, setError] = useState(null);
-  const user = useAuthStore((s) => s.user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,15 +27,14 @@ export default function PaymentForm({ onSuccess, onCancel }) {
     startTransition(async () => {
       try {
         const result = await checkoutState.checkout.confirm({
-          email: user?.email,
           redirect: "if_required",
         });
 
         if (result.type === "error") {
           setError(result.error.message ?? "Payment failed. Please try again.");
         } else {
-          onSuccess(result?.checkoutSession?.id || "unknown");
           queryClient.invalidateQueries({ queryKey: orderKeys.all });
+          onSuccess();
         }
       } catch (err) {
         console.error("Confirm error:", err);

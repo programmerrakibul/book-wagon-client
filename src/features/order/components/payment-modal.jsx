@@ -8,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckoutElementsProvider } from "@stripe/react-stripe-js/checkout";
 import { loadStripe } from "@stripe/stripe-js";
-import { useCallback, useState } from "react";
+import { useTheme } from "next-themes";
+import { useCallback, useMemo, useState } from "react";
 import { useCheckout } from "../hooks/use-orders";
 import PaymentForm from "./payment-form";
 import PaymentSuccessModal from "./payment-success-modal";
@@ -24,40 +24,15 @@ if (!STRIPE_PUBLISHABLE_KEY) {
 
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
-const elementsOptions = {
-  appearance: {
-    theme: "stripe",
-    variables: {
-      colorPrimary: "hsl(var(--primary))",
-      colorBackground: "hsl(var(--card))",
-      colorText: "hsl(var(--foreground))",
-      colorDanger: "hsl(var(--destructive))",
-      colorTextSecondary: "hsl(var(--muted-foreground))",
-      colorBorder: "hsl(var(--border))",
-      borderRadius: "var(--radius)",
-    },
-    rules: {
-      ".Input": {
-        borderColor: "hsl(var(--input))",
-        backgroundColor: "hsl(var(--card))",
-        color: "hsl(var(--foreground))",
-      },
-      ".Input:focus": {
-        borderColor: "hsl(var(--ring))",
-      },
-    },
-  },
-};
-
 export default function PaymentModal({ isOpen, onClose, orderId }) {
   const [clientSecret, setClientSecret] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const { mutate, isPending } = useCheckout();
+  const { resolvedTheme } = useTheme();
 
   const openPayment = useCallback(() => {
     mutate(orderId, {
       onSuccess: (data) => {
-        console.log(data);
         setClientSecret(data.clientSecret);
       },
     });
@@ -70,6 +45,36 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
       setShowSuccess(false);
     }, 300);
   };
+
+  const elementsOptions = useMemo(
+    () => ({
+      appearance: {
+        theme: resolvedTheme === "light" ? "stripe" : "night",
+        labels: "floating",
+        variables: {
+          colorPrimary: "hsl(var(--primary))",
+          colorBackground: "hsl(var(--card))",
+          colorText: "hsl(var(--foreground))",
+          colorDanger: "hsl(var(--destructive))",
+          colorTextSecondary: "hsl(var(--muted-foreground))",
+          colorBorder: "hsl(var(--border))",
+          borderRadius: "var(--radius)",
+          iconColor: "hsl(var(--foreground))",
+        },
+        rules: {
+          ".Input": {
+            borderColor: "hsl(var(--primary))",
+            backgroundColor: "hsl(var(--card))",
+            color: "hsl(var(--foreground))",
+          },
+          ".Input:focus": {
+            borderColor: "hsl(var(--primary))",
+          },
+        },
+      },
+    }),
+    [resolvedTheme],
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={resetModal}>
@@ -101,19 +106,19 @@ export default function PaymentModal({ isOpen, onClose, orderId }) {
         ) : showSuccess ? (
           <PaymentSuccessModal onClose={resetModal} />
         ) : (
-            <CheckoutElementsProvider
-              stripe={stripePromise}
-              options={{
-                clientSecret,
-                elementsOptions,
-                adaptivePricing: { allowed: true },
-              }}
-            >
-              <PaymentForm
-                onSuccess={() => setShowSuccess(true)}
-                onCancel={resetModal}
-              />
-            </CheckoutElementsProvider>
+          <CheckoutElementsProvider
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+              elementsOptions,
+              adaptivePricing: { allowed: true },
+            }}
+          >
+            <PaymentForm
+              onSuccess={() => setShowSuccess(true)}
+              onCancel={resetModal}
+            />
+          </CheckoutElementsProvider>
         )}
       </DialogContent>
     </Dialog>
