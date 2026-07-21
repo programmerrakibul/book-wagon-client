@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import missionImg from "@/assets/mission.png";
 import ourStoryImg from "@/assets/our_story.png";
 import visionImg from "@/assets/vision.png";
+import { NumberTicker } from "@/components/ui/number-ticker";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,10 +16,10 @@ const fadeUp = {
 };
 
 const stats = [
-  { icon: BookOpen, value: "50,000+", label: "Books Available" },
-  { icon: Users, value: "120,000+", label: "Happy Readers" },
-  { icon: Globe, value: "30+", label: "Countries Served" },
-  { icon: Award, value: "15+", label: "Years of Excellence" },
+  { icon: BookOpen, value: 50000, label: "Books Available" },
+  { icon: Users, value: 120000, label: "Happy Readers" },
+  { icon: Globe, value: 30, label: "Countries Served" },
+  { icon: Award, value: 5, label: "Years of Excellence" },
 ];
 
 export default function AboutPage() {
@@ -73,6 +74,7 @@ export default function AboutPage() {
               <img
                 src={ourStoryImg}
                 alt="Our Story"
+                loading="lazy"
                 className="h-full w-full object-cover"
               />
             </div>
@@ -109,7 +111,11 @@ export default function AboutPage() {
                         <stat.icon className="size-6 text-primary" />
                       </div>
                       <span className="text-3xl font-bold text-foreground">
-                        {stat.value}
+                        <NumberTicker
+                          value={stat.value}
+                          startValue={(stat.value * 0.8).toFixed(0)}
+                        />
+                        +
                       </span>
                       <span className="text-sm text-muted-foreground">
                         {stat.label}
@@ -135,6 +141,7 @@ export default function AboutPage() {
                 <img
                   src={missionImg}
                   alt="Our Mission"
+                  loading="lazy"
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -175,6 +182,7 @@ export default function AboutPage() {
                 <img
                   src={visionImg}
                   alt="Our Vision"
+                  loading="lazy"
                   className="h-full w-full object-cover"
                 />
               </div>
