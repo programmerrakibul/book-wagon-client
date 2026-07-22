@@ -34,9 +34,11 @@ export function useToggleFavorite(bookId) {
       return toggleFavorite(bookId);
     },
     onSuccess: (result) => {
-      queryClient.invalidateQueries({
-        queryKey: favoriteKeys.check(bookId, user.email),
-      });
+      const queryKey = favoriteKeys.check(bookId, user.email);
+
+      queryClient.setQueryData(queryKey, (oldData) => !oldData);
+      queryClient.invalidateQueries({ queryKey });
+
       toast.success(result.message);
     },
     onError: (err) => {

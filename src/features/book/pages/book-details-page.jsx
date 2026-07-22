@@ -1,4 +1,4 @@
-﻿import { ArrowLeft, Heart, ShoppingCart, User } from "lucide-react";
+﻿import { ArrowLeft, ShoppingCart, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -13,11 +13,9 @@ import { BookPriceCard } from "@/features/book/components/book-price-card";
 import { OrderModal } from "@/features/book/components/order-modal";
 import { ReviewSection } from "@/features/book/components/review-section";
 import { useBook } from "@/features/book/hooks/use-books";
-import {
-  useIsFavorite,
-  useToggleFavorite,
-} from "@/features/book/hooks/use-favorites";
 import useAuthStore from "@/store/use-auth-store";
+import { toast } from "sonner";
+import FavoriteButton from "../components/favorite-button";
 
 function DetailsSkeleton() {
   return (
@@ -48,8 +46,6 @@ function BookDetailsPage() {
   const [orderOpen, setOrderOpen] = useState(false);
 
   const { data: book, isLoading: bookLoading } = useBook(id);
-  const { data: isFavorite } = useIsFavorite(id, user?.email);
-  const toggleFavorite = useToggleFavorite(id);
 
   if (bookLoading) {
     return (
@@ -104,22 +100,8 @@ function BookDetailsPage() {
                   <h1 className="flex-1 text-2xl font-bold sm:text-3xl lg:text-4xl xl:text-5xl">
                     {book.name}
                   </h1>
-                  {!isLibrarian && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => toggleFavorite.mutate()}
-                      disabled={toggleFavorite.isPending}
-                    >
-                      <Heart
-                        className={`size-5 ${
-                          isFavorite
-                            ? "fill-red-500 text-red-500"
-                            : "text-muted-foreground"
-                        }`}
-                      />
-                    </Button>
-                  )}
+
+                  <FavoriteButton email={book.librarianId?.email} id={id} />
                 </div>
                 <div className="mt-2 flex items-center gap-2 text-base sm:text-lg">
                   <User className="size-4 text-primary" />
@@ -140,7 +122,14 @@ function BookDetailsPage() {
               {!isLibrarian && (
                 <Button
                   className="w-full"
-                  onClick={() => setOrderOpen(true)}
+                  onClick={() => {
+                    if (!user) {
+                      toast.info("Please sign in to order a book.");
+                      return;
+                    }
+
+                    setOrderOpen(true);
+                  }}
                   disabled={book.stock === 0}
                 >
                   <ShoppingCart />
