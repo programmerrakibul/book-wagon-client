@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Fragment } from "react";
 import { EmptyState } from "./empty-state";
 
 export function DataTable({
@@ -30,10 +31,10 @@ export function DataTable({
   return (
     <>
       {renderCard && (
-        <div className="grid gap-4 sm:hidden">
+        <div className="grid grid-cols-1 gap-4 sm:hidden w-full">
           {data.length
             ? data.map((row) => (
-                <div key={getRowId(row)}>{renderCard(row)}</div>
+                <Fragment key={getRowId(row)}>{renderCard(row)}</Fragment>
               ))
             : emptyState || <EmptyState />}
         </div>
