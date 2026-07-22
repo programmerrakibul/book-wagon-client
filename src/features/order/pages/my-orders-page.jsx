@@ -8,6 +8,14 @@ import { Pagination } from "@/components/shared/pagination";
 import { SkeletonLayout } from "@/components/shared/skeleton-layout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { useOrders } from "@/features/order/hooks/use-orders";
@@ -122,12 +130,19 @@ export default function MyOrdersPage() {
   const renderCard = (row) => {
     const s = getStatusBadge(row.status, OrderStatusConfig);
     const p = getStatusBadge(row.paymentStatus, PaymentStatusConfig);
+
     return (
-      <div className="flex items-center justify-between rounded-xl border bg-card p-4">
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium">
+      <Card>
+        <CardHeader className="flex items-center justify-between gap-2.5">
+          <CardTitle className="truncate text-sm font-medium">
             {row.bookId?.name ?? "Unknown Book"}
+          </CardTitle>
+          <p className="text-sm font-medium">
+            ৳{row.price}×{row.quantity}
           </p>
+        </CardHeader>
+
+        <CardContent className="space-y-3.5">
           <p className="text-sm text-muted-foreground truncate flex items-center gap-2">
             {row.transactionId?.trim() ? (
               <>
@@ -156,14 +171,14 @@ export default function MyOrdersPage() {
               {p.label}
             </Badge>
           </div>
-        </div>
-        <div className="ml-4 flex flex-col items-end gap-2">
-          <span className="text-sm font-medium">
-            ৳{row.price}×{row.quantity}
-          </span>
-          <RowActions row={row} />
-        </div>
-      </div>
+        </CardContent>
+
+        <CardFooter className="justify-end">
+          <CardAction>
+            <RowActions row={row} />
+          </CardAction>
+        </CardFooter>
+      </Card>
     );
   };
 
@@ -198,19 +213,21 @@ export default function MyOrdersPage() {
     <>
       <title>My Orders | BookWagon</title>
 
-      <Container className="py-6 sm:py-8 lg:py-10">
-        <Heading title="My Orders" subtitle="View and manage your orders" />
+      <section className="py-6 sm:py-8 lg:py-10">
+        <Container>
+          <Heading title="My Orders" subtitle="View and manage your orders" />
 
-        <div className="mt-6">
+          <div className="mt-6">
           <DataTable columns={columns} data={orders} renderCard={renderCard} />
         </div>
 
-        <Pagination
+          <Pagination
           page={page}
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-      </Container>
+        </Container>
+      </section>
     </>
   );
 }

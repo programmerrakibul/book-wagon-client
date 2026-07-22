@@ -65,7 +65,7 @@ export default function WishlistPage() {
       header: "Price",
       className: "text-right",
       cell: (row) => (
-        <span className="font-medium text-right">
+        <span className="font-medium flex items-center justify-end">
           ৳
           {getPrice({
             price: row.bookId?.price,

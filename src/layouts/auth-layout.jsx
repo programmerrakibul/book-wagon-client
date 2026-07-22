@@ -17,6 +17,7 @@ const AuthLayout = () => {
           src={authImg}
           alt="A boy in front of the shelf"
           className="h-full w-full object-cover"
+          loading="eager"
         />
       </div>
 
