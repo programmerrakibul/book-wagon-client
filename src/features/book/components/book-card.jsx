@@ -1,7 +1,10 @@
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import FavoriteButton from "./favorite-button";
 
 function BookCard({ book = {} }) {
+  const navigate = useNavigate();
   const name = book.name;
   const image = book.photoUrl;
   const discount = book.discount > 0;
@@ -11,11 +14,16 @@ function BookCard({ book = {} }) {
     : originalPrice;
 
   return (
-    <Link to={`/book-details/${book._id}`} className="group block h-full">
-      <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 h-full">
+    <>
+      <Card
+        onClick={() => {
+          navigate(`/book-details/${book._id}`);
+        }}
+        className="overflow-hidden transition-shadow duration-200 hover:shadow-md py-0 gap-0 group h-full cursor-pointer"
+      >
         <div
           className={
-            "aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted"
+            "aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted relative"
           }
         >
           <img
@@ -24,6 +32,21 @@ function BookCard({ book = {} }) {
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
+
+          {discount && (
+            <Badge
+              variant="destructive"
+              className="absolute top-3 left-3"
+            >{`-${book.discount}% off`}</Badge>
+          )}
+
+          <div className="absolute top-3 right-3">
+            <FavoriteButton
+              id={book._id}
+              email={book.librarianId?.email}
+              className="bg-background/50 backdrop-blur-md"
+            />
+          </div>
         </div>
         <CardContent className="flex flex-col gap-2 p-4">
           <CardTitle className="line-clamp-1 md:line-clamp-2 md:min-h-10 text-sm font-semibold leading-snug group-hover:text-primary">
@@ -49,7 +72,7 @@ function BookCard({ book = {} }) {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </>
   );
 }
 

@@ -2,7 +2,7 @@
 import { ArrowLeftIcon, Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -25,13 +25,15 @@ import { Spinner } from "@/components/ui/spinner";
 
 import { postUser } from "@/features/auth/services/auth.service";
 import { loginWithPassword } from "@/store/use-auth-store";
+import { getAuthErrorMessage } from "@/utils/error";
 import GoogleLogin from "../components/google-login";
 import { loginSchema } from "../validation/auth";
-import { getAuthErrorMessage } from "@/utils/error";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [searchParams] = useSearchParams();
+  const to = searchParams.get("to") || "/";
 
   const {
     control,
@@ -50,7 +52,7 @@ export default function LoginPage() {
       const user = await loginWithPassword(values);
       await postUser(user);
       toast.success("Welcome back!");
-      navigate("/");
+      navigate(to);
     } catch (err) {
       const msg = getAuthErrorMessage(err.code);
       toast.error(msg || "Login failed");

@@ -1,18 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { loginWithGoogle } from "@/store/use-auth-store";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { postUser } from "../services/auth.service";
 
 const GoogleLogin = ({ label = "Sign in with Google" }) => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const to = searchParams.get("to") || "/";
 
   const handleGoogle = async () => {
     try {
       const user = await loginWithGoogle();
       await postUser(user);
       toast.success("Signed in with Google!");
-      navigate("/");
+      navigate(to);
     } catch (err) {
       toast.error(err.message || "Google sign-in failed");
     }

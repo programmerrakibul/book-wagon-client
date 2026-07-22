@@ -36,3 +36,9 @@ export const getInitials = (text) => {
 
   return value.charAt(0).toUpperCase();
 };
+
+export const getCallbackUrl = () => {
+  const url = new URL(window.location).href;
+
+  return encodeURIComponent(url);
+};

@@ -27,7 +27,7 @@ function LatestBooks() {
   const carouselRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const { data: { data: books = [] } = {}, isLoading } = useBooks({ limit: 6 });
+  const { data: { data: books = [] } = {}, isLoading } = useBooks({ limit: 8 });
 
   useEffect(() => {
     if (isLoading || !books?.length) return;
