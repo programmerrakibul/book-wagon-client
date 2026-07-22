@@ -5,7 +5,6 @@ import { Controller, useForm } from "react-hook-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Container } from "@/components/ui/container";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
 import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
@@ -29,24 +28,20 @@ export default function EditProfilePage() {
 
   const mutation = useUpdateUserProfile();
 
-  if (authLoading) {
-    return (
-      <Container className="py-10 flex items-center justify-center min-h-[50vh]">
-        <Spinner className="size-8" />
-      </Container>
-    );
-  }
-
   return (
     <>
       <title>Edit Profile | BookWagon</title>
 
-      <Container className="py-10">
-        <Heading
-          title="Edit Profile"
-          subtitle="Update your account information"
-        />
+      <Heading
+        title="Edit Profile"
+        subtitle="Update your account information"
+      />
 
+      {authLoading ? (
+        <div className="flex items-center justify-center">
+          <Spinner className="size-8" />
+        </div>
+      ) : (
         <Card className="mt-8 max-w-2xl">
           <CardHeader>
             <CardTitle className="text-base">Profile Information</CardTitle>
@@ -131,7 +126,7 @@ export default function EditProfilePage() {
             </form>
           </CardContent>
         </Card>
-      </Container>
+      )}
     </>
   );
 }
