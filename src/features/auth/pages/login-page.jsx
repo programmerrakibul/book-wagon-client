@@ -27,6 +27,7 @@ import { postUser } from "@/features/auth/services/auth.service";
 import { loginWithPassword } from "@/store/use-auth-store";
 import GoogleLogin from "../components/google-login";
 import { loginSchema } from "../validation/auth";
+import { getAuthErrorMessage } from "@/utils/error";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -51,7 +52,8 @@ export default function LoginPage() {
       toast.success("Welcome back!");
       navigate("/");
     } catch (err) {
-      toast.error(err.message || "Login failed");
+      const msg = getAuthErrorMessage(err.code);
+      toast.error(msg || "Login failed");
     }
   };
 
