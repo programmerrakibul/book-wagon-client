@@ -12,7 +12,7 @@ import { cn } from "@/utils/utils";
 import { MenuIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { AnimatedThemeToggler } from "./animated-theme-toggler";
 import { Container } from "./container";
 import { Logo } from "./logo";
@@ -26,8 +26,10 @@ const navLinks = [
 
 function Navbar() {
   const user = useAuthStore((s) => s.user);
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { setTheme, theme } = useTheme();
+  const { pathname, search } = useLocation();
 
   return (
     <header className="fixed w-full top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -113,6 +115,9 @@ function Navbar() {
                       className="w-full"
                       onClick={() => {
                         logoutUser();
+                        navigate(
+                          `/auth/login?to=${encodeURIComponent(pathname + search)}`,
+                        );
                         setOpen(false);
                       }}
                     >

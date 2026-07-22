@@ -15,11 +15,12 @@ import {
   LogOutIcon,
   UserIcon,
 } from "lucide-react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 function AvatarDropdown() {
   const user = useAuthStore((s) => s.user);
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const navigate = useNavigate();
 
   if (!user) return null;
 
@@ -84,7 +85,13 @@ function AvatarDropdown() {
         )}
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={() => logoutUser()}>
+        <DropdownMenuItem
+          variant="destructive"
+          onClick={() => {
+            logoutUser();
+            navigate(`/auth/login?to=${encodeURIComponent(pathname + search)}`);
+          }}
+        >
           <LogOutIcon />
           Logout
         </DropdownMenuItem>
