@@ -1,7 +1,16 @@
 ﻿import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/utils/utils";
 
-function MetricCard({ title, value, icon, description, trend, className }) {
+function MetricCard({
+  title,
+  value,
+  icon,
+  description,
+  trend,
+  className,
+  isLoading,
+}) {
   return (
     <Card className={cn("flex flex-col", className)}>
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
@@ -15,7 +24,11 @@ function MetricCard({ title, value, icon, description, trend, className }) {
         )}
       </CardHeader>
       <CardContent className="space-y-1">
-        <div className="text-2xl font-bold">{value}</div>
+        {isLoading ? (
+          <Spinner className={"size-6"} />
+        ) : (
+          <div className="text-2xl font-bold">{value}</div>
+        )}
         {description && (
           <p className="text-xs text-muted-foreground">{description}</p>
         )}
