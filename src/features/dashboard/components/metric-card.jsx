@@ -18,7 +18,7 @@ function MetricCard({
           {title}
         </CardTitle>
         {icon && (
-          <div className="flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+          <div className="flex size-9 items-center justify-center rounded-lg bg-primary/15 text-muted-foreground">
             {icon}
           </div>
         )}
