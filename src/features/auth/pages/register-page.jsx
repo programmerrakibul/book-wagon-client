@@ -27,6 +27,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { postUser } from "@/features/auth/services/auth.service";
 import { uploadImage } from "@/lib/upload-image";
 import { createUser } from "@/store/use-auth-store";
+import { getAuthErrorMessage } from "@/utils/error";
 import GoogleLogin from "../components/google-login";
 import { registerSchema } from "../validation/auth";
 
@@ -56,7 +57,8 @@ export default function RegisterPage() {
       toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      toast.error(err.message || "Registration failed");
+      const msg = getAuthErrorMessage(err.code);
+      toast.error(msg || "Registration failed");
     }
   };
 
