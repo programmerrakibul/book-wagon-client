@@ -1,136 +1,93 @@
-﻿import { Button } from "@/components/ui/button";
+﻿import Autoplay from "embla-carousel-autoplay";
+import { useCallback, useEffect, useState } from "react";
+
 import { Container } from "@/components/ui/container";
 import { sliderData } from "@/features/site/data/slider-data";
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
-import { gsap } from "gsap";
-import { ArrowRight } from "lucide-react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Section from "@/components/ui/section";
+import { cn } from "@/utils/utils";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 function Banner() {
-  const navigate = useNavigate();
-  const titleRef = useRef(null);
-  const descRef = useRef(null);
-  const buttonRef = useRef(null);
-  const imageRef = useRef(null);
+  const [api, setApi] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const total = sliderData.length;
+
+  const onSelect = useCallback(() => {
+    if (!api) return;
+    setCurrentIndex(api.selectedScrollSnap());
+  }, [api]);
 
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    tl.fromTo(
-      titleRef.current,
-      { opacity: 0, y: -30 },
-      { opacity: 1, y: 0, duration: 0.8 },
-    )
-      .fromTo(
-        descRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        "-=0.4",
-      )
-      .fromTo(
-        buttonRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.6 },
-        "-=0.4",
-      )
-      .fromTo(
-        imageRef.current,
-        { opacity: 0, x: 50 },
-        { opacity: 1, x: 0, duration: 1 },
-        "-=0.8",
-      );
-
-    return () => tl.kill();
-  }, []);
+    if (!api) return;
+    onSelect();
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api, onSelect]);
 
   return (
-    <Section className="bg-linear-to-br from-primary/5 to-secondary/5">
-      <Swiper
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        pagination={{ clickable: true, dynamicBullets: true }}
-        navigation
-        loop
-        speed={800}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="w-full [&_.swiper-pagination]:bottom-5 sm:[&_.swiper-pagination]:bottom-8 [&_.swiper-pagination-bullet]:h-2.5 [&_.swiper-pagination-bullet]:w-2.5 [&_.swiper-pagination-bullet]:bg-primary [&_.swiper-pagination-bullet]:opacity-50 [&_.swiper-pagination-bullet-active]:opacity-100 [&_.swiper-button-next]:hidden sm:[&_.swiper-button-next]:flex [&_.swiper-button-next]:h-10 sm:[&_.swiper-button-next]:h-12 [&_.swiper-button-next]:w-10 sm:[&_.swiper-button-next]:w-12 [&_.swiper-button-next]:rounded-full [&_.swiper-button-next]:bg-primary/10 [&_.swiper-button-next]:text-primary [&_.swiper-button-next]:after:text-lg sm:[&_.swiper-button-next]:after:text-xl [&_.swiper-button-next]:hover:bg-primary/20 [&_.swiper-button-prev]:hidden sm:[&_.swiper-button-prev]:flex [&_.swiper-button-prev]:h-10 sm:[&_.swiper-button-prev]:h-12 [&_.swiper-button-prev]:w-10 sm:[&_.swiper-button-prev]:w-12 [&_.swiper-button-prev]:rounded-full [&_.swiper-button-prev]:bg-primary/10 [&_.swiper-button-prev]:text-primary [&_.swiper-button-prev]:after:text-lg sm:[&_.swiper-button-prev]:after:text-xl [&_.swiper-button-prev]:hover:bg-primary/20"
-      >
-        {sliderData.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Container>
-                <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-12 py-12 sm:py-16 lg:py-20 min-h-[70dvh]">
-                  <div className="flex-1 text-center lg:text-left">
-                    <motion.h1
-                      ref={titleRef}
-                      variants={itemVariants}
-                      className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
-                    >
-                      {slide.title}
-                    </motion.h1>
-                    <motion.p
-                      ref={descRef}
-                      variants={itemVariants}
-                      className="text-sm sm:text-base lg:text-lg xl:text-xl mb-6 sm:mb-8 lg:mb-10 leading-relaxed text-muted-foreground"
-                    >
-                      {slide.description}
-                    </motion.p>
-                    <motion.div ref={buttonRef} variants={itemVariants}>
-                      <Button
-                        onClick={() => navigate("/books")}
-                        className="gap-2"
-                      >
-                        Explore All Books
-                        <ArrowRight className="size-4" />
-                      </Button>
-                    </motion.div>
-                  </div>
-
-                  <motion.div
-                    ref={imageRef}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex-1"
-                  >
-                    <img
-                      src={slide.image}
-                      alt={slide.title}
-                      loading="eager"
-                      className="w-full object-cover max-w-[350px] sm:max-w-[390px] md:max-w-[450px] lg:w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl ml-auto"
-                    />
-                  </motion.div>
+    <section className="pt-18">
+      <Container>
+        <Carousel
+          opts={{ loop: true }}
+          plugins={[Autoplay({ delay: 5000, stopOnInteraction: false })]}
+          setApi={setApi}
+          className="relative"
+        >
+          <CarouselContent>
+            {sliderData.map((item, idx) => (
+              <CarouselItem
+                key={item.id}
+                className="basis-full rounded-md overflow-hidden"
+              >
+                <div className="relative aspect-video sm:aspect-video lg:aspect-auto rounded-md overflow-hidden">
+                  <img
+                    src={item.photoUrl}
+                    alt={`Slide ${idx + 1}`}
+                    loading="eager"
+                    className="h-full w-full object-cover rounded-md"
+                  />
                 </div>
-              </Container>
-            </motion.div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </Section>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious className="hidden sm:inline-flex absolute left-4" />
+          <CarouselNext className="hidden sm:inline-flex absolute right-4" />
+
+          <div className="absolute inset-0 rounded-xl bg-linear-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2">
+            {sliderData.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => api?.scrollTo(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={cn(
+                  "h-2 rounded-full transition-all duration-300",
+                  currentIndex === idx
+                    ? "w-6 bg-white"
+                    : "w-2 bg-white/50 hover:bg-white/70",
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="absolute bottom-4 right-4 sm:right-6 z-10 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm tabular-nums">
+            {currentIndex + 1} / {total}
+          </div>
+        </Carousel>
+      </Container>
+    </section>
   );
 }
 
