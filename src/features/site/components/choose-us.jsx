@@ -1,5 +1,4 @@
-﻿import chooseUsImg from "@/assets/choose_us.png";
-import { Card, CardContent } from "@/components/ui/card";
+﻿import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { features } from "../data/features";
@@ -18,7 +17,9 @@ function ChooseUs() {
           <div className="flex-1 w-full">
             <div className="relative">
               <img
-                src={chooseUsImg}
+                src={
+                  "https://res.cloudinary.com/dqh5dajig/image/upload/v1784829848/choose_us_m3e8vo.png"
+                }
                 alt="Books"
                 loading="lazy"
                 className="w-full h-64 sm:h-80 lg:h-96 xl:h-fit object-cover rounded-2xl shadow-2xl"
