@@ -26,7 +26,7 @@ export function SkeletonLayout({ variant = "cards", count = 6 }) {
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
       {Array.from({ length: count }, (_, i) => (
         <div key={i} className="overflow-hidden rounded-xl border">
-          <Skeleton className="aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full" />
+          <Skeleton className="aspect-3/2 h-[clamp(150px,35vw,270px)] sm:h-44 md:h-48 lg:h-56 w-full" />
           <div className="space-y-3 p-4">
             <Skeleton className="h-5 w-4/5" />
             <Skeleton className="h-4 w-full" />
