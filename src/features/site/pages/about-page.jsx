@@ -5,9 +5,6 @@ import { Award, BookOpen, Globe, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 
-import missionImg from "@/assets/mission.png";
-import ourStoryImg from "@/assets/our_story.png";
-import visionImg from "@/assets/vision.png";
 import { NumberTicker } from "@/components/ui/number-ticker";
 
 const fadeUp = {
@@ -72,7 +69,9 @@ export default function AboutPage() {
             </div>
             <div className="relative overflow-hidden rounded-xl">
               <img
-                src={ourStoryImg}
+                src={
+                  "https://res.cloudinary.com/dqh5dajig/image/upload/v1784829849/our_story_eccmbu.png"
+                }
                 alt="Our Story"
                 loading="lazy"
                 className="h-full w-full object-cover"
@@ -139,7 +138,9 @@ export default function AboutPage() {
             >
               <div className="order-2 overflow-hidden rounded-xl md:order-1">
                 <img
-                  src={missionImg}
+                  src={
+                    "https://res.cloudinary.com/dqh5dajig/image/upload/v1784829849/mission_aetvec.png"
+                  }
                   alt="Our Mission"
                   loading="lazy"
                   className="h-full w-full object-cover"
@@ -180,7 +181,9 @@ export default function AboutPage() {
               </div>
               <div className="overflow-hidden rounded-xl">
                 <img
-                  src={visionImg}
+                  src={
+                    "https://res.cloudinary.com/dqh5dajig/image/upload/v1784829849/vision_gduzgb.png"
+                  }
                   alt="Our Vision"
                   loading="lazy"
                   className="h-full w-full object-cover"

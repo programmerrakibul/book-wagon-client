@@ -13,7 +13,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           value={{ light: "light", dark: "dark" }}
         >
           <RouterProvider router={router} />

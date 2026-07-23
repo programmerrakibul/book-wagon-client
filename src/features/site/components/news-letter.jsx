@@ -1,5 +1,4 @@
-﻿import bgImage from "@/assets/newsletter.jpg";
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Spinner } from "@/components/ui/spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,10 +33,7 @@ function NewsLetter() {
 
   return (
     <section className="py-12 sm:py-16 lg:py-20 relative overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: `url(${bgImage})` }}
-      >
+      <div className="absolute inset-0 bg-[url(https://res.cloudinary.com/dqh5dajig/image/upload/v1784829847/newsletter_qipsts.jpg)] bg-cover bg-center bg-fixed bg-no-repeat">
         <div className="absolute inset-0 bg-linear-to-br from-primary/30 via-secondary/25 to-primary/30" />
       </div>
 

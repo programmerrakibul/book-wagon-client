@@ -23,7 +23,7 @@ function BookCard({ book = {} }) {
       >
         <div
           className={
-            "aspect-2/3 h-[clamp(80px,30vw,200px)] md:h-40 w-full overflow-hidden bg-muted relative"
+            "aspect-3/2 h-[clamp(150px,35vw,270px)] sm:h-44 md:h-48 lg:h-56 w-full overflow-hidden bg-muted relative"
           }
         >
           <img
@@ -49,16 +49,9 @@ function BookCard({ book = {} }) {
           </div>
         </div>
         <CardContent className="flex flex-col gap-2 p-4">
-          <CardTitle className="line-clamp-1 md:line-clamp-2 md:min-h-10 text-sm font-semibold leading-snug group-hover:text-primary">
+          <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-10 text-sm leading-snug group-hover:text-primary">
             {name}
           </CardTitle>
-          <p className="text-xs text-muted-foreground line-clamp-1 truncate">
-            {book.author}
-          </p>
-
-          <span className="w-fit rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary line-clamp-1">
-            {book.categoryId.name}
-          </span>
           <div className="flex items-center justify-start gap-2">
             <p className="mt-auto pt-1 text-sm font-bold">
               ৳{(discountedPrice || originalPrice).toLocaleString()}
