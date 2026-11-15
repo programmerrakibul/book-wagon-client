@@ -121,15 +121,16 @@ npm install
    variables
 
 ```env
-VITE_FIREBASE_API_KEY=your_firebase_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-VITE_CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset_name
-VITE_SERVER_URL=your_backend_api_url
+VITE_FIREBASE_API_KEY="your_firebase_api_key"
+VITE_FIREBASE_AUTH_DOMAIN="your_auth_domain"
+VITE_FIREBASE_PROJECT_ID="your_project_id"
+VITE_FIREBASE_STORAGE_BUCKET="your_storage_bucket"
+VITE_FIREBASE_MESSAGING_SENDER_ID="your_sender_id"
+VITE_FIREBASE_APP_ID="your_app_id"
+VITE_CLOUDINARY_CLOUD_NAME="your_cloud_name"
+VITE_CLOUDINARY_UPLOAD_PRESET="your_unsigned_preset_name"
+VITE_STRIPE_PUBLISHABLE_KEY="your_stripe_publishable_key"
+VITE_SERVER_URL="your_backend_api_url"
 ```
 
 4. Start the development server
@@ -151,7 +152,7 @@ The build output will be in the `dist` directory.
 ## 🎨 Design Features
 
 - **Modern UI/UX** - Clean, intuitive interface with smooth animations
-- **Dark Mode Support** - DaisyUI theme system
+- **Dark Mode Support** - Shadcn UI theme system
 - **Responsive Design** - Mobile-first approach
 - **Accessibility** - WCAG compliant components
 - **Performance Optimized** - Code splitting and lazy loading
@@ -168,7 +169,7 @@ The build output will be in the `dist` directory.
 
 **Md. Rakibul Islam**
 
-- [Portfolio](<[rakibul00206@gmail.com](https://programmer-rakibul.netlify.app/)>)
+- [Portfolio](<[rakibul00206@gmail.com](https://programmer-rakibul.vercel.app/)>)
 - [LinkedIn](https://www.linkedin.com/in/programmer-rakibul/)
 - [GitHub](https://github.com/programmerrakibul)
 - [Email](rakibul00206@gmail.com)
