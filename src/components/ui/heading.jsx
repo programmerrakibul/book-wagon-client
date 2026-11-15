@@ -6,14 +6,12 @@ function Heading({ title, subtitle, size = "default" }) {
       <h1
         className={cn(
           "font-bold tracking-tight text-foreground",
-          size === "large" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl"
+          size === "large" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl",
         )}
       >
         {title}
       </h1>
-      {subtitle && (
-        <p className="text-muted-foreground">{subtitle}</p>
-      )}
+      {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
     </div>
   );
 }

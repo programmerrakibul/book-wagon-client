@@ -1,8 +1,12 @@
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
-import { Link } from "react-router"
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  MoreHorizontalIcon,
+} from "lucide-react";
+import { Link } from "react-router";
 
-import { cn } from "@/utils/utils"
-import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/utils/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 function Pagination({ className, ...props }) {
   return (
@@ -11,7 +15,8 @@ function Pagination({ className, ...props }) {
       aria-label="pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
-      {...props} />
+      {...props}
+    />
   );
 }
 
@@ -20,7 +25,8 @@ function PaginationContent({ className, ...props }) {
     <ul
       data-slot="pagination-content"
       className={cn("flex flex-row items-center gap-1", className)}
-      {...props} />
+      {...props}
+    />
   );
 }
 
@@ -42,9 +48,10 @@ function PaginationLink({ className, isActive, size = "icon", ...props }) {
           size,
         }),
         "min-w-9 cursor-pointer",
-        className
+        className,
       )}
-      {...props} />
+      {...props}
+    />
   );
 }
 
@@ -54,7 +61,8 @@ function PaginationPrevious({ className, ...props }) {
       aria-label="Go to previous page"
       size="default"
       className={cn("gap-1.5 pl-2.5", className)}
-      {...props}>
+      {...props}
+    >
       <ChevronLeftIcon className="size-4" />
       <span>Previous</span>
     </PaginationLink>
@@ -67,7 +75,8 @@ function PaginationNext({ className, ...props }) {
       aria-label="Go to next page"
       size="default"
       className={cn("gap-1.5 pr-2.5", className)}
-      {...props}>
+      {...props}
+    >
       <span>Next</span>
       <ChevronRightIcon className="size-4" />
     </PaginationLink>
@@ -80,7 +89,8 @@ function PaginationEllipsis({ className, ...props }) {
       aria-hidden
       data-slot="pagination-ellipsis"
       className={cn("flex size-9 items-center justify-center", className)}
-      {...props}>
+      {...props}
+    >
       <MoreHorizontalIcon className="size-4" />
       <span className="sr-only">More pages</span>
     </span>
@@ -95,4 +105,4 @@ export {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-}
+};

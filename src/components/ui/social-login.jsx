@@ -46,11 +46,7 @@ function SocialLogin({ disabled }) {
       disabled={disabled}
       onClick={handleGoogleLogin}
     >
-      {disabled ? (
-        <ActionSpinner />
-      ) : (
-        <GoogleIcon />
-      )}
+      {disabled ? <ActionSpinner /> : <GoogleIcon />}
       Continue with Google
     </Button>
   );

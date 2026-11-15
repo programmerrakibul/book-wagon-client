@@ -10,7 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function BookActionsDropdown({ book, onView, onEdit, onDelete, showEdit = true }) {
+function BookActionsDropdown({
+  book,
+  onView,
+  onEdit,
+  onDelete,
+  showEdit = true,
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger

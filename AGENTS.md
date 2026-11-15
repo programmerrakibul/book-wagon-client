@@ -99,14 +99,14 @@ src/
 
 Always use these composed components instead of building from scratch:
 
-| Component | Import | Purpose |
-|-----------|--------|---------|
-| `DataTable` | `@/components/shared/data-table` | Responsive table with mobile card view, sorting |
-| `Pagination` | `@/components/shared/pagination` | Page-number pagination with ellipsis |
-| `SkeletonLayout` | `@/components/shared/skeleton-layout` | Variants: `cards`, `table`, `details` |
-| `EmptyState` | `@/components/shared/empty-state` | Icon, title, description, action button |
-| `ConfirmDialog` | `@/components/shared/confirm-dialog` | AlertDialog with onConfirm callback |
-| `FormSection` | `@/components/shared/form-section` | Card-wrapped grouped form fields |
+| Component        | Import                                | Purpose                                         |
+| ---------------- | ------------------------------------- | ----------------------------------------------- |
+| `DataTable`      | `@/components/shared/data-table`      | Responsive table with mobile card view, sorting |
+| `Pagination`     | `@/components/shared/pagination`      | Page-number pagination with ellipsis            |
+| `SkeletonLayout` | `@/components/shared/skeleton-layout` | Variants: `cards`, `table`, `details`           |
+| `EmptyState`     | `@/components/shared/empty-state`     | Icon, title, description, action button         |
+| `ConfirmDialog`  | `@/components/shared/confirm-dialog`  | AlertDialog with onConfirm callback             |
+| `FormSection`    | `@/components/shared/form-section`    | Card-wrapped grouped form fields                |
 
 ### Shared Status/Role Constants
 
@@ -124,7 +124,11 @@ import { Badge } from "@/components/ui/badge";
 
 // Usage
 const s = getStatusBadge(order.status, OrderStatusConfig);
-return <Badge variant="outline" className={s.className}>{s.label}</Badge>;
+return (
+  <Badge variant="outline" className={s.className}>
+    {s.label}
+  </Badge>
+);
 ```
 
 Available configs: `UserRoleConfig`, `BookStatusConfig`, `OrderStatusConfig`,
@@ -202,16 +206,18 @@ const sections = [
 ];
 
 // Render
-{sections.map((section) => (
-  <FormSection
-    key={section.title}
-    title={section.title}
-    fields={section.fields}
-    control={control}
-    disabled={disabled}
-    columns={section.columns}
-  />
-))}
+{
+  sections.map((section) => (
+    <FormSection
+      key={section.title}
+      title={section.title}
+      fields={section.fields}
+      control={control}
+      disabled={disabled}
+      columns={section.columns}
+    />
+  ));
+}
 ```
 
 Supported field types: `input`, `textarea`, `select`, `file`. Each field gets
@@ -276,7 +282,12 @@ export async function createItem(payload) {
 **Hook pattern** (`features/<name>/hooks/use-<name>.js`):
 
 ```jsx
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getAxiosError } from "@/utils/error";
 import { fetchItems, createItem } from "../services/<name>.service";
@@ -351,7 +362,11 @@ function ItemsPage() {
   return (
     <>
       <DataTable columns={columns} data={items} renderCard={renderCard} />
-      <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </>
   );
 }

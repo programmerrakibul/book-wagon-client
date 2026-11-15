@@ -15,7 +15,6 @@ export const defaultValues = {
   bookImage: null,
 };
 
-
 export const sortOptions = [
   { value: "default", label: "Default" },
   { value: "price-asc", label: "Price: Low to High" },
