@@ -81,8 +81,10 @@ function ReviewForm({ bookId, bookName }) {
 }
 
 function CommentItem({ c }) {
+  const { userId, comment } = c;
+  const [show, setShow] = useState(false);
 
-  const { userId, comment} = c
+  console.log(comment);
 
   return (
     <div className="flex gap-3 sm:gap-4">
@@ -101,7 +103,24 @@ function CommentItem({ c }) {
               {formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })}
             </span>
           </div>
-          <p className="text-sm leading-relaxed sm:text-base">{comment}</p>
+          <p className="text-sm leading-relaxed sm:text-base whitespace-pre-wrap">
+            {comment.length > 80 ? (
+              <>
+                <span>
+                  {show ? comment : comment.slice(0, 80)}
+                  {!show && "..."}
+                </span>{" "}
+                <span
+                  onClick={() => setShow(!show)}
+                  className="hover:no-underline underline transition cursor-pointer text-blue-500"
+                >
+                  {show ? "See Less" : "See More"}
+                </span>
+              </>
+            ) : (
+              comment
+            )}
+          </p>
         </div>
       </div>
     </div>

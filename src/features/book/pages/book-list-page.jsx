@@ -43,7 +43,7 @@ function BookListPage() {
   return (
     <>
       <title>Explore Our Collection | BookWagon</title>
-      
+
       <Section className="bg-muted/30">
         <Container>
           <Heading

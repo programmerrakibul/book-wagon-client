@@ -218,14 +218,18 @@ export default function MyOrdersPage() {
           <Heading title="My Orders" subtitle="View and manage your orders" />
 
           <div className="mt-6">
-          <DataTable columns={columns} data={orders} renderCard={renderCard} />
-        </div>
+            <DataTable
+              columns={columns}
+              data={orders}
+              renderCard={renderCard}
+            />
+          </div>
 
           <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+            page={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </Container>
       </section>
     </>

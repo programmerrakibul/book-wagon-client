@@ -15,7 +15,7 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 function Alert({ className, variant, ...props }) {
@@ -46,4 +46,5 @@ function AlertDescription({ className, ...props }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { Alert, AlertTitle, AlertDescription, alertVariants };

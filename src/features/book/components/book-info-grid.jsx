@@ -11,7 +11,13 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 
 // eslint-disable-next-line no-unused-vars
-function InfoItem({ icon: Icon, iconColor = "text-primary", bgColor = "bg-primary/10", label, value }) {
+function InfoItem({
+  icon: Icon,
+  iconColor = "text-primary",
+  bgColor = "bg-primary/10",
+  label,
+  value,
+}) {
   if (!value && value !== 0) return null;
   return (
     <div className="flex items-start gap-3">
@@ -35,7 +41,11 @@ function BookInfoGrid({ book }) {
           Book Information
         </h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-          <InfoItem icon={Layers} label="Category" value={book.categoryId?.name} />
+          <InfoItem
+            icon={Layers}
+            label="Category"
+            value={book.categoryId?.name}
+          />
 
           {book.subcategoryId && (
             <InfoItem
@@ -47,15 +57,31 @@ function BookInfoGrid({ book }) {
             />
           )}
 
-          <InfoItem icon={FileText} label="Format" value={book.formatId?.name} />
+          <InfoItem
+            icon={FileText}
+            label="Format"
+            value={book.formatId?.name}
+          />
 
           {book.weight > 0 && (
-            <InfoItem icon={Weight} label="Weight" value={`${book.weight} kg`} />
+            <InfoItem
+              icon={Weight}
+              label="Weight"
+              value={`${book.weight} kg`}
+            />
           )}
 
-          <InfoItem icon={Calendar} label="Published" value={`in ${book.publicationYear}`} />
+          <InfoItem
+            icon={Calendar}
+            label="Published"
+            value={`in ${book.publicationYear}`}
+          />
 
-          <InfoItem icon={FileText} label="Pages" value={`${book.pageCount} pages`} />
+          <InfoItem
+            icon={FileText}
+            label="Pages"
+            value={`${book.pageCount} pages`}
+          />
 
           <InfoItem
             icon={book.stock > 0 ? CheckCircle : XCircle}

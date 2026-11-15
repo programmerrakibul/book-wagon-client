@@ -111,7 +111,9 @@ function ManageBooksPage() {
         <div className="space-y-1">
           <h3 className="line-clamp-1 text-sm font-medium">{row.name}</h3>
           <p className="text-[10px] text-muted-foreground">{row.author}</p>
-          <p className="text-xs text-muted-foreground line-clamp-2 whitespace-break-spaces truncate">{row.description}</p>
+          <p className="text-xs text-muted-foreground line-clamp-2 whitespace-break-spaces truncate">
+            {row.description}
+          </p>
         </div>
         <div className="flex items-center justify-between gap-2">
           <ActiveToggle bookId={row._id} isActive={row.isActive} />

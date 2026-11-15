@@ -3,7 +3,10 @@ import { RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Search from "@/components/ui/search";
-import useBookFilters, { resetFilters, setSearch } from "@/store/use-book-filters";
+import useBookFilters, {
+  resetFilters,
+  setSearch,
+} from "@/store/use-book-filters";
 
 import FilterComponent from "./filter-component";
 import SortComponent from "./sort-component";

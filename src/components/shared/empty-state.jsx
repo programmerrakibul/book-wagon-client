@@ -26,7 +26,11 @@ export function EmptyState({
           className="mt-6"
           onClick={action.onClick}
         >
-          {action.to ? <Link to={action.to}>{action.label}</Link> : action.label}
+          {action.to ? (
+            <Link to={action.to}>{action.label}</Link>
+          ) : (
+            action.label
+          )}
         </Button>
       )}
     </div>
